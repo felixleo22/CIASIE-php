@@ -2,3 +2,4 @@
 config/
 vendor/
 .idea/
+composer.lock
