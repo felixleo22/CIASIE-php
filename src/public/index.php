@@ -8,9 +8,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 $app = new \Slim\App;
 
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
+$app->get('/[hello[/{name}]]', function (Request $request, Response $response, array $args) {
+    if (isset($args['name'])){
+        $name = $args['name'];
+        $response->getBody()->write("Hello, ${name}!");
+    }
+    else{
+        $response->getBody()->write("Hello world!");
+    }
+
     return $response;
 });
 
