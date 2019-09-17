@@ -1,0 +1,18 @@
+<?php
+return [
+    'settings' => [
+        'determineRouteBeforeAppMiddleware' => false,
+        'displayErrorDetails' => true,
+        'db' => [
+            //Remplacer par les donnees de connexion a la base de donnee
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'database' => 'database',
+            'username' => 'user',
+            'password' => 'password',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ]
+    ],
+];

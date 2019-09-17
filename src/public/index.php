@@ -17,6 +17,16 @@ $container['view'] = function($container) {
     return $view;
 };
 
+//Installation de Eloquent
+$container['db'] = function ($container) {
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db']);
+
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
+};
 
 //Creation de l application
 $app = new \Slim\App($container);
