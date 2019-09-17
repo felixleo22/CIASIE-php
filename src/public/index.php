@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../vendor/autoload.php';
+$settings = require_once '../config/config.php';
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -20,7 +21,7 @@ $container['view'] = function($container) {
 //Installation de Eloquent
 $container['db'] = function ($container) {
     $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($container['settings']['db']);
+    $capsule->addConnection($settings['db']);
 
     $capsule->setAsGlobal();
     $capsule->bootEloquent();
