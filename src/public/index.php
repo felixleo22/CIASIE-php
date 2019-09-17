@@ -25,16 +25,4 @@ $app->get('/', function (Request $request, Response $response, array $args){
     return $this->view->render($response, 'index.html.twig');
 });
 
-$app->get('/hello[/{name}]', function (Request $request, Response $response, array $args) {
-    if (isset($args['name'])){
-        $name = $args['name'];
-        $response->getBody()->write("Hello, ${name}!");
-    }
-    else{
-        $response->getBody()->write("Hello world!");
-    }
-
-    return $response;
-});
-
 $app->run();
