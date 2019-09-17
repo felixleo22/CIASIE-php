@@ -27,7 +27,7 @@ CREATE TABLE `Admin` (
   `login` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
   PRIMARY KEY (`idAdmin`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
