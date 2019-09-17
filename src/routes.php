@@ -24,7 +24,7 @@ $app = new \Slim\App($container);
 /** Routes */
 
 // Racine
-$app->get('/', '\\MyApp\\controllers\\TestController:index');
+$app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
 // Login
 $app->get('/login[/{defaultUsername}]', '\\MyApp\\controllers\\LoginController:index');
