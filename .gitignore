@@ -1,5 +1,4 @@
-
-config/
 vendor/
 .idea/
 composer.lock
+config.php
