@@ -16,9 +16,14 @@ use Slim\Views\Twig;
 
 class AdminController extends Controller
 {
-    public function listeAdmin(Request $request, Response $response){
-        $admins = Admin::all();
+    public function listeAdmin(Request $request, Response $response)
+    {
+        if ($_SESSION['current_user'] == null) {
+            return $response->withRedirect('/');
+        } else{
+            $admins = Admin::all();
         return $this->views->render($response, 'log.html.twig', ['admins' => $admins, 'session' => $_SESSION['current_user']]);
+    }
     }
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
