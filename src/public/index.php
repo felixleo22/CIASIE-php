@@ -54,8 +54,11 @@ $app->get('/liste-entite', '\\MyApp\\controllers\\EntiteController:listeEntite')
 //affichages des admins
 $app->get('/liste-admin', '\\MyApp\\controllers\\AdminController:listeAdmin');
 
-//modification des admins dans la bdd
+//accès au formulaire d'édition
 $app->get('/modifier-admin/{id}', '\\MyApp\\controllers\\AdminController:formulaireEditAdmin');
+
+//modification des admins dans la bdd
+$app->post('/verifEdit', '\\MyApp\\controllers\\AdminController:verifAdmin');
 
 //suppression des admins dans la bdd
 $app->post('/supprimer-admin', '\\MyApp\\controllers\\AdminController:suppressionAdmin');
