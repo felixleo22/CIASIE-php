@@ -16,6 +16,12 @@ class Utils {
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
         return $filename;
     }
+
+    public static function redirect(ResponseInterface $response, $route, $args = [])
+    {
+            global $app;
+            return $response->withRedirect($app->getContainer()->get('router')->pathFor($route, $args));
+    }
     
 
 }
