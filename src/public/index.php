@@ -39,4 +39,7 @@ $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
 $app->get('/login', '\\MyApp\\controllers\\LoginController:index');
 
+$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:create');
+
+//Création de l'application
 $app->run();
