@@ -42,8 +42,9 @@ $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 //Login
 $app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
 
-//Création personnage
-$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:create');
+$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:formulaireCreation');
+
+$app->post('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:creerPersonnage');
 
 //Classement
 $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
