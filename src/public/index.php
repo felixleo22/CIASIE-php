@@ -2,6 +2,7 @@
 session_start();
 require_once '../../vendor/autoload.php';
 require_once '../config/config.inc.php';
+require_once('../config/boostrap.php');
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -20,12 +21,15 @@ $container['view'] = function($container) {
     return $view;
 };
 
+//Eloquent
+$container['db'] = function ($container) use ($capsule){
+    return $capsule;
+};
 
-//Creation de l application
-$app = new \Slim\App($container);
+$app = new Slim\App($container);
 
+
+//Routes
 $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
 $app->get('/login', '\\MyApp\\controllers\\LoginController:index');
-
-$app->run();
