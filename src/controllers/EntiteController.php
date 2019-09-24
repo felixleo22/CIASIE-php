@@ -21,6 +21,14 @@ class EntiteController extends Controller
      * l'attribut photo n'est pas gere pour le moment (initialise a vide)
      */
     public function creerEntite(Request $request, Response $response, $args){
+        //upload de la photo
+        $destination = '/img';
+        $uploadedFiles = $request->getUploadedFiles();
+
+        $photo = $uploadedFiles['photo'];
+        if($photo->getError() !== UPLOAD_ERR_OK) { //erreur a faire plus tard }
+        $nomFichier = Utils::uploadFichier($destination, $photo);
+
         $perso = [];
         $perso['nom'] = $request->getParsedBodyParam('nom');
         $perso['prenom'] = $request->getParsedBodyParam('prenom');
@@ -30,7 +38,7 @@ class EntiteController extends Controller
         $perso['pointAtt'] = $request->getParsedBodyParam('pointAtt');
         $perso['pointDef'] = $request->getParsedBodyParam('pointDef');
         $perso['pointAgi'] = $request->getParsedBodyParam('pointAgi');
-        $perso['photo'] = "";
+        $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
     }
 
