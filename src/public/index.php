@@ -39,7 +39,9 @@ $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
 $app->get('/login', '\\MyApp\\controllers\\LoginController:index');
 
-$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:create');
+$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:formulaireCreation');
+
+$app->post('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:creerPersonnage');
 
 //Création de l'application
 $app->run();
