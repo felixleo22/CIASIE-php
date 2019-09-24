@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `CompteAdmin` (
+  `id` int(11) NOT NULL,
   `login` varchar(255) NOT NULL,
   `mdp` varchar(255) NOT NULL,
   `super` tinyint(1) NOT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE `Entite` (
 -- Index pour la table `CompteAdmin`
 --
 ALTER TABLE `CompteAdmin`
-  ADD PRIMARY KEY (`login`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `Entite`
@@ -76,6 +77,12 @@ ALTER TABLE `Entite`
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
+
+--
+-- AUTO_INCREMENT pour la table `CompteAdmin`
+--
+ALTER TABLE `CompteAdmin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `Entite`

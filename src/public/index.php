@@ -51,6 +51,17 @@ $app->post('/creer-entite', '\\MyApp\\controllers\\EntiteController:creerEntite'
 //affichages des entites
 $app->get('/liste-entite', '\\MyApp\\controllers\\EntiteController:listeEntite');
 
+//affichages des admins
+$app->get('/liste-admin', '\\MyApp\\controllers\\AdminController:listeAdmin');
+
+//modification des admins dans la bdd
+$app->get('/modifier-admin/{id}', '\\MyApp\\controllers\\AdminController:formulaireEditAdmin');
+
+//suppression des admins dans la bdd
+$app->post('/supprimer-admin', '\\MyApp\\controllers\\AdminController:suppressionAdmin');
+
+
+
 //Classement
 $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
 
