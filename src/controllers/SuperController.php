@@ -14,5 +14,4 @@ class SuperController
         $this->c = $container;
         $this->views = $container["view"];
     }
-
 }
