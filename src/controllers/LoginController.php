@@ -9,6 +9,11 @@ use Slim\Views\Twig;
 class LoginController extends Controller
 {
     public function index(Request $request, Response $response, $args){
-        return $this->views->render($response, 'login.html.twig');
+        if(isset($args['username'])){
+            $username = $args['username'];
+        } else{
+            $username = "";
+        }
+        return $this->views->render($response, 'login.html.twig', ['username' => $username]);
     }
 }
