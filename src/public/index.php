@@ -42,9 +42,14 @@ $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 //Login
 $app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
 
-$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:formulaireCreation');
+//Formulaire creation entite
+$app->get('/creer-entite', '\\MyApp\\controllers\\EntiteController:formulaireCreation');
 
-$app->post('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:creerPersonnage');
+//ajout dans la bdd
+$app->post('/creer-entite', '\\MyApp\\controllers\\EntiteController:creerEntite');
+
+//affichages des entites
+$app->get('/liste-entite', '\\MyApp\\controllers\\EntiteController:listeEntite');
 
 //Classement
 $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
