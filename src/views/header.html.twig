@@ -10,10 +10,16 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/classement">Classements</a>
-            </li>
+
+            {% if session.super != null %}
             <li class="nav-item">
-                <a class="nav-link" href="/connexion">Connexion</a>
+                <a class="nav-link" href="/deconnect">Deconnexion</a>
             </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/connexion">Connexion</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
