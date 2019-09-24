@@ -3,7 +3,7 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
-    <form action="">
+    <form method="POST" action="/login">
         <div class="form-group">
             <label for="ipt-login">Login</label>
             <input id="ipt-login" type="text" name="login" value="{{ username }}">
