@@ -37,16 +37,19 @@ $app = new Slim\App($container);
 /** Routes */
 
 //Root
-$app->get('/', '\\MyApp\\controllers\\IndexController:index');
+$app->get('/', '\\MyApp\\controllers\\IndexController:index') -> setName('accueil');
 
 //Login
 $app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
 
-//Formulaire création de personnage
-$app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:formulaireCreation');
+//Formulaire creation entite
+$app->get('/creer-entite', '\\MyApp\\controllers\\EntiteController:formulaireCreation');
 
-//Insertion d'un personnage dans la db
-$app->post('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:creerPersonnage');
+//ajout dans la bdd
+$app->post('/creer-entite', '\\MyApp\\controllers\\EntiteController:creerEntite');
+
+//affichages des entites
+$app->get('/liste-entite', '\\MyApp\\controllers\\EntiteController:listeEntite');
 
 //Classement
 $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
