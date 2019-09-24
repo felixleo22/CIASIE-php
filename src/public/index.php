@@ -56,4 +56,7 @@ $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
 
 /** Lancement de l'application */
 
+$app->get('/login', '\\MyApp\\controllers\\LoginController:index');
+$app->post('/login', '\\MyApp\\controllers\\LoginController:login');
+
 $app->run();
