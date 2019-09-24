@@ -1,4 +1,11 @@
 <?php
+global $BASE_URL;
+
+$config=array();
+
+$config['displayErrorDetails'] = true;
+$config['addContentLengthHeader'] = false;
+
 return [
     'settings' => [
         'determineRouteBeforeAppMiddleware' => false,
