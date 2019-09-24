@@ -6,20 +6,13 @@ $config=array();
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 
-return [
-    'settings' => [
-        'determineRouteBeforeAppMiddleware' => false,
-        'displayErrorDetails' => true,
-        'db' => [
-            //Remplacer par les donnees de connexion a la base de donnee
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'database',
-            'username' => 'user',
-            'password' => 'password',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ]
-    ],
+$config["db"] = [
+    'driver' => "mysql",
+    'host' => "localhost",
+    'database' => "Smash2",
+    'username' => "",
+    'password' => "",
+    'charset' => "utf8",
+    'collation' => "utf8_unicode_ci",
+    'prefix' => ''
 ];
