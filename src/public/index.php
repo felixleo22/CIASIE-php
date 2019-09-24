@@ -24,7 +24,7 @@ $container['view'] = function($container) {
 
 //Eloquent
 $capsule = new Capsule;
-$capsule->addConnection([$container['settings']['db']]);
+$capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 $container['db'] = function ($container) use ($capsule){
