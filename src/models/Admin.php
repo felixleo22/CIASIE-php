@@ -11,6 +11,7 @@ class Admin extends Model
     protected $table = 'CompteAdmin';
     protected $fillable = ['login', 'mdp', 'super'];
     public $timestamps = true;
+    protected  $date = ['deleted_at'];
 
 
 
