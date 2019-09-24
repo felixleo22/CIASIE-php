@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../../vendor/autoload.php';
-$settings = require_once '../config/config.php';
+require_once('../config/boostrap.php');
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -18,22 +18,10 @@ $container['view'] = function($container) {
     return $view;
 };
 
-//Installation de Eloquent
-$container['db'] = function ($container) {
-    $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($settings['db']);
 
-    $capsule->setAsGlobal();
-    $capsule->bootEloquent();
 
+$container['db'] = function ($container) use ($capsule){
     return $capsule;
 };
 
-//Creation de l application
-$app = new \Slim\App($container);
-
-$app->get('/', function (Request $request, Response $response, array $args){
-    return $this->view->render($response, 'index.html.twig');
-});
-
-$app->run();
+$app = new Slim\App($container);
