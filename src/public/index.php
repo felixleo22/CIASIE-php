@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once '../../vendor/autoload.php';
-require_once '../config/config.inc.php';
-require_once('../config/boostrap.php');
+require_once('../../vendor/autoload.php');
+require_once('../config/config.inc.php');
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 $container["settings"] = $config;
 
@@ -21,10 +21,15 @@ $container['view'] = function($container) {
     return $view;
 };
 
+/*
 //Eloquent
+$capsule = new Capsule;
+$capsule->addConnection([$container['settings']['db']]);
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
 $container['db'] = function ($container) use ($capsule){
     return $capsule;
-};
+};*/
 
 $app = new Slim\App($container);
 
