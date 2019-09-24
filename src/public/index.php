@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../vendor/autoload.php';
+require_once('../config/boostrap.php');
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -18,23 +19,9 @@ $container['view'] = function($container) {
 };
 
 
-//Creation de l application
-$app = new \Slim\App($container);
 
-$app->get('/', function (Request $request, Response $response, array $args){
-    return $this->view->render($response, 'index.html.twig');
-});
+$container['db'] = function ($container) use ($capsule){
+    return $capsule;
+};
 
-$app->get('/hello[/{name}]', function (Request $request, Response $response, array $args) {
-    if (isset($args['name'])){
-        $name = $args['name'];
-        $response->getBody()->write("Hello, ${name}!");
-    }
-    else{
-        $response->getBody()->write("Hello world!");
-    }
-
-    return $response;
-});
-
-$app->run();
+$app = new Slim\App($container);
