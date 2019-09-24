@@ -1,5 +1,7 @@
 <?php
+
 namespace MyApp\controllers;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 
 class Utils {

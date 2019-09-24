@@ -40,6 +40,8 @@ class EntiteController extends Controller
         $perso['pointAgi'] = $request->getParsedBodyParam('pointAgi');
         $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
+
+        return Utils::redirect($response, 'accueil');
     }
 
     /**
