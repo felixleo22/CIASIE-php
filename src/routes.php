@@ -18,13 +18,3 @@ $container['view'] = function($container) {
     return $view;
 };
 
-$app = new \Slim\App($container);
-
-
-/** Routes */
-
-// Racine
-$app->get('/', '\\MyApp\\controllers\\IndexController:index');
-
-// Login
-$app->get('/login[/{defaultUsername}]', '\\MyApp\\controllers\\LoginController:index');
