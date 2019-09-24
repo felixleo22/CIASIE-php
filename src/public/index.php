@@ -21,7 +21,7 @@ $container['view'] = function($container) {
     return $view;
 };
 
-/*
+
 //Eloquent
 $capsule = new Capsule;
 $capsule->addConnection([$container['settings']['db']]);
@@ -29,7 +29,7 @@ $capsule->setAsGlobal();
 $capsule->bootEloquent();
 $container['db'] = function ($container) use ($capsule){
     return $capsule;
-};*/
+};
 
 $app = new Slim\App($container);
 
@@ -38,3 +38,5 @@ $app = new Slim\App($container);
 $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
 $app->get('/login', '\\MyApp\\controllers\\LoginController:index');
+
+$app->run();
