@@ -37,7 +37,7 @@ $app = new Slim\App($container);
 /** Routes */
 
 //Root
-$app->get('/', '\\MyApp\\controllers\\IndexController:index');
+$app->get('/', '\\MyApp\\controllers\\IndexController:index') -> setName('accueil');
 
 //Login
 $app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
