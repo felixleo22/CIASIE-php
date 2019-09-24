@@ -1,15 +1,18 @@
 <?php
 session_start();
 require_once '../../vendor/autoload.php';
+require_once '../config/config.inc.php';
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-//Installation de twig
-$container = new \Slim\Container();
-$container['view'] = function($container) {
-    $view = new \Slim\Views\Twig('../views');
+$container["settings"] = $config;
 
+//Installation de twig
+$container['view'] = function($container) {
+    $view = new \Slim\Views\Twig('../views', []);
+
+    //Instantiate and add Slim specific extension
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
@@ -21,20 +24,8 @@ $container['view'] = function($container) {
 //Creation de l application
 $app = new \Slim\App($container);
 
-$app->get('/', function (Request $request, Response $response, array $args){
-    return $this->view->render($response, 'index.html.twig');
-});
+$app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
-$app->get('/hello[/{name}]', function (Request $request, Response $response, array $args) {
-    if (isset($args['name'])){
-        $name = $args['name'];
-        $response->getBody()->write("Hello, ${name}!");
-    }
-    else{
-        $response->getBody()->write("Hello world!");
-    }
-
-    return $response;
-});
+$app->get('/login', '\\MyApp\\controllers\\LoginController:index');
 
 $app->run();
