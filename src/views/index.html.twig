@@ -3,5 +3,10 @@
 {% block title %}Hello world !{% endblock %}
 
 {% block content %}
-Hello world ! Comment ca va ?
+    {% if user %}
+        Hello {{ user['name'] }} !
+    {% else %}
+        Hello world !
+    {% endif %}
+    {{ path }}
 {% endblock %}
