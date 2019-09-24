@@ -9,8 +9,14 @@
     {% endblock %}
 </head>
 <body>
+    <header>
+        {% include 'header.html.twig' %}
+    </header>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+    <footer>
+        {% include'footer.html.twig' %}
+    </footer>
 </body>
 </html>
