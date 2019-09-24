@@ -23,7 +23,6 @@ class EntiteController extends Controller
     public function creerEntite(Request $request, Response $response, $args){
         //upload de la photo
         $destination = '../public/img';
-        var_dump($destination);
         $uploadedFiles = $request->getUploadedFiles();
 
         $photo = $uploadedFiles['photo'];
