@@ -4,7 +4,7 @@ namespace MyApp\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Entite extends mModel {
+class Entite extends Model {
 
     use SoftDeletes;
     protected $table = 'Entite';
