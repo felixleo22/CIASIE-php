@@ -27,15 +27,29 @@ class AdminController extends Controller
     }
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
-        return $this->views->render($response, 'ajoutEntite.html.twig');
+        $admin = Admin::find($request->getAttribute('id'));
+        return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
     }
 
 
     public function suppressionAdmin(Request $request, Response $response){
         Admin::where('id',intval($_POST['id']))->delete();
-//        if($admin){
-//            Admin::destroy($admin);
-//        }
+        return $response->withRedirect('/admin/liste');
+    }
+
+    public function verifAdmin(Request $request, Response $response, $args){
+
+        $perso = [];
+        $perso['login'] = $request->getParsedBodyParam('login');
+        $perso['mdp'] = $request->getParsedBodyParam('mdp');
+        $perso['super'] = $request->getParsedBodyParam('super');
+
+        $admin = Admin::find(intval($_POST['id']));
+        $admin->login = $perso['login'];
+        $admin->mdp = $perso['mdp'];
+        $admin->super = $perso['super'];
+        $admin->save();
+
         return $response->withRedirect('/admin/liste');
     }
 
