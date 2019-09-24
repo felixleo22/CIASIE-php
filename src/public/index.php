@@ -34,12 +34,20 @@ $container['db'] = function ($container) use ($capsule){
 $app = new Slim\App($container);
 
 
-//Routes
+/** Routes */
+
+//Root
 $app->get('/', '\\MyApp\\controllers\\IndexController:index');
 
-$app->get('/login', '\\MyApp\\controllers\\LoginController:index');
+//Login
+$app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
 
+//Création personnage
 $app->get('/creation-personnage', '\\MyApp\\controllers\\PersonnageController:create');
 
-//Création de l'application
+//Classement
+$app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
+
+/** Lancement de l'application */
+
 $app->run();
