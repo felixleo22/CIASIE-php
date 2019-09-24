@@ -17,7 +17,7 @@
                 <td>{{ admin.mdp }}</td>
                 <td>{{ admin.super }}</td>
                 <td>
-                    <form action="/supprimer-admin" method="post">
+                    <form action="/admin/supprimer" method="post">
                         <input type="submit" class="btn btn-danger" value="Supprimer">
                         <input type="hidden" name="id" value="{{ admin.id }}">
                     </form>

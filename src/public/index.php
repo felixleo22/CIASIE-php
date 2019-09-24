@@ -43,24 +43,22 @@ $app->get('/', '\\MyApp\\controllers\\IndexController:index') -> setName('accuei
 $app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
 
 //Formulaire creation entite
-$app->get('/creer-entite', '\\MyApp\\controllers\\EntiteController:formulaireCreation');
+$app->get('/entite/creer', '\\MyApp\\controllers\\EntiteController:formulaireCreation');
 
-//ajout dans la bdd
-$app->post('/creer-entite', '\\MyApp\\controllers\\EntiteController:creerEntite');
+//Ajout dans la bdd
+$app->post('/entite/creer', '\\MyApp\\controllers\\EntiteController:creerEntite');
 
-//affichages des entites
-$app->get('/liste-entite', '\\MyApp\\controllers\\EntiteController:listeEntite');
+//Affichage des entites
+$app->get('/entite/liste', '\\MyApp\\controllers\\EntiteController:listeEntite');
 
-//affichages des admins
-$app->get('/liste-admin', '\\MyApp\\controllers\\AdminController:listeAdmin');
+//Affichage des admins
+$app->get('/admin/liste', '\\MyApp\\controllers\\AdminController:listeAdmin');
 
-//modification des admins dans la bdd
-$app->get('/modifier-admin/{id}', '\\MyApp\\controllers\\AdminController:formulaireEditAdmin');
+//Modification des admins dans la bdd
+$app->get('/admin/modifier/{id}', '\\MyApp\\controllers\\AdminController:formulaireEditAdmin');
 
-//suppression des admins dans la bdd
-$app->post('/supprimer-admin', '\\MyApp\\controllers\\AdminController:suppressionAdmin');
-
-
+//Suppression des admins dans la bdd
+$app->post('/admin/supprimer', '\\MyApp\\controllers\\AdminController:suppressionAdmin');
 
 //Classement
 $app->get('/classement', '\\MyApp\\controllers\\LadderController:index');

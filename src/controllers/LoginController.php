@@ -27,10 +27,10 @@ class LoginController extends Controller
             return $this->views->render($response, 'login.html.twig');
         }
         elseif ($pwd == $super_user->mdp && $login == $super_user->login && $super_user->super == 0){
-            return $response->withRedirect('/liste-entite');
+            return $response->withRedirect('/entite/liste');
         }
         elseif($pwd == $super_user->mdp && $login == $super_user->login && $super_user->super == 1){
-            return $response->withRedirect('/liste-admin');
+            return $response->withRedirect('/admin/liste');
         }
         else {
             return $this->views->render($response, 'login.html.twig');

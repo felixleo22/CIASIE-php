@@ -1,14 +1,30 @@
-{% for entite in entites %}
-    <tr>
-        <td> <img src="/img/{{ entite.photo }}"</td>
-        <td>{{ entite.nom }}</td>
-        <td>{{ entite.prenom }}</td>
-        <td>{{ entite.type }}</td>
-        <td>{{ entite.taille }}</td>
-        <td>{{ entite.pointVie }}</td>
-        <td>{{ entite.pointAtt }}</td>
-        <td>{{ entite.pointDef }}</td>
-        <td>{{ entite.pointAgi }}</td>
-    </tr>
-<br>
-{% endfor %}
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>Photo</th>
+            <th>Prenom</th>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Taille</th>
+            <th>PV</th>
+            <th>ATT</th>
+            <th>DEF</th>
+            <th>AGI</th>
+        </tr>
+    {% for entite in entites %}
+        <tr>
+            <td> <img src="/img/{{ entite.photo }}" alt="{{entite.prenom}}"></td>
+            <td>{{ entite.nom }}</td>
+            <td>{{ entite.prenom }}</td>
+            <td>{{ entite.type }}</td>
+            <td>{{ entite.taille }}</td>
+            <td>{{ entite.pointVie }}</td>
+            <td>{{ entite.pointAtt }}</td>
+            <td>{{ entite.pointDef }}</td>
+            <td>{{ entite.pointAgi }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

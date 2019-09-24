@@ -36,7 +36,7 @@ class AdminController extends Controller
 //        if($admin){
 //            Admin::destroy($admin);
 //        }
-        return $response->withRedirect('/liste-admin');
+        return $response->withRedirect('/admin/liste');
     }
 
 }
