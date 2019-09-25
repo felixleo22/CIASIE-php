@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\models;
+namespace smash\models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

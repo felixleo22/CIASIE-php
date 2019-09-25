@@ -1,6 +1,6 @@
 <?php
 
-namespace MyApp\controllers;
+namespace Smash\controllers;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 

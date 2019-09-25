@@ -6,9 +6,9 @@
  * Time: 17:36
  */
 
-namespace MyApp\controllers;
+namespace Smash\controllers;
 
-use MyApp\models\Admin;
+use Smash\models\Admin;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
