@@ -8,11 +8,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 //Controleurs
-use Smash\Controllers\IndexController;
-use Smash\Controllers\LoginController;
-use Smash\Controllers\EntiteController; 
-use Smash\Controllers\AdminController;
-use Smash\Controllers\LadderController;
+use Smash\controllers\IndexController;
+use Smash\controllers\LoginController;
+use Smash\controllers\EntiteController; 
+use Smash\controllers\AdminController;
+use Smash\controllers\LadderController;
 
 $container["settings"] = $config;
 
@@ -72,7 +72,7 @@ $app->get('/classement', LadderController::class.':index');
 
 /** Lancement de l'application */
 
-$app->get('/login', LoginController::class.'LoginController:index');
+$app->get('/login', LoginController::class.':index');
 $app->post('/login', LoginController::class.':login');
 $app->get('/deconnect', LoginController::class.':deconnect');
 
