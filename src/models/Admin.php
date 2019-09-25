@@ -8,11 +8,7 @@ class Admin extends Model
 {
 
     use SoftDeletes;
-    protected $table = 'CompteAdmin';
+    protected $table = 'compteAdmin';
     protected $fillable = ['login', 'mdp', 'super'];
     public $timestamps = true;
-    protected  $date = ['deleted_at'];
-
-
-
 } 
