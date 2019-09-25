@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MyApp\controllers;
+namespace Smash\controllers;
 
 
 class Controller

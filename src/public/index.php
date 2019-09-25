@@ -7,6 +7,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+//Controleurs
+use Smash\Controllers\IndexController;
+use Smash\Controllers\LoginController;
+use Smash\Controllers\EntiteController; 
+use Smash\Controllers\AdminController;
+use Smash\Controllers\LadderController;
+
 $container["settings"] = $config;
 
 //Installation de twig
@@ -37,36 +44,36 @@ $app = new Slim\App($container);
 /** Routes */
 
 //Root
-$app->get('/', '\\MyApp\\controllers\\IndexController:index') -> setName('accueil');
+$app->get('/', IndexController::class.':index') -> setName('accueil');
 
 //Login
-$app->get('/connexion[/{username}]', '\\MyApp\\controllers\\LoginController:index');
+$app->get('/connexion[/{username}]', LoginController::class.':index');
 
 //Formulaire creation entite
-$app->get('/entite/creer', '\\MyApp\\controllers\\EntiteController:formulaireCreation');
+$app->get('/entite/creer', EntiteController::class.':formulaireCreation');
 
 //Ajout dans la bdd
-$app->post('/entite/creer', '\\MyApp\\controllers\\EntiteController:creerEntite');
+$app->post('/entite/creer', EntiteController::class.':creerEntite');
 
 //Affichage des entites
-$app->get('/entite/liste', '\\MyApp\\controllers\\EntiteController:listeEntite');
+$app->get('/entite/liste', EntiteController::class.':listeEntite');
 
 //Affichage des admins
-$app->get('/admin/liste', '\\MyApp\\controllers\\AdminController:listeAdmin');
+$app->get('/admin/liste', AdminController::class.':listeAdmin');
 
 //Modification des admins dans la bdd
-$app->get('/admin/modifier/{id}', '\\MyApp\\controllers\\AdminController:formulaireEditAdmin');
+$app->get('/admin/modifier/{id}', AdminController::class.':formulaireEditAdmin');
 
 //Suppression des admins dans la bdd
-$app->post('/admin/supprimer', '\\MyApp\\controllers\\AdminController:suppressionAdmin');
+$app->post('/admin/supprimer', AdminController::class.':suppressionAdmin');
 
 //Classement
-$app->get('/classement', '\\MyApp\\controllers\\LadderController:index');
+$app->get('/classement', LadderController::class.':index');
 
 /** Lancement de l'application */
 
-$app->get('/login', '\\MyApp\\controllers\\LoginController:index');
-$app->post('/login', '\\MyApp\\controllers\\LoginController:login');
-$app->get('/deconnect', '\\MyApp\\controllers\\LoginController:deconnect');
+$app->get('/login', LoginController::class.'LoginController:index');
+$app->post('/login', LoginController::class.':login');
+$app->get('/deconnect', LoginController::class.':deconnect');
 
 $app->run();
