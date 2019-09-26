@@ -65,7 +65,7 @@ $app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite');
 $app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
 
 //Suppression d'une entite dans la bdd
-$app->post('/entite/supprimer', EntiteController::class.':suppressionEntite');
+$app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite');
 
 //Affichage des admins
 $app->get('/admin/liste', AdminController::class.':listeAdmin');

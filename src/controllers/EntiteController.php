@@ -53,7 +53,7 @@ class EntiteController extends Controller
     /**
      * 
      */
-    private function recupererEntite($request, $response, $args){
+    private function recupererEntite(Request $request, Response $response, $args){
         $idEntite = intval($args['id']);
         return Entite::find($idEntite);
     }
@@ -73,6 +73,7 @@ class EntiteController extends Controller
         $entite->type = Utils::getFilteredPost($request, "type");
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
+        $entite->taille = Utils::getFilteredPost($request, "taille");
         $entite->pointVie = Utils::getFilteredPost($request, "pointVie");
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
@@ -85,9 +86,10 @@ class EntiteController extends Controller
     /**
      * 
      */
-    public function suppressionEntite(Request $request, Response $response){
-        Entite::where('id',intval($_POST['id']))->delete();
-        return $response->withRedirect('/Entite/liste');
+    public function suppressionEntite(Request $request, Response $response, $args){
+        $entite = recupererEntite($request, $response, $args);
+        $entite::where('id',intval($args['id']))->delete();
+        return $response->withRedirect('/entite/liste');
     }
 
 
