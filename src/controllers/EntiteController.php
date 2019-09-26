@@ -28,15 +28,16 @@ class EntiteController extends Controller
         $photo = $uploadedFiles['photo'];
         if($photo->getError() !== UPLOAD_ERR_OK) { /*erreur a faire plus tard */}
         $nomFichier = Utils::uploadFichier($destination, $photo);
+
         $perso = [];
-        $perso['nom'] = $request->getParsedBodyParam('nom');
-        $perso['prenom'] = $request->getParsedBodyParam('prenom');
-        $perso['type'] = $request->getParsedBodyParam('type');
-        $perso['taille'] = $request->getParsedBodyParam('taille');
-        $perso['pointVie'] = $request->getParsedBodyParam('pointVie');
-        $perso['pointAtt'] = $request->getParsedBodyParam('pointAtt');
-        $perso['pointDef'] = $request->getParsedBodyParam('pointDef');
-        $perso['pointAgi'] = $request->getParsedBodyParam('pointAgi');
+        $perso['nom'] = Utils::getFilteredPost($request, 'nom');
+        $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
+        $perso['type'] = Utils::getFilteredPost($request, 'type');
+        $perso['taille'] = Utils::getFilteredPost($request, 'taille');
+        $perso['pointVie'] = Utils::getFilteredPost($request, 'pointVie');
+        $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
+        $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
+        $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
         $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
         return Utils::redirect($response, 'accueil');
@@ -62,6 +63,7 @@ class EntiteController extends Controller
      * 
      */
     public function afficherEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexionde l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
         return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
     }
@@ -70,6 +72,13 @@ class EntiteController extends Controller
      * 
      */
     public function modiferEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexionde l'utilisateur
+
+        $id = Utils::sanitize($args['id']);
+        if($id === null) return Utils::redirect($request, 'formModifEntite');
+       
+        $entite = Entite::find($id);
+
         $entite->type = Utils::getFilteredPost($request, "type");
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
@@ -79,17 +88,20 @@ class EntiteController extends Controller
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
         $entite->photo = Utils::getFilteredPost($request, "photo");
-        $entite = Entite::save();
-        return Utils::redirect($response, '/entite/liste');
+
+        $entite->save();
+        return Utils::redirect($response, 'afficherListeEntites');
     }
 
     /**
      * 
      */
-    public function suppressionEntite(Request $request, Response $response, $args){
-        $entite = recupererEntite($request, $response, $args);
-        $entite::where('id',intval($args['id']))->delete();
-        return $response->withRedirect('/entite/liste');
+    public function suppressionEntite(Request $request, Response $response){
+        $entite = Entite::find(Utils::getFilteredPost('id'));
+        if($entite != null) {
+            $entite->delete();
+        }
+        return $response->withRedirect('/Entite/liste');
     }
 
 

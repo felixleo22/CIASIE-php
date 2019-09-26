@@ -56,10 +56,10 @@ $app->get('/entite/creer', EntiteController::class.':formulaireCreation');
 $app->post('/entite/creer', EntiteController::class.':creerEntite');
 
 //Affichage des entites
-$app->get('/entite/liste', EntiteController::class.':listeEntite');
+$app->get('/entite/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
 
 //Affichage d'une entite
-$app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite');
+$app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
 
 //Modification d'une entite dans la bdd
 $app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
