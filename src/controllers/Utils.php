@@ -2,6 +2,7 @@
 
 namespace Smash\controllers;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\UploadedFile;
 
 class Utils {
@@ -25,5 +26,19 @@ class Utils {
             return $response->withRedirect($app->getContainer()->get('router')->pathFor($route, $args));
     }
     
+    /**
+     * Permet de récupérer une variable POST et de la filtrer
+     * Retourne null si $key n'est pas présentes dans la requête
+     */
+    public static function getFilteredPost(ServerRequestInterface $request, string $key) {
+        $data = $request->getParsedBodyParam($key, null);
+        return $data === null ? null : self::sanitize($data);
+    }
 
+    /**
+     * Permet de sanitize une string (vis-à-vis de l'affichage HTML seulement)
+     */
+    public static function sanitize(string $unsafe) : string{
+        return strip_tags($unsafe);
+    }
 }
