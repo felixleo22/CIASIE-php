@@ -28,15 +28,16 @@ class EntiteController extends Controller
         $photo = $uploadedFiles['photo'];
         if($photo->getError() !== UPLOAD_ERR_OK) { /*erreur a faire plus tard */}
         $nomFichier = Utils::uploadFichier($destination, $photo);
+        
         $perso = [];
-        $perso['nom'] = $request->getParsedBodyParam('nom');
-        $perso['prenom'] = $request->getParsedBodyParam('prenom');
-        $perso['type'] = $request->getParsedBodyParam('type');
-        $perso['taille'] = $request->getParsedBodyParam('taille');
-        $perso['pointVie'] = $request->getParsedBodyParam('pointVie');
-        $perso['pointAtt'] = $request->getParsedBodyParam('pointAtt');
-        $perso['pointDef'] = $request->getParsedBodyParam('pointDef');
-        $perso['pointAgi'] = $request->getParsedBodyParam('pointAgi');
+        $perso['nom'] = Utils::getFilteredPost($request, 'nom');
+        $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
+        $perso['type'] = Utils::getFilteredPost($request, 'type');
+        $perso['taille'] = Utils::getFilteredPost($request, 'taille');
+        $perso['pointVie'] = Utils::getFilteredPost($request, 'pointVie');
+        $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
+        $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
+        $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
         $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
         return Utils::redirect($response, 'accueil');
