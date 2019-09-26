@@ -28,7 +28,7 @@ class EntiteController extends Controller
         $photo = $uploadedFiles['photo'];
         if($photo->getError() !== UPLOAD_ERR_OK) { /*erreur a faire plus tard */}
         $nomFichier = Utils::uploadFichier($destination, $photo);
-        
+
         $perso = [];
         $perso['nom'] = Utils::getFilteredPost($request, 'nom');
         $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
@@ -63,6 +63,7 @@ class EntiteController extends Controller
      * 
      */
     public function afficherEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexionde l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
         return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
     }
@@ -71,6 +72,13 @@ class EntiteController extends Controller
      * 
      */
     public function modiferEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexionde l'utilisateur
+
+        $id = Utils::sanitize($args['id']);
+        if($id === null) return Utils::redirect($request, 'formModifEntite');
+       
+        $entite = Entite::find($id);
+
         $entite->type = Utils::getFilteredPost($request, "type");
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
@@ -79,15 +87,19 @@ class EntiteController extends Controller
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
         $entite->photo = Utils::getFilteredPost($request, "photo");
-        $entite = Entite::save();
-        return Utils::redirect($response, '/entite/liste');
+
+        $entite->save();
+        return Utils::redirect($response, 'afficherListeEntites');
     }
 
     /**
      * 
      */
     public function suppressionEntite(Request $request, Response $response){
-        Entite::where('id',intval($_POST['id']))->delete();
+        $entite = Entite::find(Utils::getFilteredPost('id'));
+        if($entite != null) {
+            $entite->delete();
+        }
         return $response->withRedirect('/Entite/liste');
     }
 
