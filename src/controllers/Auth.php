@@ -25,7 +25,7 @@ class Auth {
         $admin = Admin::where('login', '=', $login)->first();
         if($admin === null || !password_verify($mdp, $admin->mdp)) return false;
 
-        $_SESSION['user'] = $admin->id;
+        $_SESSION['user'] = $admin->login;
         return true;
     }
 

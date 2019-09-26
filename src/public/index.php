@@ -70,11 +70,20 @@ $app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite'
 //Affichage des admins
 $app->get('/admin/liste', AdminController::class.':listeAdmin');
 
-//Modification des admins dans la bdd
-$app->get('/admin/modifier/{id}', AdminController::class.':formulaireEditAdmin');
+//Formulaire de création d'un admin 
+$app->get('/admin/creer', AdminController::class.':formulaireCreation');
+
+//Ajout d'un admin dans la bdd
+$app->post('/admin/creer', AdminController::class.':creerAdmin');
+
+//affichage d'un admin 
+$app->get('/admin/modifier/{login}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
+
+//Modification d'un admin dans la bdd
+$app->post('/admon/modifier/{id}', AdminController::class.':modiferAdmin');
 
 //Suppression des admins dans la bdd
-$app->post('/admin/supprimer', AdminController::class.':suppressionAdmin');
+$app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin');
 
 //Classement
 $app->get('/classement', LadderController::class.':index');

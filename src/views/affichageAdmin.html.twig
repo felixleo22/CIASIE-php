@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>login</th>
+        </tr>
+    {% for admins in admin %}
+        <tr>
+            <td>{{ admin.login }}</td>
+            <td> <a href ="/admin/modifier/{{ admin.login }}" >Modifier</a> </td>
+            <td> <a href ="/admin/supprimer/{{ admin.login }}" >Suprimer</a> </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

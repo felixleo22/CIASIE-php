@@ -40,7 +40,7 @@ class EntiteController extends Controller
         $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
         $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
-        return Utils::redirect($response, 'accueil');
+        return Utils::redirect($response, '/entite/liste');
     }
 
     /**

@@ -15,7 +15,7 @@
         </tr>
     {% for entite in entites %}
         <tr>
-            <td> <img src="/img/{{ entite.photo }}" alt="{{entite.prenom}}"></td>
+            <td> <img src="/img/{{ entite.photo }}" alt="{{ entite.prenom }}"></td>
             <td>{{ entite.nom }}</td>
             <td>{{ entite.prenom }}</td>
             <td>{{ entite.type }}</td>
