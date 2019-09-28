@@ -80,7 +80,7 @@ $app->post('/admin/creer', AdminController::class.':creerAdmin');
 $app->get('/admin/modifier/{login}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
 
 //Modification d'un admin dans la bdd
-$app->post('/admon/modifier/{id}', AdminController::class.':modiferAdmin');
+$app->post('/admin/modifier/{id}', AdminController::class.':modiferAdmin');
 
 //Suppression des admins dans la bdd
 $app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin');

@@ -1,5 +1,5 @@
 <?php
-namespace smah\controllers;
+namespace Smash\controllers;
 
 use Smash\models\Admin;
 
