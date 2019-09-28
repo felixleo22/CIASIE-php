@@ -19,15 +19,16 @@ class LoginController extends Controller
     }
 
     public function login(Request $request, Response $response){
+
         $login = ($_POST['login']);
         $pwd = ($_POST['password']);
         if(Auth::connexion($login,$pwd) == false){
             return $this->views->render($response, 'login.html.twig');
         }
-        elseif (Auth::connexion($login,$pwd) == true && Auth::getAdmin()->super == 0){
+        elseif (Auth::connexion($login,$pwd) == true ){
             return $response->withRedirect('/entite/liste');
         }
-        elseif(Auth::connexion($login,$pwd) == true && Auth::getAdmin()->super == 1){
+        elseif(Auth::connexion($login,$pwd) == true ){
             return $response->withRedirect('/admin/liste');
         }
         else {

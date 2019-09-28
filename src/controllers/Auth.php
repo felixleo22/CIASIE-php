@@ -35,8 +35,8 @@ class Auth {
     }
 
     //permet de creer un compte admin (si pas marcher retourne null)
-    public static function creerAdmin(string $login, $mdp) {
-        $admin = Admin::create(['login' => $login, 'mdp' => password_hash($mdp, PASSWORD_DEFAULT)]);
+    public static function creerAdmin(string $login, $mdp,$super) {
+        $admin = Admin::create(['login' => $login, 'mdp' => password_hash($mdp, PASSWORD_DEFAULT),'super'=>$super]);
         return $admin;
     }
 }
