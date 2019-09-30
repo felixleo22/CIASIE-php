@@ -63,26 +63,20 @@ $app->group('/entite', function($app) {
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
 });
 
-$app->
+//gestion des admins
+$app->group('/admin', function($app) {
+    $app->get('/liste', AdminController::class.':listeAdmin')->setName('listeAdmins');
 
+    $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin');
+    $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
 
-//Affichage des admins
-$app->get('/admin/liste', AdminController::class.':listeAdmin');
-
-//Formulaire de création d'un admin 
-$app->get('/admin/creer', AdminController::class.':formulaireCreation');
-
-//Ajout d'un admin dans la bdd
-$app->post('/admin/creer', AdminController::class.':creerAdmin');
-
-//affichage d'un admin 
-$app->get('/admin/modifier/{login}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
-
-//Modification d'un admin dans la bdd
-$app->post('/admin/modifier/{id}', AdminController::class.':modiferAdmin');
-
-//Suppression des admins dans la bdd
-$app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin');
+    //TODO uniformiser soit login soit id
+    //TODO remplacer post par put
+    $app->get('/admin/modifier/{login}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
+    $app->post('/admin/modifier/{id}', AdminController::class.':modiferAdmin')->setName('execModifAdmin');
+    //TODO remplacer get par delete
+    $app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
+});
 
 /** Lancement de l'application */
 $app->run();
