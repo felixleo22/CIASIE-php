@@ -22,6 +22,11 @@ $container['view'] = function($container) {
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+    //ajout des fonctions perso pour twig
+    $functionsArray = require_once('../config/twigFunctions.inc.php');
+    foreach ($functionsArray as $fonction) {
+        $view->getEnvironment()->addFunction($fonction);
+    }
 
     return $view;
 };
