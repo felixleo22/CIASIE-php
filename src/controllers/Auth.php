@@ -1,5 +1,5 @@
 <?php
-namespace smah\controllers;
+namespace Smash\controllers;
 
 use Smash\models\Admin;
 
@@ -15,7 +15,13 @@ class Auth {
     public static function getAdmin() : Admin {
         if(!static::estConnecte()) return null;
 
-        return Admin::find($_SESSION['user']);
+        return Admin::find($_SESSION['user']['id']);
+    }
+
+    //retourne le login de l'admin
+    public static function getAdminLogin() : string {
+        if(!static::estConnecte()) return "";
+        return $_SESSION['user']['login'];
     }
 
     //permet de verifier les infos de connexion et creer la connexion si elles sont correctes
@@ -25,7 +31,8 @@ class Auth {
         $admin = Admin::where('login', '=', $login)->first();
         if($admin === null || !password_verify($mdp, $admin->mdp)) return false;
 
-        $_SESSION['user'] = $admin->id;
+        $_SESSION['user']['id'] = $admin->id;
+        $_SESSION['user']['login'] = $admin->login;
         return true;
     }
 
@@ -35,8 +42,9 @@ class Auth {
     }
 
     //permet de creer un compte admin (si pas marcher retourne null)
-    public static function creerAdmin(string $login, $mdp) {
-        $admin = Admin::create(['login' => $login, 'mdp' => password_hash($mdp, PASSWORD_DEFAULT)]);
+    public static function creerAdmin(string $login, $mdp,$super = false) {
+        $admin = Admin::create(['login' => $login, 'mdp' => password_hash($mdp, PASSWORD_DEFAULT),'super'=>$super]);
         return $admin;
     }
+
 }

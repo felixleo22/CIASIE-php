@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 {% block content %}
 <div class='formulaire'>
-    <form action='/entite/modifier/{{ entite.id }}' method='POST' enctype="multipart/form-data">
+    <form action='{{ path_for('execModifEntite', {id: entite.id}) }}' method='POST' enctype="multipart/form-data">
         <span>Nom: </span><input type='text' name ='nom' minlength='1' placeholder='Nom' value='{{ entite.nom }}' required><br>
         <span>Prénom: </span><input type='text' name = 'prenom'  minlength='1' placeholder='Prénom' value='{{ entite.prenom }}'required><br>
         <span>Type: </span><select name='type' minlength='1' placeholder='Type' value='{{ entite.type }}' required>

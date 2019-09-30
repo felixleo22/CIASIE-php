@@ -15,7 +15,7 @@
         </tr>
     {% for entite in entites %}
         <tr>
-            <td> <img src="/img/{{ entite.photo }}" alt="{{entite.prenom}}"></td>
+            <td> <img src="/img/{{ entite.photo }}" alt="{{ entite.prenom }}"></td>
             <td>{{ entite.nom }}</td>
             <td>{{ entite.prenom }}</td>
             <td>{{ entite.type }}</td>
@@ -24,8 +24,8 @@
             <td>{{ entite.pointAtt }}</td>
             <td>{{ entite.pointDef }}</td>
             <td>{{ entite.pointAgi }}</td>
-            <td> <a href ="/entite/modifier/{{ entite.id }}" >Modifier</a> </td>
-            <td> <a href ="/entite/supprimer/{{ entite.id }}" >Suprimer</a> </td>
+            <td> <a href ="{{ path_for('execModifEntite', {id: entite.id}) }}" >Modifier</a> </td>
+            <td> <a href ="{{ path_for('execSupprEntite', {id: entite.id}) }}" >Suprimer</a> </td>
         </tr>
     {% endfor %}
     </table>

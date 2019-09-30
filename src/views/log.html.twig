@@ -17,15 +17,13 @@
                 <td>{{ admin.mdp }}</td>
                 <td>{{ admin.super }}</td>
                 <td>
-                    <form action="/admin/supprimer" method="post">
+                    <form action="{{path_for('execSupprAdmin', {id: admin.id})}}" method="post">
                         <input type="submit" class="btn btn-danger" value="Supprimer">
-                        <input type="hidden" name="id" value="{{ admin.id }}">
                     </form>
                 </td>
                 <td>
-                    <form action="/admin/modifier/{{ admin.id }}" method="get">
+                    <form action="{{path_for('execModifAdmin', {id: admin.id})}}" method="get">
                         <input type="submit" class="btn btn-success" value="Modifier">
-                        <input type="hidden" name="id" value="{{ admin.id }}">
                     </form>
                 </td>
             </tr>
