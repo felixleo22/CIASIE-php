@@ -8,9 +8,10 @@
     {% for admin in admins %}
         <tr>
             <td>{{ admin.login }}</td>
-            <td> <a href ="/admin/modifier/{{ admin.id }}" >Modifier</a> </td>
-            <td> <a href ="/admin/supprimer/{{ admin.id }}" >Suprimer</a> </td>
+            <td> <a href ="{{ path_for('formModifAdmin', {id: admin.id}) }}" >Modifier</a> </td>
+            <td> <a href ="{{ path_for('execSupprAdmin', {id: admin.id}) }}" >Suprimer</a> </td>
         </tr>
     {% endfor %}
     </table>
 {% endblock %}
+

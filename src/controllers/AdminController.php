@@ -63,7 +63,7 @@ class AdminController extends Controller {
         $ad['login'] = Utils::getFilteredPost($request, 'login');
         $ad['mdp'] = Utils::getFilteredPost($request, 'mdp');
         $admin = Admin::create($ad);
-        return Utils::redirect($response, 'accueil');
+        return Utils::redirect($response, 'listeAdmins');
     }
 
     /**
@@ -89,12 +89,12 @@ class AdminController extends Controller {
     public function modifierAdmin(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
-        if($id === null) return Utils::redirect($request, 'accueil');
+        if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
         $admin->login = Utils::getFilteredPost($request, "login");
         $admin->mdp = Utils::getFilteredPost($request, "mdp");
         $admin->save();
-        return Utils::redirect($response, 'accueil');
+        return Utils::redirect($response, 'listeAdmins');
     }
 
     /**

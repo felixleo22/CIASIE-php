@@ -59,7 +59,7 @@ $app->group('/entite', function($app) {
     $app->get('/creer', EntiteController::class.':formulaireCreation')->setName('formCreerEntite');
     $app->post('/creer', EntiteController::class.':creerEntite')->setName('execCreerEntite');
     
-    $app->get('/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
+    $app->get('/liste', EntiteController::class.':listeEntite')->setname('listeEntites');
 
     $app->get('/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
     //TODO remplacer post par put
@@ -77,10 +77,10 @@ $app->group('/admin', function($app) {
 
     //TODO uniformiser soit login soit id
     //TODO remplacer post par put
-    $app->get('/admin/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
-    $app->post('/admin/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
+    $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');
+    $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
     //TODO remplacer get par delete
-    $app->get('/admin/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
+    $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
 });
 
 /** Lancement de l'application */
