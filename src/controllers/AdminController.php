@@ -117,7 +117,7 @@ class AdminController extends Controller {
         $login = Utils::getFilteredPost('login');
         $pwd = Utils::getFilteredPost('password');
         if(!Auth::connexion($login,$pwd)){
-            return Utils::redirect($response, 'formulaireConnexion');
+            return Utils::redirect($response, 'formConnexion');
         }
         
         return Utils::redirect($response, 'accueil');
@@ -125,8 +125,7 @@ class AdminController extends Controller {
 
     public function deconnecter(Request $request, Response $response){
         Auth::deconnexion(); 
-        return Utils::redirect($response, 'accueil')
-
+        return Utils::redirect($response, 'accueil');
     }
 
 }
