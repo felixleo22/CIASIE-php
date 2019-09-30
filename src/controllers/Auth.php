@@ -15,7 +15,13 @@ class Auth {
     public static function getAdmin() : Admin {
         if(!static::estConnecte()) return null;
 
-        return Admin::find($_SESSION['user']);
+        return Admin::find($_SESSION['user']['id']);
+    }
+
+    //retourne le login de l'admin
+    public static function getAdminLogin() : string {
+        if(!static::estConnecte()) return "";
+        return $_SESSION['user']['login'];
     }
 
     //permet de verifier les infos de connexion et creer la connexion si elles sont correctes
@@ -25,7 +31,8 @@ class Auth {
         $admin = Admin::where('login', '=', $login)->first();
         if($admin === null || !password_verify($mdp, $admin->mdp)) return false;
 
-        $_SESSION['user'] = $admin->login;
+        $_SESSION['user']['id'] = $admin->id;
+        $_SESSION['user']['login'] = $admin->login;
         return true;
     }
 

@@ -109,4 +109,24 @@ class AdminController extends Controller {
         return $response->withRedirect('/admin/liste');
     }
 
+    public function afficherFomulaireConnexion(Request $request, Response $response, $args) {
+        return $this->views->render($response, 'login.html.twig');
+    }
+
+    public function connecter(Request $request, Response $response, $args){
+        $login = Utils::getFilteredPost('login');
+        $pwd = Utils::getFilteredPost('password');
+        if(!Auth::connexion($login,$pwd)){
+            return Utils::redirect($response, 'formulaireConnexion');
+        }
+        
+        return Utils::redirect($response, 'accueil');
+    }
+
+    public function deconnecter(Request $request, Response $response){
+        Auth::deconnexion(); 
+        return Utils::redirect($response, 'accueil')
+
+    }
+
 }
