@@ -107,7 +107,26 @@ class AdminController extends Controller {
         if($admin != null) {
             $admin->delete();
         }
-        return $response->withRedirect('/admin/liste');
+        return Utils::redirect($response, 'listeAdmins');
+    }
+
+    public function afficherFomulaireConnexion(Request $request, Response $response, $args) {
+        return $this->views->render($response, 'login.html.twig');
+    }
+
+    public function connecter(Request $request, Response $response, $args){
+        $login = Utils::getFilteredPost($request,'login');
+        $pwd = Utils::getFilteredPost($request, 'password');
+        if(!Auth::connexion($login,$pwd)){
+            return Utils::redirect($response, 'formConnexion');
+        }
+        
+        return Utils::redirect($response, 'accueil');
+    }
+
+    public function deconnecter(Request $request, Response $response){
+        Auth::deconnexion(); 
+        return Utils::redirect($response, 'accueil');
     }
 
 }

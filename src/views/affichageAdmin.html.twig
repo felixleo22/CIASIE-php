@@ -5,7 +5,7 @@
         <tr>
             <th>login</th>
         </tr>
-    {% for admins in admin %}
+    {% for admin in admins %}
         <tr>
             <td>{{ admin.login }}</td>
             <td> <a href ="/admin/modifier/{{ admin.id }}" >Modifier</a> </td>
