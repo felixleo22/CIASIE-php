@@ -28,19 +28,19 @@ class AdminController extends Controller {
     // }
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
-        $admin = Admin::find($request->getAttribute('login'));
+        $admin = Admin::find($request->getAttribute('id'));
         return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
     }
 
     public function verifAdmin(Request $request, Response $response, $args){
 
         $perso = [];
-        $perso['login'] = $request->getParsedBodyParam('login');
+        $perso['id'] = $request->getParsedBodyParam('id');
         $perso['mdp'] = $request->getParsedBodyParam('mdp');
         $perso['super'] = $request->getParsedBodyParam('super');
 
-        $admin = Admin::find(intval($_POST['login']));
-        $admin->login = $perso['login'];
+        $admin = Admin::find(intval($_POST['id']));
+        $admin->id = $perso['id'];
         $admin->mdp = $perso['mdp'];
         $admin->super = $perso['super'];
         $admin->save();
@@ -79,21 +79,22 @@ class AdminController extends Controller {
      */
     public function afficherAdmin(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
-        $admin = Admin::find($request->getAttribute('login'));
+        $admin = Admin::find($request->getAttribute('id'));
         return $this->views->render($response, 'editAdmin.html.twig',['admins'=>$admin]);
     }
 
     /**
      * 
      */
-    public function modiferAdmin(Request $request, Response $response, $args) {
+    public function modifierAdmin(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
-        $login = Utils::sanitize($args['login']);
-        if($login === null) return Utils::redirect($request, 'formModifAdmin');
-        $admin = Admin::find($login);
+        $id = Utils::sanitize($args['id']);
+        if($id === null) return Utils::redirect($request, 'accueil');
+        $admin = Admin::find($id);
         $admin->login = Utils::getFilteredPost($request, "login");
+        $admin->mdp = Utils::getFilteredPost($request, "mdp");
         $admin->save();
-        return Utils::redirect($response, 'afficherListeAdmins');
+        return Utils::redirect($response, 'accueil');
     }
 
     /**
@@ -101,8 +102,8 @@ class AdminController extends Controller {
      */
     public function suppressionAdmin(Request $request, Response $response, $args){
         //TODO Verifier connexion de l'utilisateur
-        $login = Utils::sanitize($args['login']);
-        $admin = Admin::find($login);
+        $id = Utils::sanitize($args['id']);
+        $admin = Admin::find($id);
         if($admin != null) {
             $admin->delete();
         }

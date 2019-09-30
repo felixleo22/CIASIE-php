@@ -62,7 +62,7 @@ $app->get('/entite/liste', EntiteController::class.':listeEntite')->setname('aff
 $app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
 
 //Modification d'une entite dans la bdd
-$app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
+$app->post('/entite/modifier/{id}', EntiteController::class.':modifierEntite');
 
 //Suppression d'une entite dans la bdd
 $app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite');
@@ -77,13 +77,13 @@ $app->get('/admin/creer', AdminController::class.':formulaireCreation');
 $app->post('/admin/creer', AdminController::class.':creerAdmin');
 
 //affichage d'un admin 
-$app->get('/admin/modifier/{login}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
+$app->get('/admin/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');;
 
 //Modification d'un admin dans la bdd
-$app->post('/admon/modifier/{id}', AdminController::class.':modiferAdmin');
+$app->post('/admin/modifier/{id}', AdminController::class.':modifierAdmin');
 
 //Suppression des admins dans la bdd
-$app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin');
+$app->get('/admin/supprimer/{id}', AdminController::class.':suppressionAdmin');
 
 //Classement
 $app->get('/classement', LadderController::class.':index');

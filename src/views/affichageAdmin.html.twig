@@ -8,8 +8,8 @@
     {% for admins in admin %}
         <tr>
             <td>{{ admin.login }}</td>
-            <td> <a href ="/admin/modifier/{{ admin.login }}" >Modifier</a> </td>
-            <td> <a href ="/admin/supprimer/{{ admin.login }}" >Suprimer</a> </td>
+            <td> <a href ="/admin/modifier/{{ admin.id }}" >Modifier</a> </td>
+            <td> <a href ="/admin/supprimer/{{ admin.id }}" >Suprimer</a> </td>
         </tr>
     {% endfor %}
     </table>
