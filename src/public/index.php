@@ -9,10 +9,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 //Controleurs
 use Smash\controllers\IndexController;
-use Smash\controllers\LoginController;
 use Smash\controllers\EntiteController; 
 use Smash\controllers\AdminController;
-use Smash\controllers\LadderController;
 
 $container["settings"] = $config;
 
@@ -43,29 +41,30 @@ $app = new Slim\App($container);
 
 /** Routes */
 
-//Root
+//affichage de la page d'accueil
 $app->get('/', IndexController::class.':index') -> setName('accueil');
 
-//Login
-$app->get('/connexion[/{username}]', LoginController::class.':index');
+//gestion de la connexion
+$app->get('/connexion', AdminController::class.':afficherFomulaireConnexion')->setName('formConnexion');
+$app->post('/connexion', AdminController::class.':connecter')->setName('execConnexion');
+$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion');
 
-//Formulaire creation entite
-$app->get('/entite/creer', EntiteController::class.':formulaireCreation');
+//gestion des entites
+$app->group('/entite', function($app) {
+    $app->get('/creer', EntiteController::class.':formulaireCreation')->setName('formCreerEntite');
+    $app->post('/creer', EntiteController::class.':creerEntite')->setName('execCreerEntite');
+    
+    $app->get('/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
 
-//Ajout dans la bdd
-$app->post('/entite/creer', EntiteController::class.':creerEntite');
+    $app->get('/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
+    //TODO remplacer post par put
+    $app->post('/modifier/{id}', EntiteController::class.':modiferEntite')->setName('execModifEntite');
+    //TODO remplacer get par delete
+    $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
+});
 
-//Affichage des entites
-$app->get('/entite/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
+$app->
 
-//Affichage d'une entite
-$app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
-
-//Modification d'une entite dans la bdd
-$app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
-
-//Suppression d'une entite dans la bdd
-$app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite');
 
 //Affichage des admins
 $app->get('/admin/liste', AdminController::class.':listeAdmin');
@@ -85,12 +84,5 @@ $app->post('/admin/modifier/{id}', AdminController::class.':modiferAdmin');
 //Suppression des admins dans la bdd
 $app->get('/admin/supprimer/{login}', AdminController::class.':suppressionAdmin');
 
-//Classement
-$app->get('/classement', LadderController::class.':index');
-
 /** Lancement de l'application */
-$app->get('/login', LoginController::class.':index');
-$app->post('/login', LoginController::class.':login');
-$app->get('/deconnect', LoginController::class.':deconnect');
-
 $app->run();
