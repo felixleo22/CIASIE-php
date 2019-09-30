@@ -114,8 +114,8 @@ class AdminController extends Controller {
     }
 
     public function connecter(Request $request, Response $response, $args){
-        $login = Utils::getFilteredPost('login');
-        $pwd = Utils::getFilteredPost('password');
+        $login = Utils::getFilteredPost($request,'login');
+        $pwd = Utils::getFilteredPost($request, 'password');
         if(!Auth::connexion($login,$pwd)){
             return Utils::redirect($response, 'formConnexion');
         }

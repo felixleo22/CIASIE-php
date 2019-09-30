@@ -3,7 +3,7 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
-    <form method="POST" action="/login">
+    <form method="POST" action="{{path_for('execConnexion')}}">
         <div class="form-group">
             <label for="ipt-login">Login</label>
             <input id="ipt-login" type="text" name="login">
