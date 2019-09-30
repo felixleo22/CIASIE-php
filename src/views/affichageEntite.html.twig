@@ -24,6 +24,8 @@
             <td>{{ entite.pointAtt }}</td>
             <td>{{ entite.pointDef }}</td>
             <td>{{ entite.pointAgi }}</td>
+            <td> <a href ="/entite/modifier/{{ entite.id }}" >Modifier</a> </td>
+            <td> <a href ="/entite/supprimer/{{ entite.id }}" >Suprimer</a> </td>
         </tr>
     {% endfor %}
     </table>

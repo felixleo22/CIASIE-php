@@ -39,5 +39,4 @@ class Auth {
         $admin = Admin::create(['login' => $login, 'mdp' => password_hash($mdp, PASSWORD_DEFAULT)]);
         return $admin;
     }
-
 }

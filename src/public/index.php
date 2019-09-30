@@ -56,7 +56,16 @@ $app->get('/entite/creer', EntiteController::class.':formulaireCreation');
 $app->post('/entite/creer', EntiteController::class.':creerEntite');
 
 //Affichage des entites
-$app->get('/entite/liste', EntiteController::class.':listeEntite');
+$app->get('/entite/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
+
+//Affichage d'une entite
+$app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
+
+//Modification d'une entite dans la bdd
+$app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
+
+//Suppression d'une entite dans la bdd
+$app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite');
 
 //Affichage des admins
 $app->get('/admin/liste', AdminController::class.':listeAdmin');
@@ -71,7 +80,6 @@ $app->post('/admin/supprimer', AdminController::class.':suppressionAdmin');
 $app->get('/classement', LadderController::class.':index');
 
 /** Lancement de l'application */
-
 $app->get('/login', LoginController::class.':index');
 $app->post('/login', LoginController::class.':login');
 $app->get('/deconnect', LoginController::class.':deconnect');

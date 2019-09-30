@@ -24,33 +24,79 @@ class EntiteController extends Controller
         //upload de la photo
         $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
-
+        
         $photo = $uploadedFiles['photo'];
         if($photo->getError() !== UPLOAD_ERR_OK) { /*erreur a faire plus tard */}
         $nomFichier = Utils::uploadFichier($destination, $photo);
 
         $perso = [];
-        $perso['nom'] = $request->getParsedBodyParam('nom');
-        $perso['prenom'] = $request->getParsedBodyParam('prenom');
-        $perso['type'] = $request->getParsedBodyParam('type');
-        $perso['taille'] = $request->getParsedBodyParam('taille');
-        $perso['pointVie'] = $request->getParsedBodyParam('pointVie');
-        $perso['pointAtt'] = $request->getParsedBodyParam('pointAtt');
-        $perso['pointDef'] = $request->getParsedBodyParam('pointDef');
-        $perso['pointAgi'] = $request->getParsedBodyParam('pointAgi');
+        $perso['nom'] = Utils::getFilteredPost($request, 'nom');
+        $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
+        $perso['type'] = Utils::getFilteredPost($request, 'type');
+        $perso['taille'] = Utils::getFilteredPost($request, 'taille');
+        $perso['pointVie'] = Utils::getFilteredPost($request, 'pointVie');
+        $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
+        $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
+        $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
         $perso['photo'] = $nomFichier;
         $entite = Entite::create($perso);
-
         return Utils::redirect($response, 'accueil');
     }
 
     /**
      * selectionne toute les entites de la bdd et les affichent
      */
-    public function listeEntite(Request $request, Response $response, $args){
+    public function listeEntite(Request $request, Response $response, $args) {
         $listeEntite = Entite::all();
         return $this->views->render($response, 'affichageEntite.html.twig', ['entites' => $listeEntite]);
     }
+
+    /**
+     * 
+     */
+    public function afficherEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexion de l'utilisateur
+        $entite = Entite::find($request->getAttribute('id'));
+        return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
+    }
+
+    /**
+     * 
+     */
+    public function modiferEntite(Request $request, Response $response, $args) {
+        //TODO Verifier connexion de l'utilisateur
+        $id = Utils::sanitize($args['id']);
+        if($id === null) return Utils::redirect($request, 'formModifEntite');
+       
+        $entite = Entite::find($id);
+
+        $entite->type = Utils::getFilteredPost($request, "type");
+        $entite->prenom = Utils::getFilteredPost($request, "prenom");
+        $entite->nom = Utils::getFilteredPost($request, "nom");
+        $entite->taille = Utils::getFilteredPost($request, "taille");
+        $entite->pointVie = Utils::getFilteredPost($request, "pointVie");
+        $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
+        $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
+        $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
+        $entite->photo = Utils::getFilteredPost($request, "photo");
+
+        $entite->save();
+        return Utils::redirect($response, 'afficherListeEntites');
+    }
+
+    /**
+     * 
+     */
+    public function suppressionEntite(Request $request, Response $response, $args){
+        //TODO Verifier connexion de l'utilisateur
+        $id = Utils::sanitize($args['id']);
+        $entite = Entite::find($id);
+        if($entite != null) {
+            $entite->delete();
+        }
+        return $response->withRedirect('/entite/liste');
+    }
+
 
 }
 
