@@ -3,7 +3,6 @@
 <div class='formulaire'>
     <form action="{{ path_for('execModifAdmin', {id: admin.id}) }}" method='POST' enctype="multipart/form-data">
         <span>Login : </span><input type='text' name ='login' minlength='1'  required value="{{ admin.login }}"><br>
-        <span>Mot de passe : </span><input type='password' name = 'mdp'  minlength='1' placeholder='mot de passe ...' required value="{{ admin.mdp }}"><br>
         <span>Status : </span><select name='super' minlength='1' placeholder='Type' required>
             <option value="0">Admin</option>
             <option value="1">Super Admin</option>

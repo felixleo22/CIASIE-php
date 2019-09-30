@@ -31,6 +31,8 @@ class EntiteController extends Controller
         if($photo->getError() === UPLOAD_ERR_OK) {
             $nomFichier = Utils::uploadFichier($destination, $photo);
             $perso['photo'] = $nomFichier;
+        }else{
+            $perso['photo'] = NULL;
         }
        
         $perso['nom'] = Utils::getFilteredPost($request, 'nom');
@@ -104,7 +106,7 @@ class EntiteController extends Controller
         if($entite != null) {
             $entite->delete();
         }
-        return $response->withRedirect('/entite/liste');
+        return Utils::redirect($response, 'listeEntites');
     }
 
 

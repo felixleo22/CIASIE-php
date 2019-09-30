@@ -16,38 +16,10 @@ use Slim\Views\Twig;
 
 class AdminController extends Controller {
 
-  
-
-    // public function listeAdmin(Request $request, Response $response) {
-    //     if ($_SESSION['current_user'] == null) {
-    //         return $response->withRedirect('/');
-    //     } else {
-    //         $admins = Admin::all();
-    //     return $this->views->render($response, 'log.html.twig', ['admins' => $admins, 'session' => $_SESSION['current_user']]);
-    // }
-    // }
-
     public function formulaireEditAdmin(Request $request, Response $response, $args){
         $admin = Admin::find($request->getAttribute('id'));
         return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
     }
-
-    public function verifAdmin(Request $request, Response $response, $args){
-
-        $perso = [];
-        $perso['id'] = $request->getParsedBodyParam('id');
-        $perso['mdp'] = $request->getParsedBodyParam('mdp');
-        $perso['super'] = $request->getParsedBodyParam('super');
-
-        $admin = Admin::find(intval($_POST['id']));
-        $admin->id = $perso['id'];
-        $admin->mdp = $perso['mdp'];
-        $admin->super = $perso['super'];
-        $admin->save();
-
-        return $response->withRedirect('/admin/liste');
-    }
-
 
     /**
      * affiche le formulaire de creation d'un admin via un fichier twig
@@ -60,9 +32,9 @@ class AdminController extends Controller {
 
     public function creerAdmin(Request $request, Response $response, $args){
         //TODO filtrage dans la base de donnée
-        $ad['login'] = Utils::getFilteredPost($request, 'login');
-        $ad['mdp'] = Utils::getFilteredPost($request, 'mdp');
-        $admin = Admin::create($ad);
+        $login = Utils::getFilteredPost($request, 'login');
+        $password = Utils::getFilteredPost($request, 'mdp');
+        $admin = Auth::creerAdmin($login, $password);
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -92,10 +64,11 @@ class AdminController extends Controller {
         if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
         $admin->login = Utils::getFilteredPost($request, "login");
-        $admin->mdp = Utils::getFilteredPost($request, "mdp");
         $admin->save();
         return Utils::redirect($response, 'listeAdmins');
     }
+
+    //TODO modification du mdp
 
     /**
      * 

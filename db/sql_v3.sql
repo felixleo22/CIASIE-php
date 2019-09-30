@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 30 Septembre 2019 à 14:08
+-- Généré le :  Lun 30 Septembre 2019 à 16:26
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -41,7 +41,7 @@ CREATE TABLE `compteAdmin` (
 --
 
 INSERT INTO `compteAdmin` (`id`, `login`, `mdp`, `super`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'root', '$2y$10$6w1bGjlEuRPMQz5mB5yUKuYpmBXPAgXJYTXlHlcGAZ.EfPmieHwSS', 1, '2019-09-30 10:58:31', NULL, NULL);
+(1, 'root', '$2y$10$6w1bGjlEuRPMQz5mB5yUKuYpmBXPAgXJYTXlHlcGAZ.EfPmieHwSS', 1, '2019-09-30 10:58:31', '2019-09-30 10:58:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE `entite` (
   `pointAtt` int(11) NOT NULL,
   `pointDef` int(11) NOT NULL,
   `pointAgi` int(11) NOT NULL,
-  `photo` varchar(255) NOT NULL,
+  `photo` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -89,7 +89,7 @@ ALTER TABLE `entite`
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
 ALTER TABLE `compteAdmin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `entite`
 --
