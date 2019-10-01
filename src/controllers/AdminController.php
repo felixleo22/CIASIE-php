@@ -35,6 +35,7 @@ class AdminController extends Controller {
         $login = Utils::getFilteredPost($request, 'login');
         $password = Utils::getFilteredPost($request, 'mdp');
         $admin = Auth::creerAdmin($login, $password);
+        FlashMessage::flashSuccess('L\'admin a été créé !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -63,8 +64,14 @@ class AdminController extends Controller {
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
+         if($admin == null) {
+            FlashMessage::flashError('Cet admin n\'existe pas !');
+            return Utils::redirect($response, 'listeAdmins');
+        }
         $admin->login = Utils::getFilteredPost($request, "login");
         $admin->save();
+
+        FlashMessage::flashSuccess($admin->login.' a été modifié !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -74,12 +81,14 @@ class AdminController extends Controller {
      * 
      */
     public function suppressionAdmin(Request $request, Response $response, $args){
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $admin = Admin::find($id);
-        if($admin != null) {
-            $admin->delete();
+        if($admin == null) {
+            FlashMessage::flashError('Cet admin n\'existe pas !');
+            return Utils::redirect($response, 'listeAdmins');
         }
+        $admin->delete();
+        FlashMessage::flashSuccess($admin->login.' a été supprimé !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
