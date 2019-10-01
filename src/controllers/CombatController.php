@@ -28,31 +28,39 @@ class CombatController extends Controller {
     }
 
     /**
-     * Permet de retourner un random pour le system d'ordre pour attaquer
-     * @param Entite $entite
-     * @return int
+     * choix d'un ramdom selon l'agilite de chaque entite
+     * le plus grand chiffre commence a attaque
+     * @return Entite
      */
-    public function generateRandom(Entite $entite){
-        $agilite = $entite->getAttribute('pointAgi');
-        return mt_rand(0,$agilite);
-    }
-
-
-    public function play(Entite $entite1, Entite $entite2, Response $response){
-        while($entite1->getAttribute('pointVie')> 0  || $entite2->getAttribute('pointVie') > 0){
-            if ($this->generateRandom($entite1) < $this->generateRandom($entite2)){
-                //fonction pour infliger des dégats
-                $generate = $this->generateRandom($entite1);
-                return Utils::redirect($response, 'combat');
-            }
+    public function choixAttaquant(){
+        $res = $monstre;
+        $val1 = 0; $val2 = 0;
+        while ($val1 === $val2) {
+            $val1 = mt_rand(0,$personnage->pointAgi);
+            $val2 = mt_rand(0,$monstre->pointAgi);
         }
-        return  Utils::redirect($response, 'accueil');
-
+        if($val1 > $val2) {
+            $res = $personnage;
+        }
+        return $res;
     }
 
+    /**
+     * retourne la victime selon l'attaquant entre en parametre
+     * @return Entite
+     */
+    public function getVictime($attaquant) {
+        $res = $monstre;
+        if ($attaquant->type === 'monstre') {
+            $res = $personnage;
+        }
+        return $res;
+    }
 
+    /**
+     * @return boolean
+     */
     public function isAlive($entite){
-
         $res = false;
         if ($entite->pointVie > 0) {
             $res = true;
@@ -83,5 +91,15 @@ class CombatController extends Controller {
          }
          return $res;
     }
+
+    public function play(Response $response){
+        while(isAlive($personnage) || isAlive($monstre)) {
+            $attaquant = choixAttaquant();
+            $victime = getVictime($attaquant);
+            $degat($attaquant, $victime);
+            // pause
+        }
+    }
+
 
 }
