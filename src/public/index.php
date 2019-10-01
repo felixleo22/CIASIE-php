@@ -87,6 +87,9 @@ $app->group('/admin', function($app) {
 //affichage du combat
 $app->get('/combat', CombatController::class.':play')->setName('combat');
 
+$app->group('/combat', function($app) {
+    $app->post('creer', CombatController::class.':creerCombat');
+});
 
 /** Lancement de l'application */
 $app->run();

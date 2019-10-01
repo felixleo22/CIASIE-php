@@ -13,9 +13,18 @@ class CombatController extends Controller {
     protected $personnage;
     protected $monstre;
 
-    public function combat($p, $m) {
-        $personnage = $p;
-        $montre = $m;
+    public function creerCombat(Request $request, Response $response, $args) {
+        $montre = Entiete::find(Utils::getFilteredPost('idMonstre'));
+        $personnage = Entite::find(Utils::getFilteredPost('idPersonnage'));
+        //TODO verifier les types
+        $combat = new Combat();
+        $combat->idPersonnage = $personnage;
+        $combat->idMonstre = $monstre;
+        $combat->pointVieMonstre = $monstre->pointVie;
+        $combat->pointViePersonnage = $personnage->pointVie;
+
+        $idCombat = $combat->save();
+        return $response->withJson($idCombat);
     }
 
     /**
