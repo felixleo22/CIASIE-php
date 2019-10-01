@@ -13,7 +13,7 @@ class EntiteController extends Controller
      * affiche le formulaire de creation de monstre via un fichier twig
      */
     public function formulaireCreation(Request $request, Response $response, $args){
-        return $this->views->render($response, 'ajoutEntite.html.twig');
+        return $this->views->render($response, 'formEntite.html.twig');
     }
 
     /**
@@ -44,11 +44,33 @@ class EntiteController extends Controller
     }
 
     /**
-     * selectionne toute les entites de la bdd et les affichent
+     * Filtre une liste d'entité selon le type passé en paramètre
+     * @param array $tab - La table que l'on souhaite filtrer
+     * @param string $type - Le type selon lequel on filtre
+     * @return array $res - Une nouvelle table filtrée
+     */
+    private static function filter($tab, $type){
+        $res = [];
+        foreach ($tab as $entite){
+            if ($entite->type == $type ){
+                $res[] = $entite;
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * selectionne toute les entites de la bdd et les affiche
      */
     public function listeEntite(Request $request, Response $response, $args) {
         $listeEntite = Entite::all();
-        return $this->views->render($response, 'affichageEntite.html.twig', ['entites' => $listeEntite]);
+        $personnages = self::filter($listeEntite, "personnage");
+        $monstres = self::filter($listeEntite, "monstre");
+        return $this->views->render($response, 'affichageEntite.html.twig', [
+            'personnages' => $personnages,
+            'monstres' => $monstres
+            ]
+        );
     }
 
     /**
@@ -57,7 +79,7 @@ class EntiteController extends Controller
     public function afficherEntite(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
-        return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
+        return $this->views->render($response, 'formEntite.html.twig',['entite'=>$entite]);
     }
 
     /**
