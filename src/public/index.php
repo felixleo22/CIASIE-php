@@ -7,6 +7,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+//Middlewares
+use Smash\middlewares\AuthMiddleware;
+
 //Controleurs
 use Smash\controllers\IndexController;
 use Smash\controllers\EntiteController; 
@@ -52,7 +55,7 @@ $app->get('/', IndexController::class.':index') -> setName('accueil');
 //gestion de la connexion
 $app->get('/connexion', AdminController::class.':afficherFomulaireConnexion')->setName('formConnexion');
 $app->post('/connexion', AdminController::class.':connecter')->setName('execConnexion');
-$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion');
+$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion')->add(new AuthMiddleware());
 
 //gestion des entites
 $app->group('/entite', function($app) {
@@ -66,7 +69,7 @@ $app->group('/entite', function($app) {
     $app->post('/modifier/{id}', EntiteController::class.':modifierEntite')->setName('execModifEntite');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
-});
+})->add(new AuthMiddleware());
 
 //gestion des admins
 $app->group('/admin', function($app) {
@@ -81,7 +84,7 @@ $app->group('/admin', function($app) {
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
-});
+})->add(new AuthMiddleware());
 
 /** Lancement de l'application */
 $app->run();
