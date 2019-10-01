@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block content %}
-<div class='formulaire'>
+<div class='formulaire form-group'>
     <form action='/entite/creer' method='POST' enctype="multipart/form-data">
         <span>Nom: </span><input type='text' name ='nom' minlength='1' placeholder='Nom'  required><br>
         <span>Prénom: </span><input type='text' name = 'prenom'  minlength='1' placeholder='Prénom' required><br>
