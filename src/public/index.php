@@ -9,10 +9,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 //Controleurs
 use Smash\controllers\IndexController;
-use Smash\controllers\LoginController;
 use Smash\controllers\EntiteController; 
 use Smash\controllers\AdminController;
-use Smash\controllers\LadderController;
 
 $container["settings"] = $config;
 
@@ -24,6 +22,11 @@ $container['view'] = function($container) {
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+    //ajout des fonctions perso pour twig
+    $functionsArray = require_once('../config/twigFunctions.inc.php');
+    foreach ($functionsArray as $fonction) {
+        $view->getEnvironment()->addFunction($fonction);
+    }
 
     return $view;
 };
@@ -43,45 +46,42 @@ $app = new Slim\App($container);
 
 /** Routes */
 
-//Root
+//affichage de la page d'accueil
 $app->get('/', IndexController::class.':index') -> setName('accueil');
 
-//Login
-$app->get('/connexion[/{username}]', LoginController::class.':index');
+//gestion de la connexion
+$app->get('/connexion', AdminController::class.':afficherFomulaireConnexion')->setName('formConnexion');
+$app->post('/connexion', AdminController::class.':connecter')->setName('execConnexion');
+$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion');
 
-//Formulaire creation entite
-$app->get('/entite/creer', EntiteController::class.':formulaireCreation');
+//gestion des entites
+$app->group('/entite', function($app) {
+    $app->get('/creer', EntiteController::class.':formulaireCreation')->setName('formCreerEntite');
+    $app->post('/creer', EntiteController::class.':creerEntite')->setName('execCreerEntite');
+    
+    $app->get('/liste', EntiteController::class.':listeEntite')->setname('listeEntites');
 
-//Ajout dans la bdd
-$app->post('/entite/creer', EntiteController::class.':creerEntite');
+    $app->get('/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
+    //TODO remplacer post par put
+    $app->post('/modifier/{id}', EntiteController::class.':modifierEntite')->setName('execModifEntite');
+    //TODO remplacer get par delete
+    $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
+});
 
-//Affichage des entites
-$app->get('/entite/liste', EntiteController::class.':listeEntite')->setname('afficherListeEntites');
+//gestion des admins
+$app->group('/admin', function($app) {
+    $app->get('/liste', AdminController::class.':listeAdmin')->setName('listeAdmins');
 
-//Affichage d'une entite
-$app->get('/entite/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
+    $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin');
+    $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
 
-//Modification d'une entite dans la bdd
-$app->post('/entite/modifier/{id}', EntiteController::class.':modiferEntite');
-
-//Suppression d'une entite dans la bdd
-$app->get('/entite/supprimer/{id}', EntiteController::class.':suppressionEntite');
-
-//Affichage des admins
-$app->get('/admin/liste', AdminController::class.':listeAdmin');
-
-//Modification des admins dans la bdd
-$app->get('/admin/modifier/{id}', AdminController::class.':formulaireEditAdmin');
-
-//Suppression des admins dans la bdd
-$app->post('/admin/supprimer', AdminController::class.':suppressionAdmin');
-
-//Classement
-$app->get('/classement', LadderController::class.':index');
+    //TODO uniformiser soit login soit id
+    //TODO remplacer post par put
+    $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');
+    $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
+    //TODO remplacer get par delete
+    $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
+});
 
 /** Lancement de l'application */
-$app->get('/login', LoginController::class.':index');
-$app->post('/login', LoginController::class.':login');
-$app->get('/deconnect', LoginController::class.':deconnect');
-
 $app->run();

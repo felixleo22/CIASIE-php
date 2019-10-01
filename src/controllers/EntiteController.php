@@ -21,15 +21,20 @@ class EntiteController extends Controller
      * l'attribut photo n'est pas gere pour le moment (initialise a vide)
      */
     public function creerEntite(Request $request, Response $response, $args){
+        $perso = [];
+        
         //upload de la photo
         $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
-        
+       
         $photo = $uploadedFiles['photo'];
-        if($photo->getError() !== UPLOAD_ERR_OK) { /*erreur a faire plus tard */}
-        $nomFichier = Utils::uploadFichier($destination, $photo);
-
-        $perso = [];
+        if($photo->getError() === UPLOAD_ERR_OK) {
+            $nomFichier = Utils::uploadFichier($destination, $photo);
+            $perso['photo'] = $nomFichier;
+        }else{
+            $perso['photo'] = NULL;
+        }
+       
         $perso['nom'] = Utils::getFilteredPost($request, 'nom');
         $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
         $perso['type'] = Utils::getFilteredPost($request, 'type');
@@ -38,9 +43,9 @@ class EntiteController extends Controller
         $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
         $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
         $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
-        $perso['photo'] = $nomFichier;
+   
         $entite = Entite::create($perso);
-        return Utils::redirect($response, 'accueil');
+        return Utils::redirect($response, 'listeEntites');
     }
 
     /**
@@ -85,13 +90,11 @@ class EntiteController extends Controller
     /**
      * 
      */
-    public function modiferEntite(Request $request, Response $response, $args) {
+    public function modifierEntite(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'formModifEntite');
-       
         $entite = Entite::find($id);
-
         $entite->type = Utils::getFilteredPost($request, "type");
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
@@ -100,10 +103,19 @@ class EntiteController extends Controller
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
-        $entite->photo = Utils::getFilteredPost($request, "photo");
+
+        //photo 
+        $destination = '../public/img';
+        $uploadedFiles = $request->getUploadedFiles();
+
+        $photo = $uploadedFiles['photo'];
+        if($photo->getError() === UPLOAD_ERR_OK) {
+            $nomFichier = Utils::uploadFichier($destination, $photo);
+            $perso['photo'] = $nomFichier;
+        }
 
         $entite->save();
-        return Utils::redirect($response, 'afficherListeEntites');
+        return Utils::redirect($response, 'listeEntites');
     }
 
     /**
@@ -116,7 +128,7 @@ class EntiteController extends Controller
         if($entite != null) {
             $entite->delete();
         }
-        return $response->withRedirect('/entite/liste');
+        return Utils::redirect($response, 'listeEntites');
     }
 
 
