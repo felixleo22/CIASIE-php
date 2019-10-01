@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 //Controleurs
+use Smash\controllers\CombatController;
 use Smash\controllers\IndexController;
 use Smash\controllers\EntiteController; 
 use Smash\controllers\AdminController;
@@ -82,6 +83,10 @@ $app->group('/admin', function($app) {
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
 });
+
+//affichage du combat
+$app->get('/combat', CombatController::class.':play')->setName('combat');
+
 
 /** Lancement de l'application */
 $app->run();
