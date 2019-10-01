@@ -9,6 +9,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 //Middlewares
 use Smash\middlewares\AuthMiddleware;
+use Smash\middlewares\FlashMiddleware;
 
 //Controleurs
 use Smash\controllers\IndexController;
@@ -45,6 +46,9 @@ $container['db'] = function ($container) use ($capsule){
 };
 
 $app = new Slim\App($container);
+
+//Application des middlewares generaux
+$app->add(new FlashMiddleware());
 
 
 /** Routes */
