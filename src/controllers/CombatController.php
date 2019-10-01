@@ -5,26 +5,29 @@ use Smash\models\Admin;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
-use smash\models\Entite;
-
+use Smash\models\Entite;
+use Smash\models\Combat;
 
 class CombatController extends Controller {
 
-    protected $personnage;
-    protected $monstre;
-
     public function creerCombat(Request $request, Response $response, $args) {
-        $montre = Entiete::find(Utils::getFilteredPost('idMonstre'));
-        $personnage = Entite::find(Utils::getFilteredPost('idPersonnage'));
-        //TODO verifier les types
-        $combat = new Combat();
-        $combat->idPersonnage = $personnage;
-        $combat->idMonstre = $monstre;
-        $combat->pointVieMonstre = $monstre->pointVie;
-        $combat->pointViePersonnage = $personnage->pointVie;
+        $mId = Utils::getFilteredPost($request, 'idMonstre');
+        $pId = Utils::getFilteredPost($request, 'idPersonnage');
+        $m = Entite::find($mId);
+        $p = Entite::find($pId);
 
-        $idCombat = $combat->save();
-        return $response->withJson($idCombat);
+        if($m == null || $p == null) {
+             return $response->withJson('ta mare');
+        }
+        //TODO verifier les types
+        $combat = [];
+        $combat['idPersonnage'] = $p->id;
+        $combat['idMonstre'] = $m->id;
+        $combat['pointVieMonstre'] = $m->pointVie;
+        $combat['pointViePersonnage'] = $p->pointVie;
+
+        $created = Combat::create($combat);
+        return $response->withJson($created);
     }
 
     /**
