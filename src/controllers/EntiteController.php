@@ -91,7 +91,7 @@ class EntiteController extends Controller
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
             $nomFichier = Utils::uploadFichier($destination, $photo);
-            $perso['photo'] = $nomFichier;
+            $entite->photo = $nomFichier;
         }
 
         $entite->save();
