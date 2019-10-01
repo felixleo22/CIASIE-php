@@ -67,11 +67,19 @@ class FlashMessage {
     * Permet de sauvegarder pour la prochaine éxécution la valeur $value avec la clef $key.
     * Ecrase la valeur précédente si la clef est déjà présente
     */
-    public static function flash(string $key, $value)
+    private static function flash(string $key, $value)
     {
         self::init();
         self::$flashedData[$key] = $value;
     }
+
+    public static function flashError($value) {
+        self::flash('error', $value);
+    } 
+
+    public static function flashSuccess($value) {
+        self::flash('success', $value);
+    } 
     
     /**
     * Supprime toutes les données pour l'éxécution suivante
