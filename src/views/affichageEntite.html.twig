@@ -2,7 +2,7 @@
 
 {% block content %}
     <h3>Personnages</h3>
-    <div class="card-deck">
+    <div id="deck-personnages" class="card-deck">
         {% for personnage in personnages %}
         <div class="card">
             <img class="card-img-top" src="" alt="Card image cap">
@@ -16,6 +16,23 @@
                 <p class="card-text"><small class="text-muted">Créé le {{ personnage.created_at }}</small></p>
             </div>
         </div>
+        {% endfor %}
+    </div>
+    <h3>Monstres</h3>
+    <div id="deck-monstres" class="card-deck">
+        {% for monstre in monstres %}
+            <div class="card">
+                <img class="card-img-top" src="" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ monstre.nom }} {{ monstre.prenom }}</h5>
+                    <p class="card-text"><i class="ra ra-player"></i>{{ monstre.taille }}m</p>
+                    <p class="card-text"><i class="ra ra-two-hearts"></i> {{ monstre.pointVie }}</p>
+                    <p class="card-text"><i class="ra ra-sword"></i> {{ monstre.pointAtt }}</p>
+                    <p class="card-text"><i class="ra ra-shield"></i> {{ monstre.pointDef }}</p>
+                    <p class="card-text"><i class="ra ra-feather-wing"></i> {{ monstre.pointAgi  }}</p>
+                    <p class="card-text"><small class="text-muted">Créé le {{ monstre.created_at }}</small></p>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
