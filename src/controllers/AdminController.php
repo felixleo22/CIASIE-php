@@ -91,9 +91,11 @@ class AdminController extends Controller {
         $login = Utils::getFilteredPost($request,'login');
         $pwd = Utils::getFilteredPost($request, 'password');
         if(!Auth::connexion($login,$pwd)){
+            FlashMessage::flashError('Login ou mot de passe incorrecte !');
             return Utils::redirect($response, 'formConnexion');
         }
         
+        FlashMessage::flashSuccess('Vous êtes connecté en tant que '.$login);
         return Utils::redirect($response, 'accueil');
     }
 
