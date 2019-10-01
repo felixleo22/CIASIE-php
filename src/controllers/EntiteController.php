@@ -39,6 +39,7 @@ class EntiteController extends Controller
         $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
         $perso['type'] = Utils::getFilteredPost($request, 'type');
         $perso['taille'] = Utils::getFilteredPost($request, 'taille');
+        $perso['poids'] = Utils::getFilteredPost($request, 'poids');
         $perso['pointVie'] = Utils::getFilteredPost($request, 'pointVie');
         $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
         $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
@@ -77,6 +78,7 @@ class EntiteController extends Controller
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
         $entite->taille = Utils::getFilteredPost($request, "taille");
+        $entite->poids = Utils::getFilteredPost($request, "poids");
         $entite->pointVie = Utils::getFilteredPost($request, "pointVie");
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");

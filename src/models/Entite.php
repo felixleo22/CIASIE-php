@@ -8,7 +8,7 @@ class Entite extends Model {
 
     use SoftDeletes;
     protected $table = 'entite';
-    protected $fillable = ['type','nom', 'prenom', 'taille' , 'pointVie', 'pointAtt', 'pointDef', 'pointAgi', 'photo'];
+    protected $fillable = ['type','nom', 'prenom', 'taille' , 'poids', 'pointVie', 'pointAtt', 'pointDef', 'pointAgi', 'photo'];
     public $timestamps = true;
 
 } 
