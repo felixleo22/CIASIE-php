@@ -51,7 +51,7 @@ class Auth {
         if (!$login)
             return false;
         else {
-            return Utilisateur::where("login", "=", $login)->count() > 0; 
+            return Admin::where("login", "=", $login)->count() > 0; 
         }
     }
 
