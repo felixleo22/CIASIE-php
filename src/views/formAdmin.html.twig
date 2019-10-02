@@ -12,7 +12,7 @@
     {% else %}
         <h2>Création d'un admin</h2>
     {% endif %}
-    <form action="{{ path_for('execModifAdmin', {id: admin.id}) }}" method='POST' enctype="multipart/form-data">
+    <form action="{% if admin %}{{ path_for('execModifEntite', {id: admin.id}) }}{% else %}{{ path_for('execCreerEntite') }}{% endif %}" method='POST' enctype="multipart/form-data">
         <div class="form-group">
             <label for="iptLogin">Login<span>*</span></label>
             <input id="iptLogin" class="form-control form-control-sm" type='text' name ='login' minlength='1' required value="{{ admin.login }}">

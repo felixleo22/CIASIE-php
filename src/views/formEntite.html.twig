@@ -12,7 +12,7 @@
     {% else %}
         <h2>Création d'une entité</h2>
     {% endif %}
-    <form action='/entite/creer' method='POST' enctype="multipart/form-data">
+    <form action='{% if entite %}{{ path_for('execModifEntite', {id: entite.id}) }}{% else %}{{ path_for('execCreerEntite') }}{% endif %}' method='POST' enctype="multipart/form-data">
         <div class="form-group">
             <label for="iptSurname">Nom<span>*</span></label>
             <input class="form-control form-control-sm" id="iptSurname" type='text' name ='nom' minlength='1' value="{{ entite.nom }}" placeholder='Nom' required>
