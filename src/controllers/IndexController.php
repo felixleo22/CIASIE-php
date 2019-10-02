@@ -3,6 +3,7 @@
 
 namespace Smash\controllers;
 
+use smash\models\Admin;
 use Smash\models\Entite;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
