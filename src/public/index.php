@@ -85,8 +85,7 @@ $app->group('/admin', function($app) {
 });
 
 //affichage du combat
-$app->get('/combat', CombatController::class.':play')->setName('combat');
-
+$app->post('/combat/game', CombatController::class.':choixPerso')->setName('combat-choix');
 
 /** Lancement de l'application */
 $app->run();
