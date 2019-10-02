@@ -18,7 +18,7 @@ class AdminController extends Controller {
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
         $admin = Admin::find($request->getAttribute('id'));
-        return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
+        return $this->views->render($response, 'formAdmin.html.twig',['admin'=>$admin]);
     }
 
     /**
@@ -26,7 +26,7 @@ class AdminController extends Controller {
      * //TODO ne pas afficher le mot de passe en l'écrivant
      */
     public function formulaireCreation(Request $request, Response $response, $args){
-        return $this->views->render($response, 'ajoutAdmin.html.twig');
+        return $this->views->render($response, 'formAdmin.html.twig');
         
     }
 
@@ -53,7 +53,7 @@ class AdminController extends Controller {
     public function afficherAdmin(Request $request, Response $response, $args) {
         //TODO Verifier connexion de l'utilisateur
         $admin = Admin::find($request->getAttribute('id'));
-        return $this->views->render($response, 'editAdmin.html.twig',['admins'=>$admin]);
+        return $this->views->render($response, 'formAdmin.html.twig',['admins'=>$admin]);
     }
 
     /**

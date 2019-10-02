@@ -20,3 +20,16 @@ h5{
 h5 > div > a{
     margin: 0 5px;
 }
+div.form-group{
+    width: 40vw;
+    margin: auto;
+}
+div.form-group > label{
+    margin: 0;
+}
+div.form-group > input, select{
+    margin-bottom: 1vh;
+}
+span{
+    color: red;
+}

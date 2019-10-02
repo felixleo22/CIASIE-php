@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% block content %}
+<form action="{{ path_for('execModifAdmin', {id: admin.id}) }}" method='POST' enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="iptLogin">Login<span>*</span></label>
+        <input id="iptLogin" class="form-control form-control-sm" type='text' name ='login' minlength='1' required value="{{ admin.login }}">
+    </div>
+    <div class="form-group">
+        <label for="iptMdp">Mot de passe<span>*</span></label>
+        <input id="iptMdp" class="form-control form-control-sm"  type='password' name ='mdp' minlength='1' required>
+    </div>
+    <div class="form-group">
+        <label for="selSuper">Type<span>*</span></label>
+        <select id="selSuper" name='super' class="form-control form-control-sm"  required>
+            {% if admin.super == true %}
+                <option value="0">Admin</option>
+                <option value="1" selected>Super Admin</option>
+            {% else %}
+                <option value="0" selected>Admin</option>
+                <option value="1" >Super Admin</option>
+            {% endif %}
+        </select>
+    </div>
+    <div class="form-group" style="display: flex; justify-content: center">
+        <input class="btn btn-primary" type='submit' value='Valider'>
+    </div>
+
+</form>
+{% endblock %}
