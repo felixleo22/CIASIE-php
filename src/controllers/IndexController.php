@@ -12,7 +12,7 @@ use Slim\Views\Twig;
 class IndexController extends Controller
 {
     public function index(Request $request, Response $response){
-        $this->views->render($response, 'index.html.twig', $_SESSION);
+        $this->views->render($response, 'index.html.twig', ['session' => $_SESSION]);
     }
 
 }
