@@ -1,5 +1,17 @@
 {% extends "base.html.twig" %}
+{% block title %}
+    {% if entite %}
+        Modification {{ entite.nom }} {{ entite.prenom }}
+    {% else %}
+        Création d'une entité
+    {% endif %}
+{% endblock %}
 {% block content %}
+    {% if entite %}
+        <h2>Modification {{ entite.nom }} {{ entite.prenom }}</h2>
+    {% else %}
+        <h2>Création d'une entité</h2>
+    {% endif %}
     <form action='/entite/creer' method='POST' enctype="multipart/form-data">
         <div class="form-group">
             <label for="iptSurname">Nom<span>*</span></label>
