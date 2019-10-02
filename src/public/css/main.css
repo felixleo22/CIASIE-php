@@ -41,3 +41,6 @@ label > span{
     width: 75%;
     margin: 0 auto;
 }
+td.disabled{
+    background-color: whitesmoke;
+}
