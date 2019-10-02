@@ -1,9 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    Smash 2.0
+    Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
 {% endblock %}
 
 {% block content %}
-    Smash 2.0
+    Hello {{ get_admin_login() }}
 {% endblock %}

@@ -36,3 +36,8 @@ div.form-group > input, select{
 label > span{
     color: red;
 }
+.table{
+    text-align: center;
+    width: 75%;
+    margin: 0 auto;
+}
