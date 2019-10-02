@@ -1,32 +1,58 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <table>
-        <tr>
-            <th>Photo</th>
-            <th>Prenom</th>
-            <th>Nom</th>
-            <th>Type</th>
-            <th>Taille</th>
-            <th>PV</th>
-            <th>ATT</th>
-            <th>DEF</th>
-            <th>AGI</th>
-        </tr>
-    {% for entite in entites %}
-        <tr>
-            <td> <img src="/img/{{ entite.photo }}" alt="{{ entite.prenom }}"></td>
-            <td>{{ entite.nom }}</td>
-            <td>{{ entite.prenom }}</td>
-            <td>{{ entite.type }}</td>
-            <td>{{ entite.taille }}</td>
-            <td>{{ entite.pointVie }}</td>
-            <td>{{ entite.pointAtt }}</td>
-            <td>{{ entite.pointDef }}</td>
-            <td>{{ entite.pointAgi }}</td>
-            <td> <a href ="{{ path_for('execModifEntite', {id: entite.id}) }}" >Modifier</a> </td>
-            <td> <a href ="{{ path_for('execSupprEntite', {id: entite.id}) }}" >Suprimer</a> </td>
-        </tr>
-    {% endfor %}
-    </table>
+    <h3>Peronnages</h3>
+    <div id="deck-personnages" class="card-row">
+        {% for entite in personnages %}
+        <div class="card">
+            <img class="card-img-top" src="/img/{{ entite.photo }}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <div>
+                        {{ entite.nom }} {{ entite.prenom }}
+                    </div>
+                    <div>
+                        <a href="/entite/modifier/{{ entite.id }}"><img src="/ressources/pencil.svg"></a>
+                        <a href="/entite/supprimer/{{ entite.id }}"><img src="/ressources/x.svg"></a>
+                    </div>
+                </h5>
+                <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}m</p>
+                <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
+                <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+                <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+                <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Créé le {{ entite.created_at }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <h3>Monstres</h3>
+    <div id="deck-entites" class="card-row">
+        {% for entite in monstres %}
+            <div class="card">
+                <img class="card-img-top" src="{{ entite.photo }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <div>
+                            {{ entite.nom }} {{ entite.prenom }}
+                        </div>
+                        <div>
+                            <a href="/entite/modifier/{{ entite.id }}"><img src="/ressources/pencil.svg"></a>
+                            <a href="/entite/supprimer/{{ entite.id }}"><img src="/ressources/x.svg"></a>
+                        </div>
+                    </h5>
+                    <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}m</p>
+                    <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
+                    <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+                    <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+                    <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Créé le {{ entite.created_at }}</small>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

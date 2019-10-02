@@ -1,0 +1,70 @@
+{% extends "base.html.twig" %}
+{% block head %}
+    {{ parent() }}
+    <style>
+        div.form-group{
+            width: 40vw;
+            margin: auto;
+        }
+        div.form-group > label{
+            margin: 0;
+        }
+        div.form-group > input{
+            margin-bottom: 1vh;
+        }
+        span{
+            color: red;
+        }
+    </style>
+{%  endblock %}
+{% block content %}
+    <form action='/entite/creer' method='POST' enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="iptSurname">Nom<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptSurname" type='text' name ='nom' minlength='1' value="{{ entite.nom }}" placeholder='Nom' required>
+        </div>
+        <div class="form-group">
+            <label for="iptName">Prénom<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptName" type='text' name = 'prenom'  minlength='1' value="{{ entite.prenom }}" placeholder='Prénom' required>
+        </div>
+        <div class="form-group">
+            <label for="selType">Type<span>*</span></label>
+            <select class="form-control form-control-sm" id="selType" name='type' required>
+                {% if entite['type'] == "monstre" %}
+                    <option value="personnage" selected>Personnage</option>
+                    <option value="monstre" selected>Monstre</option>
+                {% else %}
+                    <option value="personnage" selected>Personnage</option>
+                    <option value="monstre">Monstre</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="iptHeight">Taille<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptHeight" type='text' name = 'taille' minlength='1' value="{{ entite.taille }}" placeholder='Taille' required>
+        </div>
+        <div class="form-group">
+            <label for="iptHealth">Vie<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptHealth" type='text' name = 'pointVie' minlength='1' value="{{ entite.pointVie }}" placeholder='Vie' required>
+        </div>
+        <div class="form-group">
+            <label for="iptAttack">Attaque<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptAttack" type='text' name = 'pointAtt' minlength='1' value="{{ entite.pointAtt }}" placeholder='Attaque' required>
+        </div>
+        <div class="form-group">
+            <label for="iptDefence">Défense<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptDefence" type='text' name = 'pointDef' minlength='1' value="{{ entite.pointDef }}" placeholder='Défense' required>
+        </div>
+        <div class="form-group">
+            <label for="iptAgility">Agilité<span>*</span></label>
+            <input class="form-control form-control-sm" id="iptAgility" type='text' name = 'pointAgi' minlength='1' value="{{ entite.pointAgi }}" placeholder='Agilité' required>
+        </div>
+        <div class="form-group">
+            <label for="iptPhoto">Photo</label>
+            <input id="iptPhoto" type="file" name='photo'>
+        </div>
+        <div class="form-group" style="display: flex; justify-content: center">
+            <input class="btn btn-primary" type='submit' value='Valider'>
+        </div>
+    </form>
+{% endblock %}

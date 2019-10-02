@@ -1,4 +1,22 @@
-img{
-    width: 40px;
-    height: 40px;
+div.card-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 98%;
+}
+div.card{
+    width: 23%;
+    margin: 1%;
+}
+div.card > img{
+    height: 400px;
+    width: auto;
+}
+h5{
+    display: flex;
+    justify-content: space-between;
+}
+h5 > div > a{
+    margin: 0 5px;
 }
