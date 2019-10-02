@@ -13,7 +13,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 
-
 class AdminController extends Controller {
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
@@ -33,6 +32,10 @@ class AdminController extends Controller {
     public function creerAdmin(Request $request, Response $response, $args){
         //TODO filtrage dans la base de donnée
         $login = Utils::getFilteredPost($request, 'login');
+        if(!Auth::loginDisponible($login)){
+            Flash::flashError('login deja utilisé');
+            return Utils::redirect($response, 'formCreerAdmin');   
+        }
         $password = Utils::getFilteredPost($request, 'mdp');
         $admin = Auth::creerAdmin($login, $password);
         return Utils::redirect($response, 'listeAdmins');
@@ -77,9 +80,11 @@ class AdminController extends Controller {
         //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $admin = Admin::find($id);
-        if($admin != null) {
-            $admin->delete();
+        if($admin === null || $admin->super === 1) {
+            Flash::flashError('Impossible de supprimer cette utilisateur');
+            return Utils::redirect($response, 'listeAdmins');
         }
+        $admin->delete();
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -101,5 +106,7 @@ class AdminController extends Controller {
         Auth::deconnexion(); 
         return Utils::redirect($response, 'accueil');
     }
+
+    
 
 }
