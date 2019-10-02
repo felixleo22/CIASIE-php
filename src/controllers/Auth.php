@@ -47,4 +47,12 @@ class Auth {
         return $admin;
     }
 
+    public static function loginDisponible(string $login) : bool {
+        if (!$login)
+            return false;
+        else {
+            return Admin::where("login", "=", $login)->count() > 0; 
+        }
+    }
+
 }

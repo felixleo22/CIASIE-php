@@ -7,6 +7,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+//Middlewares
+use Smash\middlewares\AuthMiddleware;
+use Smash\middlewares\FlashMiddleware;
+
 //Controleurs
 use Smash\controllers\CombatController;
 use Smash\controllers\IndexController;
@@ -23,10 +27,17 @@ $container['view'] = function($container) {
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
+
     //ajout des fonctions perso pour twig
     $functionsArray = require_once('../config/twigFunctions.inc.php');
     foreach ($functionsArray as $fonction) {
         $view->getEnvironment()->addFunction($fonction);
+    }
+
+    //ajout des tests perso pour twig
+    $functionsArray = require_once('../config/twigTests.inc.php');
+    foreach ($functionsArray as $fonction) {
+        $view->getEnvironment()->addTest($fonction);
     }
 
     return $view;
@@ -44,6 +55,9 @@ $container['db'] = function ($container) use ($capsule){
 
 $app = new Slim\App($container);
 
+//Application des middlewares generaux
+$app->add(new FlashMiddleware());
+
 
 /** Routes */
 
@@ -53,7 +67,7 @@ $app->get('/', IndexController::class.':index') -> setName('accueil');
 //gestion de la connexion
 $app->get('/connexion', AdminController::class.':afficherFomulaireConnexion')->setName('formConnexion');
 $app->post('/connexion', AdminController::class.':connecter')->setName('execConnexion');
-$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion');
+$app->get('/deconnexion', AdminController::class.':deconnecter')->setName('execDeconnexion')->add(new AuthMiddleware());
 
 //gestion des entites
 $app->group('/entite', function($app) {
@@ -67,7 +81,7 @@ $app->group('/entite', function($app) {
     $app->post('/modifier/{id}', EntiteController::class.':modifierEntite')->setName('execModifEntite');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
-});
+})->add(new AuthMiddleware());
 
 //gestion des admins
 $app->group('/admin', function($app) {
@@ -82,10 +96,18 @@ $app->group('/admin', function($app) {
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
-});
+})->add(new AuthMiddleware());
 
 //affichage du combat
+<<<<<<< HEAD
 $app->post('/combat/game', CombatController::class.':choixPerso')->setName('combat-choix');
+=======
+$app->get('/combat', CombatController::class.':play')->setName('combat');
+
+$app->group('/combat', function($app) {
+    $app->post('/creer', CombatController::class.':creerCombat');
+});
+>>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 
 /** Lancement de l'application */
 $app->run();
