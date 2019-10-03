@@ -6,12 +6,6 @@ use Smash\models\Admin;
 //Class de methode static pour faciliter la gestion de la connexion à un compte admin
 class Auth {
 
-    private static function init()
-        {
-            if (session_status() != PHP_SESSION_ACTIVE)
-                session_start();
-        }
-
     //permet de verifier si l utilisateur est connecte
     public static function estConnecte() : bool {
         return isset($_SESSION['user']);
@@ -30,12 +24,20 @@ class Auth {
         return $_SESSION['user']['login'];
     }
 
+    public static function getAdminId() : int {
+        if (!static::estConnecte()) {
+            return -1;
+        } else {
+            return $_SESSION['user']['id'];
+        }
+    }
+    
     //permet de verifier les infos de connexion et creer la connexion si elles sont correctes
     public static function connexion(string $login, string $mdp) : bool {
         if(static::estConnecte()) return true;
 
-        $admin = Admin::where('login', '=', $login)->first();
-        if($admin === null || !password_verify($mdp, $admin->mdp)) return false;
+        $admin = self::verifierMdp($login, $mdp);
+        if($admin === null) return false;
 
         $_SESSION['user']['id'] = $admin->id;
         $_SESSION['user']['login'] = $admin->login;
@@ -62,27 +64,16 @@ class Auth {
     }
 
     private static function verifierMdp(string $login, string $mdp) {
-        $admin = Admin::where("id", "=", $login)->first();
+        $admin = Admin::where("login", "=", $login)->first();
         return ($admin != null && password_verify($mdp, $admin->mdp)) ? $admin : null;
     }
 
-    public static function modifierMotDePasse(string $mdpOld, string $mdpNew) : bool {
+    public static function modifierMdp(string $ancienMdp, string $nouveauMdp) : bool {
         
-        $admin = static::verifierMdp(static::getIdAdmin(), $mdpOld);
-        if ($admin) {
-            $admin->mdp = \password_hash($mdpNew, PASSWORD_DEFAULT);
+        $admin = self::verifierMdp(self::getAdminLogin(), $ancienMdp);
+        if (!$admin) { return false; }
+        
+        $admin->mdp = password_hash($nouveauMdp, PASSWORD_DEFAULT);
             return $admin->save();
         }
-        return false;
-    }
-
-    public static function getIdAdmin() : string {
-        static::init();
-        if (!static::estConnecte()) {
-            return "";
-        } else {
-            return $_SESSION['user']['id'];
-        }
-    }
-
 }

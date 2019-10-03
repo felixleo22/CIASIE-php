@@ -47,13 +47,12 @@ class CombatController extends Controller {
         }
         return $res;
     }
-<<<<<<< HEAD
-    public function choixPerso(Request $request, Response $response){
+
+    public function choixPerso(Request $request, Response $response) {
         $data = $_POST['ids'];
         $personnage1 = Entite::find(intval($data[1]));
         $personnage2 = Entite::find(intval($data[2]));
         return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
-
     }
 
 
@@ -103,7 +102,6 @@ class CombatController extends Controller {
 //         return $res;
 //    }
 //
-=======
 
     /**
      * retourne la victime selon l'attaquant entre en parametre
@@ -162,5 +160,4 @@ class CombatController extends Controller {
     }
 
 
->>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 }
