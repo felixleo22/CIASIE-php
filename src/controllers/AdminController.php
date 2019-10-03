@@ -107,6 +107,7 @@ class AdminController extends Controller {
         $login = Utils::getFilteredPost($request,'login');
         $pwd = Utils::getFilteredPost($request, 'password');
         if(!Auth::connexion($login,$pwd)){
+            FlashMessage::flashError('Login ou mot de passe incorrecte');
             return Utils::redirect($response, 'formConnexion');
         }
         
@@ -123,11 +124,10 @@ class AdminController extends Controller {
         return $this->views->render($response, 'editMdpAdmin.html.twig');
     }
 
-    public function modifierMdp($request, $response) {
-        $id = Utils::sanitize($_SESSION['user']['id']);
-        $mdp = $request->getParsedBodyParam("mdp", null);
-        $mdpNew = $request->getParsedBodyParam("mdp_new", null);
-        $mdpConf = $request->getParsedBodyParam("mdp_conf", null);
+    public function modifierMdp(Request $request, Response $response) {
+        $mdp = Utils::getFilteredPost($request, 'mdp');
+        $mdpNew = Utils::getFilteredPost($request, "mdp_new");
+        $mdpConf = Utils::getFilteredPost($request, "mdp_conf");
 
         if ($mdpNew == null || $mdp === null || $mdpConf == null) {
             FlashMessage::flashError("Des données sont manquantes");
@@ -139,20 +139,12 @@ class AdminController extends Controller {
             return Utils::redirect($response, "formModifMdpAdmin");
         }
 
-        if (! preg_match("/(?=.*\d)(?=.*[a-zA-Z]).{6,}/", $mdpNew)) {
-            FlashMessage::flashError("Le mot de passe doit faire au moins 6 caractères et contenir 1 chiffre et 1 lettre");
+        if (!Auth::modifierMdp($mdp, $mdpNew)) {
+            FlashMessage::flashError("L'ancien mot de passe ne correspond pas");
             return Utils::redirect($response, "formModifMdpAdmin");
         }
 
-        if (!Auth::modifierMotDePasse($mdp, $mdpNew)) {
-            var_dump($mdp);
-            FlashMessage::flashError("Le mot de passe n'est pas correcte");
-            return Utils::redirect($response, "formModifMdpAdmin");
-        }
-
-        FlashMessage:: flashSuccess("Modification enregistrée");
-        return $this->views->render($response, 'editMdpAdmin.html.twig');
+        FlashMessage::flashSuccess("Le mot de passe a été changé");
+        return Utils::redirect($response, "formModifMdpAdmin");
     }
-    
-
 }
