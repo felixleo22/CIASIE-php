@@ -3,8 +3,49 @@
 {% block title %}Smash 2.0{% endblock %}
 
 {% block content %}
-    Smash 2.0
-    {{ monstre.nom }}
-    {{ personnage.nom }}
+
+
+    Smash 2.0 <BR>
+    {% block javascripts %}
+
+        <script type="text/javascript">
+            function save(){
+               let formJqObj = $("#formulaire");
+                let formDataObj = {};
+                formJqObj.find("[type='checkbox']:checked").not("[type='button']").not("[type='reset']").each(function (index) {
+                    var thisInput = $(this);
+                    formDataObj["entitée " + (index + 1)] = (thisInput.val());
+                });
+                let hidden = document.getElementById("hidden");
+                hidden.value = JSON.stringify(formDataObj)+"";
+                console.log(hidden.value);
+            }
+        </script>
+    {% endblock %}
+
+
+
+        <form id="formulaire" action="/combat/game" method="post">
+            {% for personnage in personnages %}
+            {{ personnage.nom }}
+            <label>
+                Choisir le personnage :
+                <input type="checkbox" onchange="save()" name="ids[{{ personnage.id }}]" value="{{ personnage.id }}">
+                <input type="hidden" id="hidden" name="hidden" value="" disabled >
+            </label>
+        <br>
+            {% endfor %}
+            <input id="valid" type="submit" value="Valider">
+
+        </form>
+
+
+
+
+
+
+
+
+
 
 {% endblock %}
