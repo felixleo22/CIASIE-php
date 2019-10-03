@@ -5,11 +5,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Smash\models\Entite;
-<<<<<<< HEAD
 
-=======
 use Smash\models\Combat;
->>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 
 class CombatController extends Controller {
 
