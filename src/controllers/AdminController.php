@@ -118,6 +118,41 @@ class AdminController extends Controller {
         return Utils::redirect($response, 'accueil');
     }
 
+
+    public function afficherModiferMdp(Request $request, Response $response) {
+        return $this->views->render($response, 'editMdpAdmin.html.twig');
+    }
+
+    public function modifierMdp($request, $response) {
+        $id = Utils::sanitize($_SESSION['user']['id']);
+        $mdp = $request->getParsedBodyParam("mdp", null);
+        $mdpNew = $request->getParsedBodyParam("mdp_new", null);
+        $mdpConf = $request->getParsedBodyParam("mdp_conf", null);
+
+        if ($mdpNew == null || $mdp === null || $mdpConf == null) {
+            FlashMessage::flashError("Des données sont manquantes");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        if ($mdpNew !== $mdpConf) {
+            FlashMessage::flashError("Le mot de passe et sa confirmation ne correspondent pas");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        if (! preg_match("/(?=.*\d)(?=.*[a-zA-Z]).{6,}/", $mdpNew)) {
+            FlashMessage::flashError("Le mot de passe doit faire au moins 6 caractères et contenir 1 chiffre et 1 lettre");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        if (!Auth::modifierMotDePasse($mdp, $mdpNew)) {
+            var_dump($mdp);
+            FlashMessage::flashError("Le mot de passe n'est pas correcte");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        FlashMessage:: flashSuccess("Modification enregistrée");
+        return $this->views->render($response, 'editMdpAdmin.html.twig');
+    }
     
 
 }

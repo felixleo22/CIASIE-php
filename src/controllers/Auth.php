@@ -6,6 +6,12 @@ use Smash\models\Admin;
 //Class de methode static pour faciliter la gestion de la connexion à un compte admin
 class Auth {
 
+    private static function init()
+        {
+            if (session_status() != PHP_SESSION_ACTIVE)
+                session_start();
+        }
+
     //permet de verifier si l utilisateur est connecte
     public static function estConnecte() : bool {
         return isset($_SESSION['user']);
@@ -52,6 +58,30 @@ class Auth {
             return false;
         else {
             return Admin::where("login", "=", $login)->count() > 0; 
+        }
+    }
+
+    private static function verifierMdp(string $login, string $mdp) {
+        $admin = Admin::where("id", "=", $login)->first();
+        return ($admin != null && password_verify($mdp, $admin->mdp)) ? $admin : null;
+    }
+
+    public static function modifierMotDePasse(string $mdpOld, string $mdpNew) : bool {
+        
+        $admin = static::verifierMdp(static::getIdAdmin(), $mdpOld);
+        if ($admin) {
+            $admin->mdp = \password_hash($mdpNew, PASSWORD_DEFAULT);
+            return $admin->save();
+        }
+        return false;
+    }
+
+    public static function getIdAdmin() : string {
+        static::init();
+        if (!static::estConnecte()) {
+            return "";
+        } else {
+            return $_SESSION['user']['id'];
         }
     }
 

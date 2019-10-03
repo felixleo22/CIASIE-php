@@ -96,6 +96,9 @@ $app->group('/admin', function($app) {
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
+
+    $app->get('/modifierMdp', AdminController::class.':afficherModiferMdp')->setName('formModifMdpAdmin');
+    $app->post('/modifierMdp', AdminController::class.':modifierMdp')->setName('execModifMdpAdmin');
 })->add(new AuthMiddleware());
 
 //affichage du combat

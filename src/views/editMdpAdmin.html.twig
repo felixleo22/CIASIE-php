@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+{% block content %}
+<form action='{{ path_for('execModifMdpAdmin') }}' method='POST' enctype="multipart/form-data">
+    <div>
+        <p>Ancien mot de passe<p>
+        <input id='mdp' name='mdp' type='password' placeholder='*****' required>
+    </div>
+
+    <div>
+        <p>Mot de passe<p>
+        <input id='mdp_new' name='mdp_new' type='password' placeholder='*****' pattern='(?=.*\d)(?=.*[a-zA-Z]).{6,}' required>
+        <p>Le mot de passe doit faire au moins 6 caractères et contenir 1 chiffre et 1 lettre</p>
+    </div>
+    <div>
+        <p>Confirmation du mot de passe<p>
+        <input id='mdp_conf' name='mdp_conf' type='password' placeholder='*****' data-target='mdp_new' required>
+        <p>Le mot de passe doit correspondre</p>
+    </div>
+    <input type='submit' value='Valider'>
+</form>
+{% endblock %}
