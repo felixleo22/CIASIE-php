@@ -5,11 +5,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 use Smash\models\Entite;
-<<<<<<< HEAD
 
-=======
 use Smash\models\Combat;
->>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 
 class CombatController extends Controller {
 
@@ -38,19 +35,52 @@ class CombatController extends Controller {
      * le plus grand chiffre commence a attaque
      * @return Entite
      */
-    public function choixAttaquant(){
-        $res = $monstre;
-        $val1 = 0; $val2 = 0;
-        while ($val1 === $val2) {
-            $val1 = mt_rand(0,$personnage->pointAgi);
-            $val2 = mt_rand(0,$monstre->pointAgi);
+    public function choixAttaquant($personnage1, $personnage2){
+        $val1 = 0;
+        $val2 = 0;
+        while($val1 === $val2){
+            $val1 = mt_rand(0, $personnage1->pointAgi);
+            $val2 = mt_rand(0, $personnage2->pointAgi);
         }
-        if($val1 > $val2) {
-            $res = $personnage;
+        if ($val1 > $val2){
+            return $personnage1;
+        }else{
+            return $personnage2;
         }
-        return $res;
     }
-<<<<<<< HEAD
+
+    /**
+     * point d'attaque choisit aléatoirement entre 80% et 120% de l'attaquant
+     * l'attaquant à 5% d'effectuer un coup critique (degat multiplie par 2)
+     * la défence est augmenter de 1% du poids de la victime
+     * la victime à 5% d'esquiver le coup
+     */
+    public function degat($attaquant, $victime) {
+        $esquive = mt_rand(1, 100);
+        if ($esquive <= 5) {
+            return  $res = 0;
+        } else {
+            $critique = mt_rand(1, 100);
+            if ($critique <= 5) {
+                $critique = 2;
+            } else {
+                $critique = 1;
+            }
+            $att = mt_rand(0.8, 1.2);
+            $defSup = (0.01*$victime->poids);
+            $att_tt = ($attaquant->pointAtt*$att)*$critique;
+
+            $res = $att_tt - $victime->pointDef+$defSup;
+            var_dump("attaque = ".($attaquant->pointAtt*$att)*$critique);
+            var_dump("defence = ".($victime->pointDef+$defSup));
+            var_dump("res = ".$res);
+            if ($res < 0){
+                $res = 1;
+            }
+            return $res;
+        }
+    }
+
     public function choixPerso(Request $request, Response $response){
         $data = $_POST['ids'];
         $personnage1 = Entite::find(intval($data[1]));
@@ -58,6 +88,28 @@ class CombatController extends Controller {
         return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
 
     }
+
+    public function play(Request $request, Response $response){
+        $personnage1 = Entite::find($_POST['personnage1']);
+        $personnage2 = Entite::find($_POST['personnage2']);
+        $attaquant = $this->choixAttaquant($personnage1,$personnage2);
+
+        if ($attaquant === $personnage1){
+            $degat = $this->degat($attaquant,$personnage2);
+            $personnage2->pointVie = $personnage2->pointVie - $degat;
+        }
+
+        if($attaquant === $personnage2){
+            $degat = $this->degat($attaquant,$personnage1);
+            $personnage1->pointVie = $personnage1->pointVie - $degat;
+        }
+        $personnage2->save();
+        $personnage1->save();
+        return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
+
+    }
+
+
 
 
 //    public function play($entite1, $entite2, Response $response){
@@ -106,7 +158,6 @@ class CombatController extends Controller {
 //         return $res;
 //    }
 //
-=======
 
     /**
      * retourne la victime selon l'attaquant entre en parametre
@@ -131,39 +182,14 @@ class CombatController extends Controller {
         return $res;
     }
 
-    /**
-     * point d'attaque choisit aléatoirement entre 80% et 120% de l'attaquant
-     * l'attaquant à 5% d'effectuer un coup critique (degat multiplie par 2)
-     * la défence est augmenter de 1% du poids de la victime
-     * la victime à 5% d'esquiver le coup 
-     */
-    public function degat($attaquant, $victime) {
-         $esquive = $mt_rand(1, 100);
-         if ($esquive >= 5) {
-             $res = 0;
-         } else { 
-            $critique = $mt_rand(1, 100);
-            if ($critique >= 5) {
-                $critique = 2;
-            } else {
-                $critique = 1;
-            }
-            $att = $mt_rand(0.8, 1.2);
-            $defSup = (0.01*$victime->poids);
-            $res = ($attaquant->pointAtt*$att)*$critique - $victime->pointDef+$defSup;
-         }
-         return $res;
-    }
 
-    public function play(Response $response){
-        while(isAlive($personnage) || isAlive($monstre)) {
-            $attaquant = choixAttaquant();
-            $victime = getVictime($attaquant);
-            $degat($attaquant, $victime);
-            // pause
-        }
-    }
+//    public function play(Response $response){
+//        while(isAlive($personnage) || isAlive($monstre)) {
+//            $attaquant = choixAttaquant();
+//            $victime = getVictime($attaquant);
+//            $degat($attaquant, $victime);
+//            // pause
+//        }
+//    }
 
-
->>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 }

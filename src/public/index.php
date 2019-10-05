@@ -99,15 +99,14 @@ $app->group('/admin', function($app) {
 })->add(new AuthMiddleware());
 
 //affichage du combat
-<<<<<<< HEAD
+
 $app->post('/combat/game', CombatController::class.':choixPerso')->setName('combat-choix');
-=======
 $app->get('/combat', CombatController::class.':play')->setName('combat');
+$app->post('/combat/play', CombatController::class.':play')->setName('combat-jouer');
 
 $app->group('/combat', function($app) {
     $app->post('/creer', CombatController::class.':creerCombat');
 });
->>>>>>> b3ee2a9d4e65f5a17faea56b52db28adf4f71193
 
 /** Lancement de l'application */
 $app->run();
