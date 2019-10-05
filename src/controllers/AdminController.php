@@ -107,6 +107,7 @@ class AdminController extends Controller {
         $login = Utils::getFilteredPost($request,'login');
         $pwd = Utils::getFilteredPost($request, 'password');
         if(!Auth::connexion($login,$pwd)){
+            FlashMessage::flashError('Login ou mot de passe incorrecte');
             return Utils::redirect($response, 'formConnexion');
         }
         
@@ -118,6 +119,32 @@ class AdminController extends Controller {
         return Utils::redirect($response, 'accueil');
     }
 
-    
 
+    public function afficherModiferMdp(Request $request, Response $response) {
+        return $this->views->render($response, 'editMdpAdmin.html.twig');
+    }
+
+    public function modifierMdp(Request $request, Response $response) {
+        $mdp = Utils::getFilteredPost($request, 'mdp');
+        $mdpNew = Utils::getFilteredPost($request, "mdp_new");
+        $mdpConf = Utils::getFilteredPost($request, "mdp_conf");
+
+        if ($mdpNew == null || $mdp === null || $mdpConf == null) {
+            FlashMessage::flashError("Des données sont manquantes");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        if ($mdpNew !== $mdpConf) {
+            FlashMessage::flashError("Le mot de passe et sa confirmation ne correspondent pas");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        if (!Auth::modifierMdp($mdp, $mdpNew)) {
+            FlashMessage::flashError("L'ancien mot de passe ne correspond pas");
+            return Utils::redirect($response, "formModifMdpAdmin");
+        }
+
+        FlashMessage::flashSuccess("Le mot de passe a été changé");
+        return Utils::redirect($response, "formModifMdpAdmin");
+    }
 }

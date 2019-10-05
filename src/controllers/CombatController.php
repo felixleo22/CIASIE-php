@@ -49,6 +49,7 @@ class CombatController extends Controller {
         }
     }
 
+
     /**
      * point d'attaque choisit aléatoirement entre 80% et 120% de l'attaquant
      * l'attaquant à 5% d'effectuer un coup critique (degat multiplie par 2)
@@ -81,12 +82,12 @@ class CombatController extends Controller {
         }
     }
 
-    public function choixPerso(Request $request, Response $response){
+    public function choixPerso(Request $request, Response $response) {
+
         $data = $_POST['ids'];
         $personnage1 = Entite::find(intval($data[1]));
         $personnage2 = Entite::find(intval($data[2]));
         return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
-
     }
 
     public function play(Request $request, Response $response){
