@@ -95,18 +95,24 @@ class CombatController extends Controller {
         $personnage2 = Entite::find($_POST['personnage2']);
         $attaquant = $this->choixAttaquant($personnage1,$personnage2);
 
-        if ($attaquant === $personnage1){
-            $degat = $this->degat($attaquant,$personnage2);
-            $personnage2->pointVie = $personnage2->pointVie - $degat;
+        if($this->isAlive($personnage1) || $this->isAlive($personnage2)){
+            if ($attaquant === $personnage1){
+                $degat = $this->degat($attaquant,$personnage2);
+                $personnage2->pointVie = $personnage2->pointVie - $degat;
+            }
+
+            if($attaquant === $personnage2){
+                $degat = $this->degat($attaquant,$personnage1);
+                $personnage1->pointVie = $personnage1->pointVie - $degat;
+            }
+            $personnage2->save();
+            $personnage1->save();
+            return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
+
+        }else{
+            return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
         }
 
-        if($attaquant === $personnage2){
-            $degat = $this->degat($attaquant,$personnage1);
-            $personnage1->pointVie = $personnage1->pointVie - $degat;
-        }
-        $personnage2->save();
-        $personnage1->save();
-        return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
 
     }
 
