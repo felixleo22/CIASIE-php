@@ -37,10 +37,15 @@ class AdminController extends Controller {
         //TODO filtrage dans la base de donnée
         $login = Utils::getFilteredPost($request, 'login');
         if(!Auth::loginDisponible($login)){
-            FlashMessage::flashError('login deja utilisé');
+            FlashMessage::flashError('Login deja utilisé');
             return Utils::redirect($response, 'formCreerAdmin', ['id' => $admin->id]);   
         }
         $password = Utils::getFilteredPost($request, 'mdp');
+        $passwordConf = Utils::getFilteredPost($request, 'mdp_conf');
+        if ($password !== $passwordConf) {
+            FlashMessage::flashError('Les mots de passe ne correspondent pas');
+            return Utils::redirect($response, 'formCreerAdmin', ['id' => $admin->id]); 
+        }
         $admin = Auth::creerAdmin($login, $password);
         return Utils::redirect($response, 'listeAdmins');
     }
