@@ -102,6 +102,12 @@ $app->group('/admin', function($app) {
 })->add(new AuthMiddleware());
 
 //affichage du combat
+
+
+$app->post('/combat/game', CombatController::class.':choixPerso')->setName('combat-choix');
+$app->get('/combat', CombatController::class.':play')->setName('combat');
+$app->post('/combat/play', CombatController::class.':play')->setName('combat-jouer');
+
 $app->group('/combat', function($app) {
     $app->post('/creer', CombatController::class.':creerCombat');
 });
