@@ -24,12 +24,11 @@ class EntiteController extends Controller
         $perso = [];
         
         //upload de la photo
-        $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
        
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
-            $nomFichier = Utils::uploadFichier($destination, $photo);
+            $nomFichier = Utils::uploadFichier($photo);
             $perso['photo'] = $nomFichier;
         }else{
             $perso['photo'] = NULL;
@@ -85,7 +84,7 @@ class EntiteController extends Controller
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
 
         //photo 
-        $destination = '../public/img';
+        $destination = '../public/uploaded';
         $uploadedFiles = $request->getUploadedFiles();
 
         $photo = $uploadedFiles['photo'];

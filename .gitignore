@@ -3,3 +3,4 @@ vendor/
 composer.lock
 config.inc.php
 img/
+uploaded/
