@@ -12,6 +12,6 @@ class Entite extends Model {
     public $timestamps = true;
 
     public function defaultPhoto() {
-        return $this->type === 'monstre' ? 'default_monstre' : 'default_personnage';
+        return $this->type === 'monstre' ? 'default_monstre.png' : 'default_personnage.png';
     }
 } 

@@ -12,7 +12,9 @@ class Utils {
     */
     public static function uploadFichier(UploadedFile  $uploadedFile) {
         $directory = '../public'.self::$uploadDirectory;
-        if (!is_dir($directory)){ mkdir($directory); }
+        if (!is_dir($directory)){ 
+            mkdir($directory); 
+        }
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
         $basename = bin2hex(time().random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
         $filename = sprintf('%s.%0.8s', $basename, $extension);
@@ -22,7 +24,7 @@ class Utils {
     }
     
     public static function getUploadedPhoto($file, $default) : string {
-        $img = $uploadDirectory.'/'.$file;
+        $img = self::$uploadDirectory.'/'.$file;
         
         if(is_file('../public'.$img)) {
             return $img;

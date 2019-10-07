@@ -1,6 +1,7 @@
 <?php
 use Smash\controllers\Auth;
 use Smash\controllers\FlashMessage;
+use Smash\controllers\Utils;
 
 return [
     new Twig_Function("est_connecte", Auth::class."::estConnecte"),
