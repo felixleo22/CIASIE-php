@@ -24,12 +24,11 @@ class EntiteController extends Controller
         $perso = [];
         
         //upload de la photo
-        $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
        
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
-            $nomFichier = Utils::uploadFichier($destination, $photo);
+            $nomFichier = Utils::uploadFichier($photo);
             $perso['photo'] = $nomFichier;
         }else{
             $perso['photo'] = NULL;
@@ -96,12 +95,11 @@ class EntiteController extends Controller
             return Utils::redirect($response, 'listeEntites'); 
         }
         //photo 
-        $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
 
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
-            $nomFichier = Utils::uploadFichier($destination, $photo);
+            $nomFichier = Utils::uploadFichier($photo);
             $entite->photo = $nomFichier;
         }
 

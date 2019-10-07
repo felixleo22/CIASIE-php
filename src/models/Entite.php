@@ -11,4 +11,7 @@ class Entite extends Model {
     protected $fillable = ['type','nom', 'prenom', 'taille' , 'poids', 'pointVie', 'pointAtt', 'pointDef', 'pointAgi', 'photo'];
     public $timestamps = true;
 
+    public function defaultPhoto() {
+        return $this->type === 'monstre' ? 'default_monstre.png' : 'default_personnage.png';
+    }
 } 
