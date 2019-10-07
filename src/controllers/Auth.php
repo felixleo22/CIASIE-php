@@ -7,6 +7,11 @@ use Smash\models\Admin;
 class Auth {
 
     //permet de verifier si l utilisateur est connecte
+    public static function estSuperAdmin() : bool {
+        return ($_SESSION['user']['super'] === 1);
+    }
+
+    //permet de verifier si l utilisateur est connecte
     public static function estConnecte() : bool {
         return isset($_SESSION['user']);
     }
@@ -41,6 +46,7 @@ class Auth {
 
         $_SESSION['user']['id'] = $admin->id;
         $_SESSION['user']['login'] = $admin->login;
+        $_SESSION['user']['super'] = $admin->super;
         return true;
     }
 

@@ -10,6 +10,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 //Middlewares
 use Smash\middlewares\AuthMiddleware;
 use Smash\middlewares\FlashMiddleware;
+use Smash\middlewares\SuperAdminMiddleware;
 
 //Controleurs
 use Smash\controllers\CombatController;
@@ -83,19 +84,21 @@ $app->group('/entite', function($app) {
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
 })->add(new AuthMiddleware());
 
+
+
 //gestion des admins
 $app->group('/admin', function($app) {
     $app->get('/liste', AdminController::class.':listeAdmin')->setName('listeAdmins');
 
-    $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin');
+    $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin')->add(new SuperAdminMiddleware());
     $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
 
     //TODO uniformiser soit login soit id
     //TODO remplacer post par put
-    $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin');
+    $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin')->add(new SuperAdminMiddleware());
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
     //TODO remplacer get par delete
-    $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin');
+    $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin')->add(new SuperAdminMiddleware());
 
     $app->get('/modifierMdp', AdminController::class.':afficherModiferMdp')->setName('formModifMdpAdmin');
     $app->post('/modifierMdp', AdminController::class.':modifierMdp')->setName('execModifMdpAdmin');

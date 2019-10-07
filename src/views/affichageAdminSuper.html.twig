@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>login</th>
+        </tr>
+    {% for admin in admins %}
+        <tr>
+            <td>{{ admin.login }}</td>
+            {% if admin.super == '0' %}
+            <td> <a href ="{{ path_for('formModifAdmin', {id: admin.id}) }}" >Modifier</a> </td>
+            <td> <a href ="{{ path_for('execSupprAdmin', {id: admin.id}) }}" >Suprimer</a> </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    <td> <a href ="{{ path_for('formCreerAdmin') }}" >Créer</a> </td>
+    </table>
+{% endblock %}
+

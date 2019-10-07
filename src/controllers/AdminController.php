@@ -18,6 +18,10 @@ class AdminController extends Controller {
 
     public function formulaireEditAdmin(Request $request, Response $response, $args){
         $admin = Admin::find($request->getAttribute('id'));
+        if($admin === NULL) {
+            FlashMessage::flashError('Impossible de modifier cet utilisateur');
+            return Utils::redirect($response, 'listeAdmins');   
+        }
         return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
     }
 
@@ -25,6 +29,7 @@ class AdminController extends Controller {
      * affiche le formulaire de creation d'un admin via un fichier twig
      */
     public function formulaireCreation(Request $request, Response $response, $args){
+
         return $this->views->render($response, 'ajoutAdmin.html.twig');
         
     }
@@ -33,7 +38,7 @@ class AdminController extends Controller {
      * creation de d'un admin
      * verification des logins
      */
-    public function creerAdmin(Request $request, Response $response, $args){
+    public function creerAdmin(Request $request, Response $response, $args) {
         //TODO filtrage dans la base de donnée
         $login = Utils::getFilteredPost($request, 'login');
         if(!Auth::loginDisponible($login)){
@@ -54,8 +59,13 @@ class AdminController extends Controller {
      * selectionne tout les admins de la bdd et les affichent
      */
     public function listeAdmin(Request $request, Response $response, $args) {
-        $listeAdmin = Admin::all();
-        return $this->views->render($response, 'affichageAdmin.html.twig', ['admins' => $listeAdmin]);
+        if(Auth::estSuperAdmin()){
+            $listeAdmin = Admin::all();
+        return $this->views->render($response, 'affichageAdminSuper.html.twig', ['admins' => $listeAdmin]);
+        } else {
+            $listeAdmin = Admin::all();
+            return $this->views->render($response, 'affichageAdmin.html.twig', ['admins' => $listeAdmin]);
+        }
     }
 
     /**
@@ -75,7 +85,7 @@ class AdminController extends Controller {
         if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
         $admin->login = Utils::getFilteredPost($request, "login");
-        if(Auth::loginDisponible($admin->login)){
+        if(!Auth::loginDisponible($admin->login)){
             FlashMessage::flashError('login deja utilisé');
             return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
         }
@@ -83,18 +93,16 @@ class AdminController extends Controller {
         return Utils::redirect($response, 'listeAdmins');
     }
 
-    //TODO modification du mdp
-
     /**
      * supprime un admin dans la base de donnee
      * verification si suppresion du super admin
      */
     public function suppressionAdmin(Request $request, Response $response, $args){
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $admin = Admin::find($id);
         if($admin === null || $admin->super === 1) {
-            FlashMessage::flashError('Impossible de supprimer cette utilisateur');
+            //TODO a la fin du projet, changer le message d'erreur
+            FlashMessage::flashError('Impossible de supprimer le super admin');
             return Utils::redirect($response, 'listeAdmins');
         }
         $admin->delete();
