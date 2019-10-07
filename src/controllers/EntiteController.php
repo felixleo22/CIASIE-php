@@ -44,6 +44,12 @@ class EntiteController extends Controller
         $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
         $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
         $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
+        if (!Utils::verifIfNumber($perso['taille']) || !Utils::verifIfNumber($perso['poids']) || 
+        !Utils::verifIfNumber($perso['pointVie']) || !Utils::verifIfNumber($perso['pointAtt']) || 
+        !Utils::verifIfNumber($perso['pointDef']) || !Utils::verifIfNumber($perso['pointAgi'])) {
+            FlashMessage::flashError("Valeurs d'entrés incorrect");
+            return Utils::redirect($response, 'listeEntites'); 
+        }
    
         $entite = Entite::create($perso);
         return Utils::redirect($response, 'listeEntites');
@@ -83,7 +89,12 @@ class EntiteController extends Controller
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
-
+        if (!Utils::verifIfNumber($entite->taille) || !Utils::verifIfNumber($entite->poids) || 
+        !Utils::verifIfNumber($entite->pointVie) || !Utils::verifIfNumber($entite->pointAtt) || 
+        !Utils::verifIfNumber($entite->pointDef) || !Utils::verifIfNumber($entite->pointAgi)) {
+            FlashMessage::flashError("Valeurs d'entrés incorrect");
+            return Utils::redirect($response, 'listeEntites'); 
+        }
         //photo 
         $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
