@@ -2,5 +2,4 @@ vendor/
 .idea/
 composer.lock
 config.inc.php
-img/
 uploaded/
