@@ -81,5 +81,10 @@ class Auth {
         
         $admin->mdp = password_hash($nouveauMdp, PASSWORD_DEFAULT);
             return $admin->save();
-        }
+    }
+
+    public static function modifierMdpBySuper($admin, string $ancienMdp, string $nouveauMdp) : bool {
+        $admin->mdp = password_hash($nouveauMdp, PASSWORD_DEFAULT);
+        return $admin->save();
+    }
 }

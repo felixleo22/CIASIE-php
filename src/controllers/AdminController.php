@@ -22,7 +22,7 @@ class AdminController extends Controller {
             FlashMessage::flashError('Impossible de modifier cet utilisateur');
             return Utils::redirect($response, 'listeAdmins');   
         }
-        return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
+        return $this->views->render($response, 'formAdmin.html.twig',['admin'=>$admin]);
     }
 
     /**
@@ -83,18 +83,27 @@ class AdminController extends Controller {
         if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
          if($admin == null) {
-            FlashMessage::flashError('Cet admin n\'existe pas !');
-            return Utils::redirect($response, 'listeAdmins');
+            FlashMessage::flashError("Cet admin n'existe pas !");
+            return Utils::redirect($response, "listeAdmins");
         }
         $admin->login = Utils::getFilteredPost($request, "login");
-        if(!Auth::loginDisponible($admin->login)){
-            FlashMessage::flashError('login deja utilisé');
-            return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
-        }
-        $admin->save();
+        //TODO verifier s'il veut changer de login
+        // if(!Auth::loginDisponible($admin->login)){
+        //     FlashMessage::flashError('login deja utilisé');
+        //     return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
+        // }
 
-        FlashMessage::flashSuccess($admin->login.' a été modifié !');
-        return Utils::redirect($response, 'listeAdmins');
+        $mdp = Utils::getFilteredPost($request, "mdp");
+        $mdpConf = Utils::getFilteredPost($request, "mdp_conf");
+
+        if ($mdp !== $mdpConf) {
+            FlashMessage::flashError("Le mot de passe et sa confirmation ne correspondent pas");
+            return Utils::redirect($response, "listeAdmins");
+        }
+        Auth::modifierMdpBySuper($admin, $mdp, $mdpConf);
+
+        FlashMessage::flashSuccess($admin->login." a été modifié !");
+        return Utils::redirect($response, "listeAdmins");
     }
 
     /**
