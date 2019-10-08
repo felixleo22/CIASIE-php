@@ -129,7 +129,7 @@ class CombatController extends Controller {
         }
         else
         {
-            FlashMessage::flashSuccess('Combat terminé');
+            FlashMessage::flashInfo('Combat terminé');
             return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
         }
         
