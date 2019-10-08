@@ -10,4 +10,13 @@ class Combat extends Model
     protected $table = 'combat';
     protected $fillable = ['id', 'idPersonnage', 'pointViePersonnage', 'idMonstre', 'pointVieMonstre'];
     public $timestamps = true;
+
+    public function monstre() {
+        return Entite::find($this->idMonstre);
+    }
+
+    public function personnage() {
+        return Entite::find($this->idPersonnage);
+    }
+
 } 
