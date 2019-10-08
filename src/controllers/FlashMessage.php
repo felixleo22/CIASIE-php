@@ -81,6 +81,10 @@ class FlashMessage {
         self::flash('success', $value);
     } 
     
+    public static function flashInfo($value) {
+        self::flash('info', $value);
+    } 
+
     /**
     * Supprime toutes les données pour l'éxécution suivante
     */

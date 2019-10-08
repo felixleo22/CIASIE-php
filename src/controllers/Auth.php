@@ -7,6 +7,11 @@ use Smash\models\Admin;
 class Auth {
 
     //permet de verifier si l utilisateur est connecte
+    public static function estSuperAdmin() : bool {
+        return ($_SESSION['user']['super'] === 1);
+    }
+
+    //permet de verifier si l utilisateur est connecte
     public static function estConnecte() : bool {
         return isset($_SESSION['user']);
     }
@@ -24,15 +29,24 @@ class Auth {
         return $_SESSION['user']['login'];
     }
 
+    public static function getAdminId() : int {
+        if (!static::estConnecte()) {
+            return -1;
+        } else {
+            return $_SESSION['user']['id'];
+        }
+    }
+    
     //permet de verifier les infos de connexion et creer la connexion si elles sont correctes
     public static function connexion(string $login, string $mdp) : bool {
         if(static::estConnecte()) return true;
 
-        $admin = Admin::where('login', '=', $login)->first();
-        if($admin === null || !password_verify($mdp, $admin->mdp)) return false;
+        $admin = self::verifierMdp($login, $mdp);
+        if($admin === null) return false;
 
         $_SESSION['user']['id'] = $admin->id;
         $_SESSION['user']['login'] = $admin->login;
+        $_SESSION['user']['super'] = $admin->super;
         return true;
     }
 
@@ -47,4 +61,25 @@ class Auth {
         return $admin;
     }
 
+    public static function loginDisponible(string $login) : bool {
+        if (!$login)
+            return false;
+        else {
+            return !Admin::where("login", "=", $login)->count() > 0; 
+        }
+    }
+
+    private static function verifierMdp(string $login, string $mdp) {
+        $admin = Admin::where("login", "=", $login)->first();
+        return ($admin != null && password_verify($mdp, $admin->mdp)) ? $admin : null;
+    }
+
+    public static function modifierMdp(string $ancienMdp, string $nouveauMdp) : bool {
+        
+        $admin = self::verifierMdp(self::getAdminLogin(), $ancienMdp);
+        if (!$admin) { return false; }
+        
+        $admin->mdp = password_hash($nouveauMdp, PASSWORD_DEFAULT);
+            return $admin->save();
+        }
 }

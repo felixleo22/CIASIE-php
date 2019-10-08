@@ -24,12 +24,15 @@ class EntiteController extends Controller
         $perso = [];
         
         //upload de la photo
-        $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
         
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
-            $nomFichier = Utils::uploadFichier($destination, $photo);
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formCreerEntite');
+            }
+            $nomFichier = Utils::uploadFichier($photo);
             $perso['photo'] = $nomFichier;
         }else{
             $perso['photo'] = NULL;
@@ -39,11 +42,19 @@ class EntiteController extends Controller
         $perso['prenom'] = Utils::getFilteredPost($request, 'prenom');
         $perso['type'] = Utils::getFilteredPost($request, 'type');
         $perso['taille'] = Utils::getFilteredPost($request, 'taille');
+        $perso['poids'] = Utils::getFilteredPost($request, 'poids');
         $perso['pointVie'] = Utils::getFilteredPost($request, 'pointVie');
         $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
         $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
         $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
-        
+        //TODO eventuellement faire plus propre
+        if (!Utils::verifIfNumber($perso['taille']) || !Utils::verifIfNumber($perso['poids']) || 
+        !Utils::verifIfNumber($perso['pointVie']) || !Utils::verifIfNumber($perso['pointAtt']) || 
+        !Utils::verifIfNumber($perso['pointDef']) || !Utils::verifIfNumber($perso['pointAgi'])) {
+            FlashMessage::flashError("Valeurs d'entrés incorrect");
+            return Utils::redirect($response, 'listeEntites'); 
+        }
+   
         $entite = Entite::create($perso);
         FlashMessage::flashSuccess('L\'entité a été créée !');
         return Utils::redirect($response, 'listeEntites');
@@ -83,7 +94,6 @@ class EntiteController extends Controller
     * 
     */
     public function afficherEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
         return $this->views->render($response, 'formEntite.html.twig',['entite'=>$entite]);
     }
@@ -92,7 +102,6 @@ class EntiteController extends Controller
     * 
     */
     public function modifierEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'formModifEntite');
         $entite = Entite::find($id);
@@ -105,19 +114,30 @@ class EntiteController extends Controller
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
         $entite->taille = Utils::getFilteredPost($request, "taille");
+        $entite->poids = Utils::getFilteredPost($request, "poids");
         $entite->pointVie = Utils::getFilteredPost($request, "pointVie");
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
-        
+
+        //TODO meme chose au dessus
+        if (!Utils::verifIfNumber($entite->taille) || !Utils::verifIfNumber($entite->poids) || 
+        !Utils::verifIfNumber($entite->pointVie) || !Utils::verifIfNumber($entite->pointAtt) || 
+        !Utils::verifIfNumber($entite->pointDef) || !Utils::verifIfNumber($entite->pointAgi)) {
+            FlashMessage::flashError("Valeurs d'entrés incorrect");
+            return Utils::redirect($response, 'listeEntites'); 
+        }
         //photo 
-        $destination = '../public/img';
         $uploadedFiles = $request->getUploadedFiles();
         
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
-            $nomFichier = Utils::uploadFichier($destination, $photo);
-            $perso['photo'] = $nomFichier;
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
+            }
+            $nomFichier = Utils::uploadFichier($photo);
+            $entite->photo = $nomFichier;
         }
         
         $entite->save();
@@ -129,7 +149,6 @@ class EntiteController extends Controller
     * 
     */
     public function suppressionEntite(Request $request, Response $response, $args){
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $entite = Entite::find($id);
         if($entite == null) {
