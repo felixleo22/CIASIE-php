@@ -70,7 +70,6 @@ class EntiteController extends Controller
      * 
      */
     public function afficherEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
         return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
     }
@@ -79,7 +78,6 @@ class EntiteController extends Controller
      * 
      */
     public function modifierEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'formModifEntite');
         $entite = Entite::find($id);
@@ -119,7 +117,6 @@ class EntiteController extends Controller
      * 
      */
     public function suppressionEntite(Request $request, Response $response, $args){
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $entite = Entite::find($id);
         if($entite != null) {
