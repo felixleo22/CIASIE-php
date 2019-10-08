@@ -35,27 +35,27 @@
         </div>
         <div class="form-group">
             <label for="iptHeight">Taille<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptHeight" type='text' name = 'taille' minlength='1' value="{{ entite.taille }}" placeholder='Taille' required>
+            <input class="form-control form-control-sm" id="iptHeight" type='text' name = 'taille' minlength='1' value="{{ entite.taille }}" placeholder='Taille' pattern="\d+" required>
         </div>
         <div class="form-group">
                 <label for="iptWeight">Poids<span>*</span></label>
-                <input class="form-control form-control-sm" id="iptWeight" type='text' name = 'poids' minlength='1' value="{{ entite.poids }}" placeholder='Poids' required>
+                <input class="form-control form-control-sm" id="iptWeight" type='text' name = 'poids' minlength='1' value="{{ entite.poids }}" placeholder='Poids' pattern="\d+" required>
             </div>
         <div class="form-group">
             <label for="iptHealth">Vie<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptHealth" type='text' name = 'pointVie' minlength='1' value="{{ entite.pointVie }}" placeholder='Vie' required>
+            <input class="form-control form-control-sm" id="iptHealth" type='text' name = 'pointVie' minlength='1' value="{{ entite.pointVie }}" placeholder='Vie' pattern="\d+" required>
         </div>
         <div class="form-group">
             <label for="iptAttack">Attaque<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptAttack" type='text' name = 'pointAtt' minlength='1' value="{{ entite.pointAtt }}" placeholder='Attaque' required>
+            <input class="form-control form-control-sm" id="iptAttack" type='text' name = 'pointAtt' minlength='1' value="{{ entite.pointAtt }}" placeholder='Attaque' pattern="\d+" required>
         </div>
         <div class="form-group">
             <label for="iptDefence">Défense<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptDefence" type='text' name = 'pointDef' minlength='1' value="{{ entite.pointDef }}" placeholder='Défense' required>
+            <input class="form-control form-control-sm" id="iptDefence" type='text' name = 'pointDef' minlength='1' value="{{ entite.pointDef }}" placeholder='Défense' pattern="\d+" required>
         </div>
         <div class="form-group">
             <label for="iptAgility">Agilité<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptAgility" type='text' name = 'pointAgi' minlength='1' value="{{ entite.pointAgi }}" placeholder='Agilité' required>
+            <input class="form-control form-control-sm" id="iptAgility" type='text' name = 'pointAgi' minlength='1' value="{{ entite.pointAgi }}" placeholder='Agilité' pattern="\d+" required>
         </div>
         <div class="form-group">
             <label for="iptPhoto">Photo</label>
