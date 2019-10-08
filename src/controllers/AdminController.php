@@ -22,7 +22,7 @@ class AdminController extends Controller {
             FlashMessage::flashError('Impossible de modifier cet utilisateur');
             return Utils::redirect($response, 'listeAdmins');   
         }
-        return $this->views->render($response, 'editAdmin.html.twig',['admin'=>$admin]);
+        return $this->views->render($response, 'formAdmin.html.twig',['admin'=>$admin]);
     }
 
     /**
@@ -86,11 +86,12 @@ class AdminController extends Controller {
             FlashMessage::flashError('Cet admin n\'existe pas !');
             return Utils::redirect($response, 'listeAdmins');
         }
-        $admin->login = Utils::getFilteredPost($request, "login");
-        if(!Auth::loginDisponible($admin->login)){
-            FlashMessage::flashError('login deja utilisé');
-            return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
-        }
+        //TODO verifier s'il veut changer de login ou non
+        // $admin->login = Utils::getFilteredPost($request, "login");
+        // if(!Auth::loginDisponible($admin->login)){
+        //     FlashMessage::flashError('login deja utilisé');
+        //     return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
+        // }
         $admin->save();
 
         FlashMessage::flashSuccess($admin->login.' a été modifié !');
