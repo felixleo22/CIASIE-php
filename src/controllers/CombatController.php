@@ -123,6 +123,10 @@ class CombatController extends Controller {
                 $combat->pointViePersonnage -= $degat;
             }
             $combat->save();
+        }else{
+            $combat->delete();
+            FlashMessage::flashSuccess('Combat terminé');
+            return Utils::redirect($response,'resultCombat');
         }
         
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2]);        
