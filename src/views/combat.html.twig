@@ -2,90 +2,97 @@
 
 {% block content%}
 
-    <h2>Combat n°{{ combat.id }}</h2>
+<h2>Combat n°{{ combat.id }}</h2>
 
-    {% if  personnage1.pointVie > 0  or  personnage2.pointVie > 0  %}
+{% if  personnage1.pointVie > 0  or  personnage2.pointVie > 0  %}
 
-        <div class="row">
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            {{ personnage1.nom }}
-                           {{ personnage1.prenom }}
-                            <hr>
-                        </div>
-                        <img src="/img/{{ personnage1.photo }}" alt="">
-                    </div>
-                    <div class="card-body">
-                        <p>Rappel des stats :</p>
-                        <div class="row">
-                            <div class="col-sm">
-                                <p> type : {{ personnage1.type }}</p>
-                                <p> taille : {{ personnage1.taille }} m</p>
-                                <p> pointVieMax : {{ personnage1.pointVie }} m</p>                                
-                            </div>
-                            <div class="col-sm">
-                                <p> pointDef : {{ personnage1.pointDef }} </p>
-                                <p> pointAtt : {{ personnage1.pointAtt }} </p>
-                                <p> pointAgi : {{ personnage1.pointAgi }} </p>
-                                <p> pointVie : {{ combat.pointViePersonnage }} </p>
-                            </div>
-                        </div>
-                    </div>
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    {{ personnage1.nom }}
+                    {{ personnage1.prenom }}
+                    <hr>
                 </div>
+                <img src="/img/{{ personnage1.photo }}" alt="">
             </div>
-
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            {{ personnage2.nom }}
-                            {{ personnage2.prenom }}
-                            <hr>
-                        </div>
-                        <img src="/img/{{ personnage2.photo }}" alt="">
+            <div class="card-body">
+                <p>Rappel des stats :</p>
+                <div class="row">
+                    <div class="col-sm">
+                        <p> type : {{ personnage1.type }}</p>
+                        <p> taille : {{ personnage1.taille }} m</p>
+                        <p> pointVieMax : {{ personnage1.pointVie }} m</p>                                
                     </div>
-                    <div class="card-body">
-                        <p>Rappel des stats :</p>
-                        <div class="row">
-                            <div class="col-sm">
-                                <p> type : {{ personnage2.type }}</p>
-                                <p> taille : {{ personnage2.taille }} m</p>
-                                <p> pointVieMax : {{ personnage1.pointVie }} m</p>       
-                            </div>
-                            <div class="col-sm">
-                                <p> pointDef : {{ personnage2.pointDef }} </p>
-                                <p> pointAtt : {{ personnage2.pointAtt }} </p>
-                                <p> pointAgi : {{ personnage2.pointAgi }} </p>
-                                <p> pointVie : {{ combat.pointVieMonstre }} </p>
-                            </div>
-                        </div>
+                    <div class="col-sm">
+                        <p> pointDef : {{ personnage1.pointDef }} </p>
+                        <p> pointAtt : {{ personnage1.pointAtt }} </p>
+                        <p> pointAgi : {{ personnage1.pointAgi }} </p>
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm">
+                        <p> pointVie : {{ combat.pointViePersonnage }} </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm">
-                <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
-                    <input style="width: 90%; margin-left: 5%;margin-right:5%;margin-top: 5%" class="btn btn-primary" type="submit" value="Jouer le prochain tour">
-                </form>
+    </div>
+    
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    {{ personnage2.nom }}
+                    {{ personnage2.prenom }}
+                    <hr>
+                </div>
+                <img src="/img/{{ personnage2.photo }}" alt="">
+            </div>
+            <div class="card-body">
+                <p>Rappel des stats :</p>
+                <div class="row">
+                    <div class="col-sm">
+                        <p> type : {{ personnage2.type }}</p>
+                        <p> taille : {{ personnage2.taille }} m</p>
+                        <p> pointVieMax : {{ personnage1.pointVie }} m</p>       
+                    </div>
+                    <div class="col-sm">
+                        <p> pointDef : {{ personnage2.pointDef }} </p>
+                        <p> pointAtt : {{ personnage2.pointAtt }} </p>
+                        <p> pointAgi : {{ personnage2.pointAgi }} </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <p> pointVie : {{ combat.pointVieMonstre }} </p>
+                    </div>
+                </div>
             </div>
         </div>
-    {% else %}
-        {% if  personnage1.pointVie > 0  and (  personnage2.pointVie == 0  or  personnage2.pointVie < 0   )%}
-            <div class="content">
-                <p>Le personnage vainqeur de ce duel est {{ personnage1.nom }}</p>
-            </div>
-        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
+            <input style="width: 90%; margin-left: 5%;margin-right:5%;margin-top: 5%" class="btn btn-primary" type="submit" value="Jouer le prochain tour">
+        </form>
+    </div>
+</div>
+{% else %}
+{% if  personnage1.pointVie > 0  and (  personnage2.pointVie == 0  or  personnage2.pointVie < 0   )%}
+<div class="content">
+    <p>Le personnage vainqeur de ce duel est {{ personnage1.nom }}</p>
+</div>
+{% endif %}
 
-        {% if  personnage2.pointVie > 0  and ( personnage1.pointVie == 0  or  personnage1.pointVie < 0 )%}
-            <div class="content">
-                <p>Le personnage vainqeur de ce duel est {{ personnage2.nom }}</p>
-            </div>
-        {% endif %}
+{% if  personnage2.pointVie > 0  and ( personnage1.pointVie == 0  or  personnage1.pointVie < 0 )%}
+<div class="content">
+    <p>Le personnage vainqeur de ce duel est {{ personnage2.nom }}</p>
+</div>
+{% endif %}
 
-    {% endif %}
+{% endif %}
 
 
 {% endblock %}
