@@ -34,7 +34,7 @@ Entités
 <div id="deck-entites" class="card-row">
     {% for entite in monstres %}
     <div class="card">
-        <img class="card-img-top" src="/img/{{ entite.photo }}" alt="Card image cap">
+        <img class="card-img-top" src="{{get_photo(entite.photo, entite.defaultPhoto())}}" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">
                 <div>
