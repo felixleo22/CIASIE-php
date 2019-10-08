@@ -8,12 +8,12 @@
                                 <option value="personnage">Personnage</option>
                                 <option value="monstre">Monstre</option>
                            </select><br>
-        <span>Taille: </span><input type='number' name = 'taille' minlength='1' placeholder='Taille' value='{{ entite.taille }}' required><br>
-        <span>Poids: </span><input type='number' name = 'poids' minlength='1' placeholder='Poids' value='{{ entite.poids }}' required><br>
-        <span>Vie</span><input type='number' name = 'pointVie' minlength='1' placeholder='Vie' value='{{ entite.pointVie }}' required><br>
-        <span>Attaque</span><input type='number' name = 'pointAtt' minlength='1' placeholder='Attaque' value='{{ entite.pointAtt }}' required><br>
-        <span>Defence</span><input type='number' name = 'pointDef' minlength='1'  placeholder='Defence' value='{{ entite.pointDef }}' required><br>
-        <span>Agilité</span><input type='number' name = 'pointAgi' minlength='1' placeholder='Agilité' value='{{ entite.pointAgi }}' required><br>
+        <span>Taille: </span><input type='text' pattern="\d+" name = 'taille' minlength='1' placeholder='Taille' value='{{ entite.taille }}' required><br>
+        <span>Poids: </span><input type='text' pattern="\d+" name = 'poids' minlength='1' placeholder='Poids' value='{{ entite.poids }}' required><br>
+        <span>Vie</span><input type='text' pattern="\d+" name = 'pointVie' minlength='1' placeholder='Vie' value='{{ entite.pointVie }}' required><br>
+        <span>Attaque</span><input type='text' pattern="\d+" name = 'pointAtt' minlength='1' placeholder='Attaque' value='{{ entite.pointAtt }}' required><br>
+        <span>Defence</span><input type='text' pattern="\d+" name = 'pointDef' minlength='1'  placeholder='Defence' value='{{ entite.pointDef }}' required><br>
+        <span>Agilité</span><input type='text' pattern="\d+" name = 'pointAgi' minlength='1' placeholder='Agilité' value='{{ entite.pointAgi }}' required><br>
         <span>Photo</span><input type="file" name='photo'><br>
         <input type='submit' value='Valider'>
     </form>

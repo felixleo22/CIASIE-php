@@ -55,7 +55,11 @@ class Utils {
         $data = $request->getParsedBodyParam($key, null);
         return $data === null ? null : self::sanitize($data);
     }
-    
+
+    public static function verifIfNumber($data) : bool {
+        return filter_var($data, FILTER_VALIDATE_INT) !== false;
+    }
+
     /**
     * Permet de sanitize une string (vis-à-vis de l'affichage HTML seulement)
     */
