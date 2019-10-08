@@ -66,7 +66,7 @@ class Utils {
     }
 
     public static function verifIfNumber($data) : bool {
-        return filter_var($data, FILTER_VALIDATE_INT) !== false;
+        return filter_var($data, FILTER_VALIDATE_INT);
     }
 
     /**
