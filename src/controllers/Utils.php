@@ -53,7 +53,16 @@ class Utils {
     */
     public static function getFilteredPost(ServerRequestInterface $request, string $key) {
         $data = $request->getParsedBodyParam($key, null);
-        return $data === null ? null : self::sanitize($data);
+        
+        if($data === null) return null;
+        if(is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = self::sanitize($value);
+            }
+            return $data;
+        }
+
+        return self::sanitize($data);
     }
 
     public static function verifIfNumber($data) : bool {

@@ -84,7 +84,7 @@ class CombatController extends Controller {
 
     public function choixPerso(Request $request, Response $response) {
 
-        $data = $_POST['ids'];
+        $data = Utils::getFilteredPost($request, 'ids');
         $personnage1 = Entite::find(intval($data[1]));
         $personnage2 = Entite::find(intval($data[2]));
         return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
