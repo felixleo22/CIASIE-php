@@ -25,7 +25,7 @@
 
 
 
-        <form id="formulaire" action="/combat/game" method="post">
+        <form id="formulaire" action="{{path_for('creerCombat')}}" method="post">
             {% for personnage in personnages %}
             {{ personnage.nom }}
             <label>
