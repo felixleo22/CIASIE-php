@@ -13,7 +13,7 @@ div.card{
     margin: 1%;
 }
 div.card > img{
-    height: 400px;
+    height: 350px;
     width: auto;
 }
 h5{
@@ -36,6 +36,13 @@ div.form-group > input, select{
 label > span{
     color: red;
 }
+div.stat-group{
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 13vh;
+}
 .table{
     text-align: center;
     width: 75%;
@@ -43,4 +50,8 @@ label > span{
 }
 td.disabled{
     background-color: whitesmoke;
+}
+p.link{
+    margin-top: 2vh;
+    text-align: center;
 }
