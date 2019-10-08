@@ -29,7 +29,7 @@ class AdminController extends Controller {
      * affiche le formulaire de creation d'un admin via un fichier twig
      */
     public function formulaireCreation(Request $request, Response $response, $args){
-        return $this->views->render($response, 'ajoutAdmin.html.twig');
+        return $this->views->render($response, 'formAdmin.html.twig');
     }
 
     /**
@@ -46,7 +46,7 @@ class AdminController extends Controller {
         $passwordConf = Utils::getFilteredPost($request, 'mdp_conf');
         if ($password !== $passwordConf) {
             FlashMessage::flashError('Les mots de passe ne correspondent pas');
-            return Utils::redirect($response, 'formCreerAdmin', ['id' => $admin->id]); 
+            return Utils::redirect($response, 'formCreerAdmin', ['id' => $admin->id]);
         }
         $admin = Auth::creerAdmin($login, $password);
         FlashMessage::flashSuccess('L\'admin a été créé !');

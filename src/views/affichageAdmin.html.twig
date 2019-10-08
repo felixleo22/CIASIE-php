@@ -7,7 +7,6 @@
         <thead>
         <tr>
             <th scope="col">Login</th>
-            <th scope="col" colspan="2">Actions</th>
         </tr>
         </thead>
     {% for admin in admins %}
@@ -18,6 +17,5 @@
         </tbody>
     {% endfor %}
     </table>
-    <p class="link"><a class="btn btn-primary" href="{{ path_for('formCreerAdmin') }}">Ajouter un admin</a></p>
 {% endblock %}
 

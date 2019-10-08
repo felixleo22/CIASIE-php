@@ -1,12 +1,19 @@
 h2{
     text-align: center;
 }
+section{
+    width: 96vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+section:first-of-type{
+    margin-bottom: 5vh;
+}
 div.card-row{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin: auto;
-    width: 98%;
 }
 div.card{
     width: 23%;
