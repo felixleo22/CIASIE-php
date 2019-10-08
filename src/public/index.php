@@ -93,7 +93,6 @@ $app->group('/admin', function($app) {
     $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin')->add(new SuperAdminMiddleware());
     $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
     
-    //TODO uniformiser soit login soit id
     //TODO remplacer post par put
     $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin')->add(new SuperAdminMiddleware());
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
@@ -106,9 +105,9 @@ $app->group('/admin', function($app) {
 
 //affichage du combat
 $app->group('/combat', function($app) {
+    $app->get('/{id}', CombatController::class.':play')->setName('resultCombat');
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
-    $app->post('/combat/play/{id}', CombatController::class.':play')->setName('jouerCombat');
-    $app->get('/combat/{id}', CombatController::class.':play')->setName('resultCombat');
+    $app->post('/play/{id}', CombatController::class.':play')->setName('jouerCombat');
 });
 
 
