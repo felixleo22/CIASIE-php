@@ -12,7 +12,7 @@
                            {{ personnage1.prenom }}
                             <hr>
                         </div>
-                        {{ personnage1.photo }}
+                        <img src="/img/{{ personnage1.photo }}" alt="">
                     </div>
                     <div class="card-body">
                         <p>Rappel des stats :</p>
@@ -40,7 +40,7 @@
                             {{ personnage2.prenom }}
                             <hr>
                         </div>
-                        {{ personnage2.photo }}
+                        <img src="/img/{{ personnage2.photo }}" alt="">
                     </div>
                     <div class="card-body">
                         <p>Rappel des stats :</p>
@@ -83,9 +83,6 @@
         {% endif %}
 
     {% endif %}
-
-
-
 
 
 {% endblock %}
