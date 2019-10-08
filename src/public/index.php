@@ -91,7 +91,7 @@ $app->group('/admin', function($app) {
     $app->get('/liste', AdminController::class.':listeAdmin')->setName('listeAdmins');
     
     $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin')->add(new SuperAdminMiddleware());
-    $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
+    $app->post('/creer', AdminController::class.':creerAdmin')->setName('execCreerAdmin');
     
     //TODO remplacer post par put
     $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin')->add(new SuperAdminMiddleware());
