@@ -28,6 +28,10 @@ class EntiteController extends Controller
        
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formCreerEntite');
+            }
             $nomFichier = Utils::uploadFichier($photo);
             $perso['photo'] = $nomFichier;
         }else{
@@ -66,7 +70,6 @@ class EntiteController extends Controller
      * 
      */
     public function afficherEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $entite = Entite::find($request->getAttribute('id'));
         return $this->views->render($response, 'editEntite.html.twig',['entite'=>$entite]);
     }
@@ -75,7 +78,6 @@ class EntiteController extends Controller
      * 
      */
     public function modifierEntite(Request $request, Response $response, $args) {
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'formModifEntite');
         $entite = Entite::find($id);
@@ -99,6 +101,10 @@ class EntiteController extends Controller
 
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
+            }
             $nomFichier = Utils::uploadFichier($photo);
             $entite->photo = $nomFichier;
         }
@@ -111,7 +117,6 @@ class EntiteController extends Controller
      * 
      */
     public function suppressionEntite(Request $request, Response $response, $args){
-        //TODO Verifier connexion de l'utilisateur
         $id = Utils::sanitize($args['id']);
         $entite = Entite::find($id);
         if($entite != null) {

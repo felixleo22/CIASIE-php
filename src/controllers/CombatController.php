@@ -54,7 +54,7 @@ class CombatController extends Controller {
      * L'attaque est chosit entre 80% et 120% des point d'attaque de l'attaquant.
      * La defence est calculer en % avec des palier tout les 20 points de defense
      * Elle ne peut pas exeder 70%
-     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence)
+     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
      * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
      */
     public function degat($attaquant, $victime) {
