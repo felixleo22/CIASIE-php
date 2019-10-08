@@ -22,7 +22,7 @@
                             <div class="col-sm">
                                 <p> type : {{ personnage1.type }}</p>
                                 <p> taille : {{ personnage1.taille }} m</p>
-                                <p> pointVie : {{ personnage1.pointVie }} </p>
+                                <p> pointVie : {{ combat.pointViePersonnage }} </p>
                             </div>
                             <div class="col-sm">
                                 <p> pointDef : {{ personnage1.pointDef }} </p>
@@ -50,7 +50,7 @@
                             <div class="col-sm">
                                 <p> type : {{ personnage2.type }}</p>
                                 <p> taille : {{ personnage2.taille }} m</p>
-                                <p> pointVie : {{ personnage2.pointVie }} </p>
+                                <p> pointVie : {{ combat.pointVieMonstre }} </p>
                             </div>
                             <div class="col-sm">
                                 <p> pointDef : {{ personnage2.pointDef }} </p>
@@ -64,9 +64,7 @@
         </div>
         <div class="row">
             <div class="col-sm">
-                <form action="/combat/play" method="post">
-                    <input type="hidden" style="display: none" name="personnage1" value="{{ personnage1.id }}">
-                    <input type="hidden" style="display: none" name="personnage2" value="{{ personnage2.id }}">
+                <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
                     <input style="width: 90%; margin-left: 5%;margin-right:5%;margin-top: 5%" class="btn btn-primary" type="submit" value="Jouer le prochain tour">
                 </form>
             </div>
