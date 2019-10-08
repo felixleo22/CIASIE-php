@@ -4,6 +4,8 @@ namespace smash\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Smash\models\Entite;
+
 class Combat extends Model
 {
     use SoftDeletes;
@@ -21,6 +23,12 @@ class Combat extends Model
 
     public function isEnd() : bool {
         return $this->pointViePersonnage <= 0 || $this->pointVieMonstre <= 0;
+    }
+
+    public function vainqueur() {
+        if($this->pointViePersonnage <= 0) return $this->monstre();
+        if($this->pointVieMonstre <= 0) return $this->personnage();
+        return null;
     }
 
 } 

@@ -4,8 +4,8 @@ namespace Smash\controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
-use Smash\models\Entite;
 
+use Smash\models\Entite;
 use Smash\models\Combat;
 
 class CombatController extends Controller {
@@ -130,9 +130,27 @@ class CombatController extends Controller {
         else
         {
             FlashMessage::flashSuccess('Combat terminé');
-            return Utils::redirect($response,'resultCombat', ['id' => $combat.id]);
+            return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
         }
         
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2]);        
+    }
+
+    public function result(Request $request, Response $response, $args) {
+        //TODO verifier si le combat est terminé
+        $idCombat = Utils::sanitize($args['id']);
+        $combat = Combat::find($idCombat);
+        if($combat === null) {
+            FlashMessage::flashError('Le combat n\'existe pas');
+            return Utils::redirect($response, 'accueil');
+        }
+
+        $vainqueur = $combat->vainqueur();
+        if($vainqueur === null) {
+            FlashMessage::flashError('Le combat ne possede pas de resultat');
+            return Utils::redirect($response, 'accueil');
+        }
+
+        return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
     }
 }
