@@ -108,7 +108,10 @@ $app->group('/admin', function($app) {
 $app->group('/combat', function($app) {
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
     $app->post('/combat/play/{id}', CombatController::class.':play')->setName('jouerCombat');
+    $app->get('/combat/{id}', CombatController::class.':play')->setName('resultCombat');
 });
+
+
 
 /** Lancement de l'application */
 $app->run();
