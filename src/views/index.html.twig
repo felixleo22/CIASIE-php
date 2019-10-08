@@ -30,7 +30,7 @@
             {{ personnage.nom }}
             <label>
                 Choisir le personnage :
-                <input type="checkbox" onchange="save()" name="ids[{{ personnage.id }}]" value="{{ personnage.id }}">
+                <input type="checkbox" onchange="save()" name="ids[]" value="{{ personnage.id }}">
                 <input type="hidden" id="hidden" name="hidden" value="" disabled >
             </label>
         <br>
