@@ -28,6 +28,10 @@ class EntiteController extends Controller
        
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formCreerEntite');
+            }
             $nomFichier = Utils::uploadFichier($photo);
             $perso['photo'] = $nomFichier;
         }else{
@@ -99,6 +103,10 @@ class EntiteController extends Controller
 
         $photo = $uploadedFiles['photo'];
         if($photo->getError() === UPLOAD_ERR_OK) {
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
+            }
             $nomFichier = Utils::uploadFichier($photo);
             $entite->photo = $nomFichier;
         }

@@ -6,7 +6,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\UploadedFile;
 
 class Utils {
+
     private static $uploadDirectory = '/uploaded';
+    private static $acceptedFiles = ['gif', 'jpg', 'jpeg', 'png'];
+
     /**
     * Permet de generer un nom de fichier et de le deplacer dans le bon dossier
     */
@@ -32,6 +35,11 @@ class Utils {
         
         return '/img/'.$default;
     }
+
+    public static function isAcceptedFile(UploadedFile  $uploadedFile) : bool {
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+         return in_array($extension, self::$acceptedFiles);
+    }
     
     public static function redirect(ResponseInterface $response, $route, $args = [])
     {
@@ -45,7 +53,16 @@ class Utils {
     */
     public static function getFilteredPost(ServerRequestInterface $request, string $key) {
         $data = $request->getParsedBodyParam($key, null);
-        return $data === null ? null : self::sanitize($data);
+        
+        if($data === null) return null;
+        if(is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = self::sanitize($value);
+            }
+            return $data;
+        }
+
+        return self::sanitize($data);
     }
 
     public static function verifIfNumber($data) : bool {

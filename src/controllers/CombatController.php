@@ -83,7 +83,6 @@ class CombatController extends Controller {
     }
 
     public function choixPerso(Request $request, Response $response) {
-
         $data = $_POST['ids'];
         $personnage1 = Entite::find(intval($data[0]));
         $personnage2 = Entite::find(intval($data[1]));
