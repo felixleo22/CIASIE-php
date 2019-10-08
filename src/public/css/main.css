@@ -51,3 +51,7 @@ div.stat-group{
 td.disabled{
     background-color: whitesmoke;
 }
+p.link{
+    margin-top: 2vh;
+    text-align: center;
+}
