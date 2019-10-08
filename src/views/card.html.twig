@@ -1,0 +1,24 @@
+<div class="card">
+    <img class="card-img-top" src="/img/{{ entite.photo }}" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">
+            <div>
+                {{ entite.nom }} {{ entite.prenom }}
+            </div>
+            <div>
+                <a href="/entite/modifier/{{ entite.id }}"><img src="/ressources/pencil.svg"></a>
+                <a href="/entite/supprimer/{{ entite.id }}"><img src="/ressources/x.svg"></a>
+            </div>
+        </h5>
+        <div class="stat-group">
+            <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
+            <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
+            <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+            <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+            <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
+        </div>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">Créé le {{ entite.created_at }}</small>
+    </div>
+</div>
