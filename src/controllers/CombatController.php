@@ -49,44 +49,38 @@ class CombatController extends Controller {
         }
     }
 
-
     /**
-     * point d'attaque choisit aléatoirement entre 80% et 120% de l'attaquant
-     * l'attaquant à 5% d'effectuer un coup critique (degat multiplie par 2)
-     * la défence est augmenter de 1% du poids de la victime
-     * la victime à 5% d'esquiver le coup
+     * La victime à 5% de chance d'esquiver le coup (return 0)
+     * L'attaque est chosit entre 80% et 120% des point d'attaque de l'attaquant.
+     * La defence est calculer en % avec des palier tout les 20 points de defense
+     * Elle ne peut pas exeder 70%
+     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence)
+     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
      */
     public function degat($attaquant, $victime) {
         $esquive = mt_rand(1, 100);
         if ($esquive <= 5) {
-            return  $res = 0;
-        } else {
-            $critique = mt_rand(1, 100);
-            if ($critique <= 5) {
-                $critique = 2;
-            } else {
-                $critique = 1;
-            }
-            $att = mt_rand(0.8, 1.2);
-            $defSup = (0.01*$victime->poids);
-            $att_tt = ($attaquant->pointAtt*$att)*$critique;
-
-            $res = $att_tt - $victime->pointDef+$defSup;
-            var_dump("attaque = ".($attaquant->pointAtt*$att)*$critique);
-            var_dump("defence = ".($victime->pointDef+$defSup));
-            var_dump("res = ".$res);
-            if ($res < 0){
-                $res = 1;
-            }
-            return $res;
+            return 0;
         }
+        $att = mt_rand(8, 12)/10;
+        $critique = mt_rand(1, 100);
+        if ($critique <= 5) {
+            return round(($attaquant->pointAtt*$att));
+        }
+        $reste = round($victime->pointDef/20);
+        if($reste > 7) {
+            $reste = 7;
+        }
+        return round(($attaquant->pointAtt*$att)*($reste/10));
+        
     }
+
 
     public function choixPerso(Request $request, Response $response) {
 
         $data = $_POST['ids'];
-        $personnage1 = Entite::find(intval($data[1]));
-        $personnage2 = Entite::find(intval($data[2]));
+        $personnage1 = Entite::find(intval($data[0]));
+        $personnage2 = Entite::find(intval($data[1]));
         return $this->views->render($response, 'combat.html.twig',['personnage1'=> $personnage1,'personnage2'=> $personnage2]);
     }
 
