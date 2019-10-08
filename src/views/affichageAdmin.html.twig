@@ -13,17 +13,10 @@
         <tbody>
         <tr>
             <td>{{ admin.login }}</td>
-            {% if not admin.super %}
-            <td> <a href ="{{ path_for('formModifAdmin', {id: admin.id}) }}"><img src="/ressources/pencil.svg" alt="modifier"></a></td>
-            <td> <a href ="{{ path_for('execSupprAdmin', {id: admin.id}) }}"><img src="/ressources/x.svg" alt="supprimer"></a> </td>
-            {% else %}
-            <td class="disabled"></td>
-            <td class="disabled"></td>
-            {% endif %}
         </tr>
         </tbody>
     {% endfor %}
     </table>
-    <p class="link"><a class="btn btn-primary" href="/admin/creer">Ajouter un admin</a></p>
+    <p class="link"><a class="btn btn-primary" href="{{ path_for('formCreerAdmin') }}">Ajouter un admin</a></p>
 {% endblock %}
 
