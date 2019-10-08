@@ -93,6 +93,9 @@ class CombatController extends Controller {
         if($reste > 7) {
             $reste = 7;
         }
+        if($reste >= 0) {
+            $reste = 10;
+        }
         return round(($attaquant->pointAtt*$att)*($reste/10));
         
     }
