@@ -39,7 +39,6 @@ class AdminController extends Controller {
      * verification des logins
      */
     public function creerAdmin(Request $request, Response $response, $args) {
-        //TODO filtrage dans la base de donnée
         $login = Utils::getFilteredPost($request, 'login');
         if(!Auth::loginDisponible($login)){
             FlashMessage::flashError('Login deja utilisé');

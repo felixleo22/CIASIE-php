@@ -100,7 +100,6 @@ class CombatController extends Controller {
         
     }
     
-    //TODO Est-ce qu'on delete quand fini ?
     public function play(Request $request, Response $response, $args){
 
         $idCombat = Utils::sanitize($args['id']);

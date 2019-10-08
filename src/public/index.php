@@ -93,7 +93,6 @@ $app->group('/admin', function($app) {
     $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin')->add(new SuperAdminMiddleware());
     $app->post('/creer', AdminController::class.':creerAdmin')->setName('exeCreerAdmin');
     
-    //TODO uniformiser soit login soit id
     //TODO remplacer post par put
     $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin')->add(new SuperAdminMiddleware());
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
