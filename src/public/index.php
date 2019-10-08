@@ -106,9 +106,9 @@ $app->group('/admin', function($app) {
 
 //affichage du combat
 $app->group('/combat', function($app) {
+    $app->get('/{id}', CombatController::class.':play')->setName('resultCombat');
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
-    $app->post('/combat/play/{id}', CombatController::class.':play')->setName('jouerCombat');
-    $app->get('/combat/{id}', CombatController::class.':play')->setName('resultCombat');
+    $app->post('/play/{id}', CombatController::class.':play')->setName('jouerCombat');
 });
 
 
