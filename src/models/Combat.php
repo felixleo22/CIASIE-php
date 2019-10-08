@@ -19,4 +19,8 @@ class Combat extends Model
         return Entite::find($this->idPersonnage);
     }
 
+    public function isEnd() : bool {
+        return $this->pointViePersonnage <= 0 || $this->pointVieMonstre <= 0;
+    }
+
 } 
