@@ -1,4 +1,46 @@
-img{
-    width: 40px;
-    height: 40px;
+h2{
+    text-align: center;
+}
+div.card-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 98%;
+}
+div.card{
+    width: 23%;
+    margin: 1%;
+}
+div.card > img{
+    height: 400px;
+    width: auto;
+}
+h5{
+    display: flex;
+    justify-content: space-between;
+}
+h5 > div > a{
+    margin: 0 5px;
+}
+div.form-group{
+    width: 40vw;
+    margin: auto;
+}
+div.form-group > label{
+    margin: 0;
+}
+div.form-group > input, select{
+    margin-bottom: 1vh;
+}
+label > span{
+    color: red;
+}
+.table{
+    text-align: center;
+    width: 75%;
+    margin: 0 auto;
+}
+td.disabled{
+    background-color: whitesmoke;
 }

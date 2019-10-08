@@ -29,9 +29,7 @@ class AdminController extends Controller {
      * affiche le formulaire de creation d'un admin via un fichier twig
      */
     public function formulaireCreation(Request $request, Response $response, $args){
-
         return $this->views->render($response, 'ajoutAdmin.html.twig');
-        
     }
 
     /**
@@ -51,6 +49,7 @@ class AdminController extends Controller {
             return Utils::redirect($response, 'formCreerAdmin', ['id' => $admin->id]); 
         }
         $admin = Auth::creerAdmin($login, $password);
+        FlashMessage::flashSuccess('L\'admin a été créé !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -72,7 +71,7 @@ class AdminController extends Controller {
      */
     public function afficherAdmin(Request $request, Response $response, $args) {
         $admin = Admin::find($request->getAttribute('id'));
-        return $this->views->render($response, 'editAdmin.html.twig',['admins'=>$admin]);
+        return $this->views->render($response, 'formAdmin.html.twig',['admins'=>$admin]);
     }
 
     /**
@@ -83,12 +82,18 @@ class AdminController extends Controller {
         $id = Utils::sanitize($args['id']);
         if($id === null) return Utils::redirect($request, 'listeAdmins');
         $admin = Admin::find($id);
+         if($admin == null) {
+            FlashMessage::flashError('Cet admin n\'existe pas !');
+            return Utils::redirect($response, 'listeAdmins');
+        }
         $admin->login = Utils::getFilteredPost($request, "login");
         if(!Auth::loginDisponible($admin->login)){
             FlashMessage::flashError('login deja utilisé');
             return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
         }
         $admin->save();
+
+        FlashMessage::flashSuccess($admin->login.' a été modifié !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -99,12 +104,17 @@ class AdminController extends Controller {
     public function suppressionAdmin(Request $request, Response $response, $args){
         $id = Utils::sanitize($args['id']);
         $admin = Admin::find($id);
-        if($admin === null || $admin->super === 1) {
+        if($admin == null) {
+            FlashMessage::flashError('Cet admin n\'existe pas !');
+            return Utils::redirect($response, 'listeAdmins');
+        }
+        if($admin->super === 1) {
             //TODO a la fin du projet, changer le message d'erreur
             FlashMessage::flashError('Impossible de supprimer le super admin');
             return Utils::redirect($response, 'listeAdmins');
         }
         $admin->delete();
+        FlashMessage::flashSuccess($admin->login.' a été supprimé !');
         return Utils::redirect($response, 'listeAdmins');
     }
 
@@ -123,6 +133,7 @@ class AdminController extends Controller {
             return Utils::redirect($response, 'formConnexion');
         }
         
+        FlashMessage::flashSuccess('Vous êtes connecté en tant que '.$login);
         return Utils::redirect($response, 'accueil');
     }
 
