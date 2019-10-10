@@ -15,7 +15,7 @@
                     {{ personnage1.prenom }}
                     <hr>
                 </div>
-                <img src="/img/{{ personnage1.photo }}" alt="">
+                <img src="{{ get_photo(personnage1.photo, personnage1.defaultPhoto()) }}" alt="">
             </div>
             <div class="card-body">
                 <p>Rappel des stats :</p>
@@ -47,7 +47,7 @@
                     {{ personnage2.prenom }}
                     <hr>
                 </div>
-                <img src="/img/{{ personnage2.photo }}" alt="">
+                <img src="{{ get_photo(personnage2.photo, personnage2.defaultPhoto()) }}" alt="">
             </div>
             <div class="card-body">
                 <p>Rappel des stats :</p>
