@@ -6,8 +6,9 @@
                 {{ entite.nom }} {{ entite.prenom }}
             </div>
             <div>
-                <a href="/entite/modifier/{{ entite.id }}"><img src="/ressources/pencil.svg"></a>
-                <a href="/entite/supprimer/{{ entite.id }}"><img src="/ressources/x.svg"></a>
+                    {{ path_for('execSupprEntite', {id:  entite.id}) }}
+                <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
+                <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
             </div>
         </h5>
         <div class="stat-group">
