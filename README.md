@@ -1,12 +1,9 @@
 # PROJET SMASH2
 
-Antoine PINOT
-
-Léo FELIX
-
-Simon DAL PONTE
-
-Hugo JAHNKE
+Antoine PINOT  
+Léo FELIX  
+Simon DAL PONTE  
+Hugo JAHNKE  
 
 # EXPORT DE LA BASE DE DONNEES
 importer le fichier **db/smash2.sql**
@@ -16,6 +13,5 @@ puis configurer les identifiants de connexion dans le fichier **src/config/confi
 # compte admins
 le compte administrateur par défault est :
 
-**login :** root
-
-**password :** root
+**login :** root  
+**password :** root  
