@@ -36,20 +36,28 @@ class CombatController extends Controller {
         
         //TODO verifier les types
         $combat = new Combat();
-        $combat->idPersonnage = $personnageArray[0]->id;
-        $combat->idMonstre = $monstreArray[0]->id;
-        $combat->pointVieMonstre = $monstreArray[0]->pointVie;
-        $combat->pointViePersonnage = $personnageArray[0]->pointVie;
-        
         $created = $combat->save();
-        
         if(!$created) {
             FlashMessage::flashError('Impossible de créer le combat');
             return Utils::redirect($response, 'accueil');
         }
         
+        foreach ($personnageArray as $personnage) {
+            $participant = new Participant();
+            $participant->pointVie = $personnage->pointVie;
+            $participant->idpersonnage = $personnage->id;
+            $participant->idCombat = $combat->id;
+        }
+
+        foreach ($monstreArray as $monstre) {
+            $participant = new Participant();
+            $participant->pointVie = $monstre->pointVie;
+            $participant->idmonstre = $monstre->id;
+            $participant->idCombat = $combat->id;
+        }
+
         //TODO changer la vue quand le models combat sera changer
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnageArray[0],'personnage2'=> $monstreArray[0]]);
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $entiteArray[0],'personnage2'=> $monstreArray[0]]);
     }
     
     /**
