@@ -109,50 +109,29 @@ class CombatController extends Controller {
             Utils::redirect($response, 'accueil');
         }
         
-        $personnage1 = Entite::find($combat->idPersonnage);
-        $personnage2 = Entite::find($combat->idMonstre);
+        $entites = $combat->participants()->get();
+        $participant1 = $entite[0];
+        $participant2 = $entite[1];
         
-        if(!$combat->isEnd()){ 
-            //choix de l attaquant
-            $choix = $this->choixAttaquant($personnage1, $personnage2);
-            $attaquant = $choix['attaquant'];
-            $victime = $choix['victime'];
-            
-            $degat = $this->degat($attaquant,$victime);
+        if($combat->termine){
+            //si combat terminé, on affiche le résultat
+            $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
 
-            if($victime === $personnage1)
-                $combat->pointViePersonnage -= $degat;
-            else
-                $combat->pointVieMonstre -= $degat;
-
-            $messsage = "$attaquant->prenom $attaquant->nom a fait $degat points de dégat à $victime->prenom $victime->nom";
-                
-            $combat->save();
-        }
-        else
-        {
-            FlashMessage::flashInfo('Combat terminé');
-            return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
         }
         
+        //choix de l attaquant
+        $choix = $this->choixAttaquant($participant1, $participant2);
+        $attaquant = $choix['attaquant'];
+        $victime = $choix['victime'];
+        
+        $degat = $this->degat($attaquant,$victime);
+        $victime->pointVie -= $degat;
+        
+        if($victime->pointVie <= 0) {
+            $combat->termine = true;
+        }
+        $combat->save();
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2, 'message' => $messsage]);        
-    }
-    
-    public function result(Request $request, Response $response, $args) {
-        //TODO verifier si le combat est terminé
-        $idCombat = Utils::sanitize($args['id']);
-        $combat = Combat::find($idCombat);
-        if($combat === null) {
-            FlashMessage::flashError('Le combat n\'existe pas');
-            return Utils::redirect($response, 'accueil');
-        }
-        
-        $vainqueur = $combat->vainqueur();
-        if($vainqueur === null) {
-            FlashMessage::flashError('Le combat ne possede pas de resultat');
-            return Utils::redirect($response, 'accueil');
-        }
-        
-        return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
     }
 }
