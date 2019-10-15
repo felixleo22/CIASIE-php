@@ -107,7 +107,7 @@ INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `poin
 -- Structure de la table `participantCombat`
 --
 
-CREATE TABLE `participantCombat` (
+CREATE TABLE `participant` (
   `id` int(11) NOT NULL,
   `idCombat` int(11) NOT NULL,
   `idEntite` int(11) NOT NULL,
@@ -147,7 +147,7 @@ ALTER TABLE `entite`
 --
 -- Index pour la table `participantCombat`
 --
-ALTER TABLE `participantCombat`
+ALTER TABLE `participant`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -172,7 +172,7 @@ ALTER TABLE `entite`
 --
 -- AUTO_INCREMENT pour la table `participantCombat`
 --
-ALTER TABLE `participantCombat`
+ALTER TABLE `participant`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
