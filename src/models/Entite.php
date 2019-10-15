@@ -12,10 +12,9 @@ class Entite extends Model {
     protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "combatGagne", "combatPerdu"];
     public $timestamps = true;
 
-	public function participe(){
+	public function participants(){
 		return $this->hasMany(Participant::class);
     }
-    
     
     public function defaultPhoto() {
         return $this->type === 'monstre' ? 'default_monstre.png' : 'default_personnage.png';
@@ -27,6 +26,4 @@ class Entite extends Model {
         }
         return round($this->combatGagne / ($this->combatGagne + $this->combatPerdu));
     }
-
-    
 } 

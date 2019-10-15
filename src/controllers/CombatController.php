@@ -148,7 +148,7 @@ class CombatController extends Controller {
                 $messsage .= "Le coup de grâce à été donné !";
             }
             $combat->save();
-         }
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $participant1->entite()->first(),'personnage2'=> $personnage2->entite()->first(), 'message' => $messsage]);        
+        }
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $participant1->entite,'personnage2'=> $personnage2->entite, 'message' => $messsage]);        
     }
 }
