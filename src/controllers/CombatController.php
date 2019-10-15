@@ -65,9 +65,9 @@ class CombatController extends Controller {
             $val2 = mt_rand(0, $personnage2->pointAgi);
         }
         if ($val1 > $val2){
-            return $personnage1;
+            return ['attaquant' => $personnage1, 'victime' => $personnage2];
         }else{
-            return $personnage2;
+            return ['attaquant' => $personnage2, 'victime' => $personnage1];
         }
     }
     
@@ -101,29 +101,32 @@ class CombatController extends Controller {
     }
     
     public function play(Request $request, Response $response, $args){
-
+        
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
             FlashMessage::flashError('Le combat n\'existe pas');
             Utils::redirect($response, 'accueil');
         }
-
+        
         $personnage1 = Entite::find($combat->idPersonnage);
         $personnage2 = Entite::find($combat->idMonstre);
-
-        $attaquant = $this->choixAttaquant($personnage1, $personnage2);
-
+        
         if(!$combat->isEnd()){ 
-            if ($attaquant === $personnage1){
-                $degat = $this->degat($attaquant,$personnage2);
-                $combat->pointVieMonstre -= $degat;
-            }
+            //choix de l attaquant
+            $choix = $this->choixAttaquant($personnage1, $personnage2);
+            $attaquant = $choix['attaquant'];
+            $victime = $choix['victime'];
             
-            if($attaquant === $personnage2){
-                $degat = $this->degat($attaquant,$personnage1);
+            $degat = $this->degat($attaquant,$victime);
+
+            if($victime === $personnage1)
                 $combat->pointViePersonnage -= $degat;
-            }
+            else
+                $combat->pointVieMonstre -= $degat;
+
+            $messsage = "$attaquant->prenom $attaquant->nom a fait $degat points de dégat à $victime->prenom $victime->nom";
+                
             $combat->save();
         }
         else
@@ -132,9 +135,9 @@ class CombatController extends Controller {
             return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
         }
         
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2]);        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2, 'message' => $messsage]);        
     }
-
+    
     public function result(Request $request, Response $response, $args) {
         //TODO verifier si le combat est terminé
         $idCombat = Utils::sanitize($args['id']);
@@ -143,13 +146,13 @@ class CombatController extends Controller {
             FlashMessage::flashError('Le combat n\'existe pas');
             return Utils::redirect($response, 'accueil');
         }
-
+        
         $vainqueur = $combat->vainqueur();
         if($vainqueur === null) {
             FlashMessage::flashError('Le combat ne possede pas de resultat');
             return Utils::redirect($response, 'accueil');
         }
-
+        
         return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
     }
 }
