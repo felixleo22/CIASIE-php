@@ -7,9 +7,19 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
+use Symfony\Component\Translation\Util\ArrayConverter;
 
 class CombatController extends Controller {
-    
+    public $compteur_tour;
+    public $compteur_coup_porter ;
+
+    public function __construct($container)
+    {
+        $this->compteur_tour = 0;
+        $this->compteur_coup_porter = 0;
+        parent::__construct($container);
+    }
+
     public function creerCombat(Request $request, Response $response, $args) {
         $data = Utils::getFilteredPost($request, 'ids');
         $personnageArray = [];
@@ -40,7 +50,10 @@ class CombatController extends Controller {
         $combat->idMonstre = $monstreArray[0]->id;
         $combat->pointVieMonstre = $monstreArray[0]->pointVie;
         $combat->pointViePersonnage = $personnageArray[0]->pointVie;
-        
+        $combat->nombreTour = 0;
+        $combat->nombreCoupPortePersonnage = 0;
+        $combat->nombreCoupPorteMonstre = 0;
+
         $created = $combat->save();
         
         if(!$created) {
@@ -79,7 +92,7 @@ class CombatController extends Controller {
     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
     */
-    public function degat($attaquant, $victime) : int{
+    public function degat($attaquant, $victime) {
         $esquive = mt_rand(1, 100);
         if ($esquive <= 5) {
             return 0;
@@ -101,7 +114,6 @@ class CombatController extends Controller {
     }
     
     public function play(Request $request, Response $response, $args){
-
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
@@ -114,16 +126,26 @@ class CombatController extends Controller {
 
         $attaquant = $this->choixAttaquant($personnage1, $personnage2);
 
-        if(!$combat->isEnd()){ 
+
+        if(!$combat->isEnd()){
+            $combat->nombreTour ++;
             if ($attaquant === $personnage1){
                 $degat = $this->degat($attaquant,$personnage2);
+                if ($degat != 0){
+                    $combat->nombreCoupPortePersonnage ++ ;
+                }
                 $combat->pointVieMonstre -= $degat;
             }
             
             if($attaquant === $personnage2){
                 $degat = $this->degat($attaquant,$personnage1);
                 $combat->pointViePersonnage -= $degat;
+                if ($degat != 0){
+                    $combat->nombreCoupPorteMonstre ++;
+                }
             }
+
+
             $combat->save();
         }
         else
@@ -139,6 +161,24 @@ class CombatController extends Controller {
         //TODO verifier si le combat est terminé
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
+
+        $point_de_vie_personnage_fin_combat = $combat->pointViePersonnage;
+        $point_de_vie_monstre_fin_combat = $combat->pointVieMonstre;
+        $id_monstre = $combat->idMonstre;
+        $id_personnage = $combat->idPersonnage;
+        $personnage = Entite::find($id_personnage);
+        $monstre = Entite::find($id_monstre);
+
+        $personnages = [];
+
+        $nbr_degat_infliger_monstre = $personnage->pointVie - $point_de_vie_personnage_fin_combat;
+        $nbr_degat_infliger_personnage = $monstre->pointVie - $point_de_vie_monstre_fin_combat;
+
+        $nbr_coup_porter_monstre = $combat->nombreCoupPorteMonstre;
+        $nbr_coup_porter_personnage = $combat->nombreCoupPortePersonnage;
+        $nbr_tour = $combat->nombreTour;
+
+
         if($combat === null) {
             FlashMessage::flashError('Le combat n\'existe pas');
             return Utils::redirect($response, 'accueil');
@@ -149,7 +189,14 @@ class CombatController extends Controller {
             FlashMessage::flashError('Le combat ne possede pas de resultat');
             return Utils::redirect($response, 'accueil');
         }
+        if ($vainqueur->nom = $monstre->nom){
+            $personnages[0] = $vainqueur;
+            $personnages[1] = $monstre;
+        }else{
+            $personnages[0] = $vainqueur;
+            $personnages[1] = $personnage;
+        }
 
-        return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
+        return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages'=>$personnages,'entite' => $vainqueur,'nbr_degat_infliger_monstre' => $nbr_degat_infliger_monstre,'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,'nbr_tour'=>$nbr_tour,'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre, 'nbr_coup_porter_personnage'=>$nbr_coup_porter_personnage]);
     }
 }

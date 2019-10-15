@@ -32,6 +32,9 @@ CREATE TABLE `combat` (
   `idMonstre` int(11) NOT NULL,
   `pointViePersonnage` int(11) NOT NULL,
   `pointVieMonstre` int(11) NOT NULL,
+  `nombreTour` int(11)NOT NULL,
+  `nombreCoupPortePersonnage` int(11) NOT NULL,
+  `nombreCoupPorteMonstre` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -41,8 +44,8 @@ CREATE TABLE `combat` (
 -- Contenu de la table `combat`
 --
 
-INSERT INTO `combat` (`id`, `idPersonnage`, `idMonstre`, `pointViePersonnage`, `pointVieMonstre`, `updated_at`, `created_at`, `deleted_at`) VALUES
-(1, 1, 2, 28, -16, '2019-10-14 18:46:56', '2019-10-14 18:46:05', NULL);
+INSERT INTO `combat` (`id`, `idPersonnage`, `idMonstre`, `pointViePersonnage`, `pointVieMonstre`,`nombreTour`,`nombreCoupPortePersonnage`,`nombreCoupPorteMonstre`, `updated_at`, `created_at`, `deleted_at`) VALUES
+(1, 1, 2, 28, -16, 12,4,6,'2019-10-14 18:46:56', '2019-10-14 18:46:05', NULL);
 
 -- --------------------------------------------------------
 
