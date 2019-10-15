@@ -131,6 +131,7 @@ class CombatController extends Controller {
         
         //si Post, on update le combat
         //sinon on affiche la vue
+        $messsage = "";
         if ($request->isPost()) {
             $choix = $this->choixAttaquant($participant1, $participant2);
             $attaquant = $choix['attaquant'];
@@ -138,12 +139,14 @@ class CombatController extends Controller {
             
             $degat = $this->degat($attaquant,$victime);
             $victime->pointVie -= $degat;
+            $messsage = "$degat points de dégats subits.";
             
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
+                $messsage .= "Le coup de grâce à été donné !";
             }
             $combat->save();
          }
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2, 'message' => $messsage]);        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $participant1->entite()->first(),'personnage2'=> $personnage2->entite()->first(), 'message' => $messsage]);        
     }
 }
