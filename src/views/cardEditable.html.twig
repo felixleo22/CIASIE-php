@@ -1,0 +1,20 @@
+{% extends 'card.html.twig' %}
+{% block type %}
+    editable
+{% endblock %}
+{% block cardTitle %}
+    {{ parent() }}
+    <div>
+        <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
+        <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
+    </div>
+{% endblock %}
+{% block cardText %}
+    <div class="stat-group">
+        <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
+        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
+        <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+        <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+        <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
+    </div>
+{% endblock %}
