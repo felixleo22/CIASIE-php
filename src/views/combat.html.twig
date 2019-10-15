@@ -8,34 +8,33 @@
     {{ message }}
 </p>
 
-{% if  personnage1.pointVie > 0  or  personnage2.pointVie > 0  %}
 <div class="row">
     <div class="col-sm">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">
-                    {{ personnage1.nom }}
-                    {{ personnage1.prenom }}
+                    {{ participant1.entite.nom }}
+                    {{ participant1.entite.prenom }}
                     <hr>
                 </div>
-                <img src="{{ get_photo(personnage1.photo, personnage1.defaultPhoto()) }}" alt="">
+                <img src="{{ get_photo(participant1.entite.photo, participant.entite.defaultPhoto()) }}" alt="">
             </div>
             <div class="card-body">
                 <p>Rappel des stats :</p>
                 <div class="row">
                     <div class="col-sm">
-                        <p> type : {{ personnage1.type }}</p>
-                        <p> taille : {{ personnage1.taille }} m</p>
-                        <p> pointVieMax : {{ personnage1.pointVie }}</p>                                
+                        <p> type : {{ participant1.entite.type }}</p>
+                        <p> taille : {{ participant1.entite.taille }} m</p>
+                        <p> pointVieMax : {{ participant1.entite.pointVie }}</p>                                
                     </div>
                     <div class="col-sm">
-                        <p> pointDef : {{ personnage1.pointDef }} </p>
-                        <p> pointAtt : {{ personnage1.pointAtt }} </p>
-                        <p> pointAgi : {{ personnage1.pointAgi }} </p>
+                        <p> pointDef : {{ participant1.entite.pointDef }} </p>
+                        <p> pointAtt : {{ participant1.entite.pointAtt }} </p>
+                        <p> pointAgi : {{ participant1.entite.pointAgi }} </p>
                     </div>
                 </div><div class="row">
                     <div class="col-sm">
-                        <p> pointVie : {{ combat.pointViePersonnage }} </p>
+                        <p> pointVie : {{ participant1.pointVie }} </p>
                     </div>
                 </div>
             </div>
@@ -46,29 +45,29 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-title">
-                    {{ personnage2.nom }}
-                    {{ personnage2.prenom }}
+                    {{ participant2.entite.nom }}
+                    {{ participant2.entite.prenom }}
                     <hr>
                 </div>
-                <img src="{{ get_photo(personnage2.photo, personnage2.defaultPhoto()) }}" alt="">
+                <img src="{{ get_photo(participant2.entite.photo, participant2.entite.defaultPhoto()) }}" alt="">
             </div>
             <div class="card-body">
                 <p>Rappel des stats :</p>
                 <div class="row">
                     <div class="col-sm">
-                        <p> type : {{ personnage2.type }}</p>
-                        <p> taille : {{ personnage2.taille }} m</p>
-                        <p> pointVieMax : {{ personnage1.pointVie }}</p>       
+                        <p> type : {{ participant2.entite.type }}</p>
+                        <p> taille : {{ participant2.entite.taille }} m</p>
+                        <p> pointVieMax : {{ participant2.entite.pointVie }}</p>       
                     </div>
                     <div class="col-sm">
-                        <p> pointDef : {{ personnage2.pointDef }} </p>
-                        <p> pointAtt : {{ personnage2.pointAtt }} </p>
-                        <p> pointAgi : {{ personnage2.pointAgi }} </p>
+                        <p> pointDef : {{ participant2.entite.pointDef }} </p>
+                        <p> pointAtt : {{ participant2.entite.pointAtt }} </p>
+                        <p> pointAgi : {{ participant2.entite.pointAgi }} </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm">
-                        <p> pointVie : {{ combat.pointVieMonstre }} </p>
+                        <p> pointVie : {{ participant2.pointVie }} </p>
                     </div>
                 </div>
             </div>
@@ -82,20 +81,5 @@
         </form>
     </div>
 </div>
-{% else %}
-{% if  personnage1.pointVie > 0  and (  personnage2.pointVie == 0  or  personnage2.pointVie < 0   )%}
-<div class="content">
-    <p>Le personnage vainqeur de ce duel est {{ personnage1.nom }}</p>
-</div>
-{% endif %}
-
-{% if  personnage2.pointVie > 0  and ( personnage1.pointVie == 0  or  personnage1.pointVie < 0 )%}
-<div class="content">
-    <p>Le personnage vainqeur de ce duel est {{ personnage2.nom }}</p>
-</div>
-{% endif %}
-
-{% endif %}
-
 
 {% endblock %}
