@@ -13,10 +13,6 @@ class Combat extends Model
     protected $fillable = ['id', 'termine'];
     public $timestamps = true;
 
-    public function isEnd() : bool {
-        return $this->pointViePersonnage <= 0 || $this->pointVieMonstre <= 0;
-    }
-
     public function participants() {
         $this->hasMany('Smash\models\Participant');
     }
