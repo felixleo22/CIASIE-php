@@ -10,7 +10,7 @@ class Combat extends Model
 {
     use SoftDeletes;
     protected $table = 'combat';
-    protected $fillable = ['id', 'termine'];
+    protected $fillable = ['id', 'termine', 'nbTours'];
     public $timestamps = true;
 
     public function participants() {

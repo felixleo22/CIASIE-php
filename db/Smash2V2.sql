@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 15 Octobre 2019 à 09:14
+-- Généré le :  Mar 15 Octobre 2019 à 09:50
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `combat` (
   `id` int(11) NOT NULL,
-  `termine` tinyint(1) NOT NULL DEFAULT '0'
+  `termine` tinyint(1) NOT NULL DEFAULT '0',
+  `nbTours` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
