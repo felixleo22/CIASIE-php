@@ -7,6 +7,7 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
+use Smash\models\Participant;
 
 class CombatController extends Controller {
     
@@ -57,7 +58,7 @@ class CombatController extends Controller {
         }
 
         //TODO changer la vue quand le models combat sera changer
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $entiteArray[0],'personnage2'=> $monstreArray[0]]);
+        return Utils::redirect($response, 'combat');
     }
     
     /**
@@ -128,18 +129,21 @@ class CombatController extends Controller {
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
         }
         
-        //choix de l attaquant
-        $choix = $this->choixAttaquant($participant1, $participant2);
-        $attaquant = $choix['attaquant'];
-        $victime = $choix['victime'];
-        
-        $degat = $this->degat($attaquant,$victime);
-        $victime->pointVie -= $degat;
-        
-        if($victime->pointVie <= 0) {
-            $combat->termine = true;
-        }
-        $combat->save();
+        //si Post, on update le combat
+        //sinon on affiche la vue
+        if ($request->isPost()) {
+            $choix = $this->choixAttaquant($participant1, $participant2);
+            $attaquant = $choix['attaquant'];
+            $victime = $choix['victime'];
+            
+            $degat = $this->degat($attaquant,$victime);
+            $victime->pointVie -= $degat;
+            
+            if($victime->pointVie <= 0) {
+                $combat->termine = true;
+            }
+            $combat->save();
+         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2, 'message' => $messsage]);        
     }
 }

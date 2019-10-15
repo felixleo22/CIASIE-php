@@ -14,7 +14,7 @@ class Combat extends Model
     public $timestamps = true;
 
     public function participants() {
-        $this->hasMany('Smash\models\Participant');
+        $this->hasMany(Participant::class);
     }
 
 } 

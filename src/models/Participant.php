@@ -11,10 +11,10 @@ class Participant extends Model {
     public $timestamps = true;
 
     public function combat() {
-        $this->belongsTo('Smash\models\Combat', 'idCombat');
+        $this->belongsTo(Combat::class, 'idCombat');
     }
 
     public function entite() {
-        $this->belongsTo('Entite', 'idEntite');
+        $this->belongsTo(Entite::class, 'idEntite');
     }
 }
