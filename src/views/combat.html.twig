@@ -4,8 +4,11 @@
 
 <h2>Combat n°{{ combat.id }}</h2>
 
-{% if  personnage1.pointVie > 0  or  personnage2.pointVie > 0  %}
+<p>
+    {{ message }}
+</p>
 
+{% if  personnage1.pointVie > 0  or  personnage2.pointVie > 0  %}
 <div class="row">
     <div class="col-sm">
         <div class="card">
