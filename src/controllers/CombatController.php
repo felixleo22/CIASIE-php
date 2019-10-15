@@ -142,10 +142,13 @@ class CombatController extends Controller {
             $victime->pointVie -= $degat;
             $messsage = "$degat points de dégats subits.";
             
+            
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
                 $messsage .= "Le coup de grâce à été donné !";
             }
+            $attaquant->save();
+            $victime->save();
             $combat->save();
         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
