@@ -72,8 +72,8 @@ class CombatController extends Controller {
         $val1 = 0;
         $val2 = 0;
         while($val1 === $val2){
-            $val1 = mt_rand(0, $personnage1->pointAgi);
-            $val2 = mt_rand(0, $personnage2->pointAgi);
+            $val1 = mt_rand(0, $personnage1->entite->pointAgi);
+            $val2 = mt_rand(0, $personnage2->entite->pointAgi);
         }
         if ($val1 > $val2){
             return ['attaquant' => $personnage1, 'victime' => $personnage2];
@@ -98,21 +98,20 @@ class CombatController extends Controller {
         $att = mt_rand(8, 12)/10;
         $critique = mt_rand(1, 100);
         if ($critique <= 5) {
-            return round(($attaquant->pointAtt*$att));
+            return round(($attaquant->entite->pointAtt*$att));
         }
-        $reste = round($victime->pointDef/20);
+        $reste = round($victime->entite->pointDef/20);
         if($reste > 7) {
             $reste = 7;
         }
         if($reste >= 0) {
             $reste = 10;
         }
-        return round(($attaquant->pointAtt*$att)*($reste/10));
+        return round(($attaquant->entite->pointAtt*$att)*($reste/10));
         
     }
     
-    public function play(Request $request, Response $response, $args){
-        
+    public function play(Request $request, Response $response, $args){  
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
@@ -149,6 +148,6 @@ class CombatController extends Controller {
             }
             $combat->save();
         }
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $participant1->entite,'personnage2'=> $personnage2->entite, 'message' => $messsage]);        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
 }
