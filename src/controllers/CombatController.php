@@ -46,19 +46,21 @@ class CombatController extends Controller {
         foreach ($personnageArray as $personnage) {
             $participant = new Participant();
             $participant->pointVie = $personnage->pointVie;
-            $participant->idpersonnage = $personnage->id;
-            $participant->idCombat = $combat->id;
+            $participant->entite_id = $personnage->id;
+            $participant->combat_id = $combat->id;
+            $participant->save();
         }
 
         foreach ($monstreArray as $monstre) {
             $participant = new Participant();
             $participant->pointVie = $monstre->pointVie;
-            $participant->idmonstre = $monstre->id;
-            $participant->idCombat = $combat->id;
+            $participant->entite_id = $monstre->id;
+            $participant->combat_id = $combat->id;
+            $participant->save();
         }
 
         //TODO changer la vue quand le models combat sera changer
-        return Utils::redirect($response, 'combat');
+        return Utils::redirect($response, 'combat', ['id' => $combat->id]);
     }
     
     /**
@@ -118,9 +120,9 @@ class CombatController extends Controller {
             Utils::redirect($response, 'accueil');
         }
         
-        $entites = $combat->participants()->get();
-        $participant1 = $entite[0];
-        $participant2 = $entite[1];
+        $entites = $combat->participants;
+        $participant1 = $entites[0];
+        $participant2 = $entites[1];
         
         if($combat->termine){
             //si combat terminé, on affiche le résultat

@@ -1,20 +1,19 @@
 <?php
-namespace smash\models;
 
+namespace Smash\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Smash\models\Entite;
+class Combat extends Model {
 
-class Combat extends Model
-{
     use SoftDeletes;
-    protected $table = 'combat';
-    protected $fillable = ['id', 'termine', 'nbTours'];
+	protected $table = 'combat';
+	protected $primaryKey = 'id';
+    protected $fillable = ['id' , "termine", "nbTours"];
     public $timestamps = true;
 
-    public function participants() {
-        $this->hasMany(Participant::class);
+	public function participants(){
+		return $this->hasMany(Participant::class);
     }
-
-} 
+    
+}

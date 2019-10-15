@@ -1,20 +1,22 @@
 <?php
-namespace smash\models;
 
+namespace Smash\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Participant extends Model {
+
     use SoftDeletes;
-    protected $table = 'participantCombat';
-    protected $fillable = ['pointVie', 'nbAttaqueInflige', 'nbAttaqueRecu', 'degatInflige', 'degatRecu', 'gagner'];
+	protected $table = 'participantCombat';
+	protected $primaryKey = 'id';
+    protected $fillable = ['id' ,"combat_id", "entite_id", "pointVie", "nbAttaqueInflige", "nbAttaqueRecu", "degatInflige", "degatRecu", "gagner"];
     public $timestamps = true;
-
-    public function combat() {
-        $this->belongsTo(Combat::class, 'idCombat');
+    
+	public function combat(){
+		return $this->belongsTo(Combat::class);
     }
-
-    public function entite() {
-        $this->belongsTo(Entite::class, 'idEntite');
-    }
+    
+    public function entite(){
+		return $this->belongsTo(Entite::class);
+	}
 }
