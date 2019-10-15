@@ -20,8 +20,11 @@ div.card{
     margin: 1%;
 }
 div.card > img{
-    height: 350px;
+    height: 300px;
     width: auto;
+}
+div.card.selectable > img{
+    filter: grayscale(90%);
 }
 h5{
     display: flex;
@@ -29,6 +32,10 @@ h5{
 }
 h5 > div > a{
     margin: 0 5px;
+}
+div.card-text{
+    display: flex;
+    justify-content: center;
 }
 div.form-group{
     width: 40vw;
