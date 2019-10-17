@@ -9,11 +9,17 @@ section{
 section:first-of-type{
     margin-bottom: 5vh;
 }
-div.card-row{
+section > h3{
+    margin-left: 1vw;
+}
+div.card-row, div.battlefield{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin: auto;
+}
+div.battlefield{
+    justify-content: space-evenly;
 }
 div.card{
     width: 23%;
@@ -68,4 +74,17 @@ td.disabled{
 p.link{
     margin-top: 2vh;
     text-align: center;
+}
+div.vs{
+    display: flex;
+}
+div.vs > p {
+    margin: auto;
+    font-size: 10rem;
+}
+
+@media (orientation: portrait) {
+    div.vs > p {
+        font-size: 3rem;
+    }
 }
