@@ -127,10 +127,9 @@ class CombatController extends Controller {
         if($combat->termine){
             //si combat terminé, on affiche le résultat
             $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
         }
-        
+        $combat->nbTours++;
         //si Post, on update le combat
         //sinon on affiche la vue
         $messsage = "";
