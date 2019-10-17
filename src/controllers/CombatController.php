@@ -59,6 +59,7 @@ class CombatController extends Controller {
             $participant->save();
         }
 
+        $_SESSION['combat'][] = [$combat->id];
         //TODO changer la vue quand le models combat sera changer
         return Utils::redirect($response, 'combat', ['id' => $combat->id]);
     }
@@ -145,6 +146,9 @@ class CombatController extends Controller {
             
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
+                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
+                    unset($_SESSION[$key]);
+                }
                 $messsage .= "Le coup de grâce à été donné !";
             }
             $attaquant->save();
