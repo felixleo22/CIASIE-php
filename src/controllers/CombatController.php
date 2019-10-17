@@ -134,7 +134,7 @@ class CombatController extends Controller {
         $participant1 = $entites[0];
         $participant2 = $entites[1];
         
-        if($combat->termine){
+        if($combat->termine) {
             //si combat terminé, on affiche le résultat
             $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
@@ -161,6 +161,18 @@ class CombatController extends Controller {
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
                 if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
+                    $entite1 = $attaquant->entite;
+                    $entite1->combatGagne++;
+                    $entite1->totalDegatInflige = $attaquant->degatInflige;
+                    $entite1->totalDegatRecu = $attaquant->degatRecu;
+                    $entite1->save();
+
+                    $entite2 = $victime->entite;
+                    $entite2->combatPerdu++;
+                    $entite2->totalDegatInflige = $victime->degatInflige;
+                    $entite2->totalDegatRecu = $victime->degatRecu;
+                    $entite2->save();
+
                     unset($_SESSION[$key]);
                 }
                 $messsage .= "Le coup de grâce à été donné !";
