@@ -7,14 +7,24 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
+
 use Smash\models\Participant;
 
 class CombatController extends Controller {
-    
+    public $compteur_tour;
+    public $compteur_coup_porter ;
+
+    public function __construct($container)
+    {
+        $this->compteur_tour = 0;
+        $this->compteur_coup_porter = 0;
+        parent::__construct($container);
+    }
+
     public function creerCombat(Request $request, Response $response, $args) {
         $data = Utils::getFilteredPost($request, 'ids');
-        $personnageArray = [];
-        $monstreArray = [];
+        $personnages = [];
+        $monstres = [];
         foreach ($data as $idEntite) {
             $entite = Entite::find($idEntite);
             if($entite === null) {
@@ -23,14 +33,14 @@ class CombatController extends Controller {
             }
             
             if($entite->type === "monstre") {
-                array_push($monstreArray, $entite);
+                array_push($monstres, $entite);
             }else{
-                array_push($personnageArray, $entite);
+                array_push($personnages, $entite);
             }
         }
         
         //TODO a changer lorsqu'il y  aura du 2v2
-        if(count($personnageArray) !== 1 && count($monstreArray) !== 1) {
+        if(count($personnages) !== 1 && count($monstres) !== 1) {
             FlashMessage::flashError('Vous devez choisir un personnage et un monstre');
             return Utils::redirect($response, 'accueil');
         }
@@ -91,7 +101,7 @@ class CombatController extends Controller {
     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
     */
-    public function degat($attaquant, $victime) : int{
+    public function degat($attaquant, $victime) {
         $esquive = mt_rand(1, 100);
         if ($esquive <= 5) {
             return 0;

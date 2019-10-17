@@ -75,4 +75,20 @@ class Utils {
     public static function sanitize(string $unsafe) : string{
         return strip_tags($unsafe);
     }
+
+    /**
+     * Filtre une liste d'entité selon le type passé en paramètre
+     * @param array $tab - La table que l'on souhaite filtrer
+     * @param string $type - Le type selon lequel on filtre
+     * @return array $res - Une nouvelle table filtrée
+     */
+    public static function filter($tab, $type){
+        $res = [];
+        foreach ($tab as $entite){
+            if ($entite->type == $type ){
+                $res[] = $entite;
+            }
+        }
+        return $res;
+    }
 }

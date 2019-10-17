@@ -5,39 +5,28 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
 {% endblock %}
 
 {% block content %}
-
-Smash 2.0 <BR>
-    {% block javascripts %}
-    
-    <script type="text/javascript">
-        function save(){
-            let formJqObj = $("#formulaire");
-            let formDataObj = {};
-            formJqObj.find("[type='checkbox']:checked").not("[type='button']").not("[type='reset']").each(function (index) {
-                var thisInput = $(this);
-                formDataObj["entitée " + (index + 1)] = (thisInput.val());
-            });
-            let hidden = document.getElementById("hidden");
-            hidden.value = JSON.stringify(formDataObj)+"";
-            console.log(hidden.value);
-        }
-    </script>
-    {% endblock %}
-    
-    
-    
+    <h2>Choix des combattants</h2>
     <form id="formulaire" action="{{path_for('creerCombat')}}" method="post">
-        {% for personnage in personnages %}
-        {{ personnage.nom }}
-        <label>
-            Choisir le personnage :
-            <input type="checkbox" onchange="save()" name="ids[]" value="{{ personnage.id }}">
-            <input type="hidden" id="hidden" name="hidden" value="" disabled >
-        </label>
-        <br>
-        {% endfor %}
-        <input id="valid" type="submit" value="Valider">
-        
+        <section id="personnage">
+            <h3 class="global-title">Personnages</h3>
+            <div class="card-row" id="deck-personnage">
+                {% for entite in personnages %}
+                    {% include 'cardSelectable.html.twig' %}
+                    <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
+                {% endfor %}
+            </div>
+        </section>
+        <section id="monstre">
+            <h3 class="global-title">Monstres</h3>
+            <div class="card-row" id="deck-monstre">
+                {% for entite in monstres %}
+                    {% include 'cardSelectable.html.twig' %}
+                    <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
+                {% endfor %}
+            </div>
+        </section>
+        <div class="form-group" style="display:flex; justify-content: center">
+            <input id="valid" class="btn btn-danger" type="submit" value="SMASH">
+        </div>
     </form>
-    {% endblock %}
-    
+{% endblock %}

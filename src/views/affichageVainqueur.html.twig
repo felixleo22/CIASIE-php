@@ -1,6 +1,73 @@
 {% extends 'base.html.twig' %}
 
+
+
 {% block content %}
-   <p> vainqueur : {{ entite.nom }} {{ entite.prenom }} </p>
+   <h1 id="titre">Vainqueur</h1>
+   <div class="row-deck">
+      <div id="vainqueur" style="display: flex; justify-content: center">
+         <div class="card">
+            <img class="card-img-top" src="{{ get_photo(personnages[0].photo, personnages[0].defaultPhoto()) }}" alt="Card image cap">
+            <div class="card-body">
+               <h5 class="card-title">
+                  <div>
+                     {{ personnages[0].nom }} {{ personnages[0].prenom }}
+                  </div>
+               </h5>
+               <div class="stat-group">
+                  <p class="card-text"><i class="ra ra-player"></i>{{ personnages[0].taille }}</p>
+                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ personnages[0].pointVie }}</p>
+                  <p class="card-text"><i class="ra ra-sword"></i> {{ personnages[0].pointAtt }}</p>
+                  <p class="card-text"><i class="ra ra-shield"></i> {{ personnages[0].pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ personnages[0].pointAgi  }}</p>
+               </div>
+            </div>
+         </div>
+         {% include 'fin_game_stat_vainqeur.html.twig' %}
+
+      </div>
+      <div style="display: flex; justify-content: center;">
+         <button id="stat_perdant" class="btn btn-primary">Afficher les stats du perdant </button>
+      </div>
+
+
+      <div id="perdant" style="display: flex; justify-content: center" >
+         <div class="card">
+            <img class="card-img-top" src="{{ get_photo(personnages[1].photo, personnages[1].defaultPhoto()) }}" alt="Card image cap">
+            <div class="card-body">
+               <h5 class="card-title">
+                  <div>
+                     {{ personnages[1].nom }} {{ personnages[1].prenom }}
+                  </div>
+               </h5>
+               <div class="stat-group">
+                  <p class="card-text"><i class="ra ra-player"></i>{{ personnages[1].taille }}</p>
+                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ personnages[1].pointVie }}</p>
+                  <p class="card-text"><i class="ra ra-sword"></i> {{ personnages[1].pointAtt }}</p>
+                  <p class="card-text"><i class="ra ra-shield"></i> {{ personnages[1].pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ personnages[1].pointAgi  }}</p>
+               </div>
+            </div>
+         </div>
+             {% include 'fin_game_stat_perdant.html.twig' %}
+      </div>
+      <div style="display: flex; justify-content: center;">
+         <button id="stat_gagant" class="btn btn-primary">Afficher les stats du gagnant </button>
+      </div>
+   </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+$(document).ready(function(){
+   $("#vainqueur").show();
+   $("#perdant").hide();
+
+   $("#stat").click(function () {
+      $("#vainqueur").hide();
+      $("#perdant").show();
+   })
+})
 
 {% endblock %}

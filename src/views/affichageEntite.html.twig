@@ -7,7 +7,7 @@
         <h3 class="global-title">Personnages</h3>
         <div id="deck-personnages" class="card-row">
             {% for entite in personnages %}
-                {% include 'card.html.twig' %}
+                {% include 'cardEditable.html.twig' %}
             {% endfor %}
         </div>
     </section>
@@ -15,7 +15,7 @@
         <h3 class="global-title">Monstres</h3>
         <div id="deck-entites" class="card-row">
             {% for entite in monstres %}
-                {% include 'card.html.twig' %}
+                {% include 'cardEditable.html.twig' %}
             {% endfor %}
         </div>
     </section>

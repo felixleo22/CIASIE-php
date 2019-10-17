@@ -1,22 +1,14 @@
-<div class="card">
-    <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="Card image cap">
+<div id="card-{{ entite.id }}" class="card {% block type %}{% endblock %}">
+    <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
     <div class="card-body">
-        <h5 class="card-title">
+        <h5 class="card-title" style="{% block style %}{% endblock %}">
+        {% block cardTitle %}
             <div>
                 {{ entite.nom }} {{ entite.prenom }}
             </div>
-            <div>
-                <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
-                <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
-            </div>
+        {% endblock %}
         </h5>
-        <div class="stat-group">
-            <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
-            <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
-            <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
-            <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
-            <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
-        </div>
+        {% block cardText %}{% endblock %}
     </div>
 </div>
 

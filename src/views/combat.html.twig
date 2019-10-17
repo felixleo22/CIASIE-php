@@ -4,86 +4,40 @@
 
 <h2>Combat n°{{ combat.id }}</h2>
 
-<p>
-    {{ message }}
-</p>
+<p>{{ message }}</p>
 
-<div class="row">
-    <div class="col-sm">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">
-                    {{ participant1.entite.nom }}
-                    {{ participant1.entite.prenom }}
-                    <hr>
-                </div>
-                <img src="{{ get_photo(participant1.entite.photo, participant.entite.defaultPhoto()) }}" alt="">
-            </div>
-            <div class="card-body">
-                <p>Rappel des stats :</p>
-                <div class="row">
-                    <div class="col-sm">
-                        <p> type : {{ participant1.entite.type }}</p>
-                        <p> taille : {{ participant1.entite.taille }} m</p>
-                        <p> pointVieMax : {{ participant1.entite.pointVie }}</p>                                
-                    </div>
-                    <div class="col-sm">
-                        <p> pointDef : {{ participant1.entite.pointDef }} </p>
-                        <p> pointAtt : {{ participant1.entite.pointAtt }} </p>
-                        <p> pointAgi : {{ participant1.entite.pointAgi }} </p>
-                    </div>
-                </div><div class="row">
-                    <div class="col-sm">
-                        <p> pointVie : {{ participant1.pointVie }} </p>
-                    </div>
-                </div>
-            </div>
+{% if  personnages[0].pointVie  or  monstres[0].pointVie %}
+    <div class="battlefield">
+        {% set entite = personnages[0] %}
+        {% include 'cardCombat.html.twig' %}
+
+        <div class="vs">
+            <p>VS</p>
+        </div>
+
+        {% set entite = monstres[0] %}
+        {% include 'cardCombat.html.twig' %}
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
+                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Jouer le prochain tour">
+            </form>
         </div>
     </div>
-    
-    <div class="col-sm">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">
-                    {{ participant2.entite.nom }}
-                    {{ participant2.entite.prenom }}
-                    <hr>
-                </div>
-                <img src="{{ get_photo(participant2.entite.photo, participant2.entite.defaultPhoto()) }}" alt="">
-            </div>
-            <div class="card-body">
-                <p>Rappel des stats :</p>
-                <div class="row">
-                    <div class="col-sm">
-                        <p> type : {{ participant2.entite.type }}</p>
-                        <p> taille : {{ participant2.entite.taille }} m</p>
-                        <p> pointVieMax : {{ participant2.entite.pointVie }}</p>       
-                    </div>
-                    <div class="col-sm">
-                        <p> pointDef : {{ participant2.entite.pointDef }} </p>
-                        <p> pointAtt : {{ participant2.entite.pointAtt }} </p>
-                        <p> pointAgi : {{ participant2.entite.pointAgi }} </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <p> pointVie : {{ participant2.pointVie }} </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{% else %}
+{% if  personnage1.pointVie > 0  and (  personnage2.pointVie == 0  or  personnage2.pointVie < 0   )%}
+<div class="content">
+    <p>Le personnage vainqeur de ce duel est {{ personnage1.nom }}</p>
 </div>
-<div class="row">
-    <div class="col-sm">
-        <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
-            {% if combat.termine %}
-                <input style="width: 90%; margin-left: 5%;margin-right:5%;margin-top: 5%" class="btn btn-primary" type="submit" value="Voir le résultat">
-            {% else %}
-                <input style="width: 90%; margin-left: 5%;margin-right:5%;margin-top: 5%" class="btn btn-primary" type="submit" value="Jouer le prochain tour">                
-            {% endif %}            
-        </form>
-    </div>
+{% endif %}
+
+{% if  personnage2.pointVie > 0  and ( personnage1.pointVie == 0  or  personnage1.pointVie < 0 )%}
+<div class="content">
+    <p>Le personnage vainqeur de ce duel est {{ personnage2.nom }}</p>
 </div>
+{% endif %}
+
+{% endif %}
 
 {% endblock %}
