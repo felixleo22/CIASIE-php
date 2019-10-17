@@ -5,14 +5,10 @@
 {% endblock %}
 {% block cardText %}
     <div class="stat-group">
-        <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
-        {% if entite.type == "personnage" %}
-        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.pointViePersonnage }}</p>
-        {% else %}
-        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.pointVieMonstre }}</p>
-        {% endif %}
-        <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
-        <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
-        <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
+        <p class="card-text"><i class="ra ra-player"></i>{{ participant.entite.taille }}</p>
+        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ participant.pointVie}}</p>
+        <p class="card-text"><i class="ra ra-sword"></i> {{ participant.entite.pointAtt }}</p>
+        <p class="card-text"><i class="ra ra-shield"></i> {{ participant.entite.pointDef }}</p>
+        <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant.entite.pointAgi  }}</p>
     </div>
 {% endblock %}
