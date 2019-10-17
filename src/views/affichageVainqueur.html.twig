@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 
-
 {% block content %}
    <h1 id="titre">Vainqueur</h1>
    <div class="row-deck">
@@ -59,7 +58,7 @@
 {% endblock %}
 
 {% block javascript %}
-
+<script>
 $(document).ready(function(){
    $("#vainqueur").show();
    $("#perdant").hide();
@@ -69,5 +68,6 @@ $(document).ready(function(){
       $("#perdant").show();
    })
 })
+</script>
 
 {% endblock %}
