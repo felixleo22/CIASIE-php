@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-$(document).ready(function(){
-    $("#vainqueur").show();
-    $("#perdant").hide();
-    $("#stat_gagant").hide();
-
-    $("#stat_perdant").click(function () {
-        $("#vainqueur").hide();
-        $("#perdant").show();
-        $("#stat_perdant").hide();
-        $("#stat_gagant").show();
-        $("#titre").text("Perdant") ;
-    });
-
-    $("#stat_gagant").click(function () {
-        $("#vainqueur").show();
-        $("#perdant").hide();
-        $("#stat_gagant").show();
-        $("#titre").text("Vainqueur") ;
-
-    })
-});
-
-=======
 /**
  * Utilité : Permet à l'utilisateur de visualiser le choix d'un perso
  *  On applique un filtre gris sur les images de tous les personnages d'un type
@@ -69,6 +45,25 @@ $(document).ready(function () {
         const type = $(this).data("type");
         const id = $(this).prop("id");
         select(type, id);
-    })
+    });
+
+    $("#vainqueur").show();
+    $("#perdant").hide();
+    $("#stat_gagant").hide();
+
+    $("#stat_perdant").click(function () {
+        $("#vainqueur").hide();
+        $("#perdant").show();
+        $("#stat_perdant").hide();
+        $("#stat_gagant").show();
+        $("#titre").text("Perdant") ;
+    });
+
+    $("#stat_gagant").click(function () {
+        $("#vainqueur").show();
+        $("#perdant").hide();
+        $("#stat_gagant").show();
+        $("#titre").text("Vainqueur") ;
+
+    });
 });
->>>>>>> 22da88403c17bbbbcea2b57caa2365bc4c3806eb
