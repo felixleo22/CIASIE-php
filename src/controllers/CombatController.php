@@ -53,7 +53,7 @@ class CombatController extends Controller {
             return Utils::redirect($response, 'accueil');
         }
         
-        foreach ($personnageArray as $personnage) {
+        foreach ($personnages as $personnage) {
             $participant = new Participant();
             $participant->pointVie = $personnage->pointVie;
             $participant->entite_id = $personnage->id;
@@ -61,7 +61,7 @@ class CombatController extends Controller {
             $participant->save();
         }
 
-        foreach ($monstreArray as $monstre) {
+        foreach ($monstres as $monstre) {
             $participant = new Participant();
             $participant->pointVie = $monstre->pointVie;
             $participant->entite_id = $monstre->id;
@@ -137,7 +137,9 @@ class CombatController extends Controller {
         if($combat->termine) {
             //si combat terminé, on affiche le résultat
             $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-            return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
+            $personnages = [];
+            array_push($personnages, [$participant1, $participant2]);
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['perssonages' => $personnages]);
         }
         $combat->nbTours++;
         //si Post, on update le combat
