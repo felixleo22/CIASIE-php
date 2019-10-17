@@ -7,13 +7,27 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
-
 use Smash\models\Participant;
 
 class CombatController extends Controller {
     public $compteur_tour;
     public $compteur_coup_porter ;
-    
+
+    /**
+     * affiche la liste des combats finits.
+     */
+    public function affichageListeCombat(Request $request, Response $response) {
+        $listeCombat = Combat::all();
+        $combats = [];
+        foreach ($listeCombat as $combat){
+            if($combat->termine === 1) {
+                $combats = $combat;
+            }
+        }
+        //todo changer la route
+        return $this->views->render($response, 'fichier.twig', ['combats' => $combats]);
+    }
+
     public function __construct($container)
     {
         $this->compteur_tour = 0;
@@ -184,4 +198,5 @@ class CombatController extends Controller {
         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
+
 }
