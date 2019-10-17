@@ -13,14 +13,14 @@ use Smash\models\Participant;
 class CombatController extends Controller {
     public $compteur_tour;
     public $compteur_coup_porter ;
-
+    
     public function __construct($container)
     {
         $this->compteur_tour = 0;
         $this->compteur_coup_porter = 0;
         parent::__construct($container);
     }
-
+    
     public function creerCombat(Request $request, Response $response, $args) {
         $data = Utils::getFilteredPost($request, 'ids');
         $personnages = [];
@@ -60,7 +60,7 @@ class CombatController extends Controller {
             $participant->combat_id = $combat->id;
             $participant->save();
         }
-
+        
         foreach ($monstres as $monstre) {
             $participant = new Participant();
             $participant->pointVie = $monstre->pointVie;
@@ -68,9 +68,9 @@ class CombatController extends Controller {
             $participant->combat_id = $combat->id;
             $participant->save();
         }
-
-        $_SESSION['combat'][] = [$combat->id];
-        //TODO changer la vue quand le models combat sera changer
+        
+        setcookie("combat", json_encode($combat->id), time() + 3600*24*60, "/");
+        
         return Utils::redirect($response, 'combat', ['id' => $combat->id]);
     }
     
@@ -162,21 +162,20 @@ class CombatController extends Controller {
             
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
-                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
-                    $entite1 = $attaquant->entite;
-                    $entite1->combatGagne++;
-                    $entite1->totalDegatInflige = $attaquant->degatInflige;
-                    $entite1->totalDegatRecu = $attaquant->degatRecu;
-                    $entite1->save();
+                setcookie("combat", "", -1, "/");
 
-                    $entite2 = $victime->entite;
-                    $entite2->combatPerdu++;
-                    $entite2->totalDegatInflige = $victime->degatInflige;
-                    $entite2->totalDegatRecu = $victime->degatRecu;
-                    $entite2->save();
-
-                    unset($_SESSION[$key]);
-                }
+                $entite1 = $attaquant->entite;
+                $entite1->combatGagne++;
+                $entite1->totalDegatInflige = $attaquant->degatInflige;
+                $entite1->totalDegatRecu = $attaquant->degatRecu;
+                $entite1->save();
+                
+                $entite2 = $victime->entite;
+                $entite2->combatPerdu++;
+                $entite2->totalDegatInflige = $victime->degatInflige;
+                $entite2->totalDegatRecu = $victime->degatRecu;
+                $entite2->save();
+                
                 $messsage .= "Le coup de grâce à été donné !";
             }
             $attaquant->save();
