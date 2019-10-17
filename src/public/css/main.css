@@ -35,6 +35,7 @@ div.card.selectable > img{
 h5{
     display: flex;
     justify-content: space-between;
+    font-size: 14pt;
 }
 h5 > div > a{
     margin: 0 5px;
