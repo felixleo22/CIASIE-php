@@ -1,14 +1,16 @@
-{% extends 'card.html.twig' %}
-{% block type %}battle{% endblock %}
-{% block cardTitle %}
-    {{ parent() }}
-{% endblock %}
-{% block cardText %}
-    <div class="stat-group">
-        <p class="card-text"><i class="ra ra-player"></i>{{ participant.entite.taille }}</p>
-        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ participant.pointVie}}</p>
-        <p class="card-text"><i class="ra ra-sword"></i> {{ participant.entite.pointAtt }}</p>
-        <p class="card-text"><i class="ra ra-shield"></i> {{ participant.entite.pointDef }}</p>
-        <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant.entite.pointAgi  }}</p>
+<div id="card-{{ participant.entite.id }}" class="card selectable">
+    <img class="card-img-top" src="{{ get_photo(participant.entite.photo, participant.entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+    <div class="card-body">
+        <h5 class="card-title" style="display: flex;justify-content: center">
+            <span>{{ participant.entite.nom }} {{ participant.entite.prenom }}</span>
+        </h5>
+            <div class="stat-group">
+                <p class="card-text"><i class="ra ra-player"></i>{{ participant.entite.taille }}</p>
+                <p class="card-text"><i class="ra ra-two-hearts"></i> {{ participant.pointVie}}</p>
+                <p class="card-text"><i class="ra ra-sword"></i> {{ participant.entite.pointAtt }}</p>
+                <p class="card-text"><i class="ra ra-shield"></i> {{ participant.entite.pointDef }}</p>
+                <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant.entite.pointAgi }}</p>
+            </div>
     </div>
-{% endblock %}
+</div>
+

@@ -9,7 +9,7 @@ class Entite extends Model {
     use SoftDeletes;
 	protected $table = 'entite';
 	protected $primaryKey = 'id';
-    protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "combatGagne", "combatPerdu"];
+    protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "combatGagne", "combatPerdu", "totalDegatInflige" , "totalDegatRecu"];
     public $timestamps = true;
 
 	public function participants(){

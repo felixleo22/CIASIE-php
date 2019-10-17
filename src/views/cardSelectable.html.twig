@@ -1,16 +1,11 @@
-{% extends 'card.html.twig' %}
-{% block type %}
-    selectable
-{% endblock %}
-{% block style %}
-    display: flex;
-    justify-content: center;
-{% endblock %}
-{% block cardTitle %}
-    {{ parent() }}
-{% endblock %}
-{% block cardText %}
-    <div class="card-text">
-        <input type="button" class="btn btn-primary btn-select" id="{{ entite.id }}" value="Choisir" data-type="{{ entite.type }}">
+<div id="card-{{ entite.id }}" class="card selectable">
+    <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+    <div class="card-body">
+        <h5 class="card-title" style="display: flex;justify-content: center">
+                <span>{{ entite.nom }} {{ entite.prenom }}</span>
+        </h5>
+        <div class="card-text">
+            <input type="button" class="btn btn-primary btn-select" id="{{ entite.id }}" value="Choisir" data-type="{{ entite.type }}">
+        </div>
     </div>
-{% endblock %}
+</div>
