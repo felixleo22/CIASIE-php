@@ -12,8 +12,8 @@ class CombatController extends Controller {
     
     public function creerCombat(Request $request, Response $response, $args) {
         $data = Utils::getFilteredPost($request, 'ids');
-        $personnageArray = [];
-        $monstreArray = [];
+        $personnages = [];
+        $monstres = [];
         foreach ($data as $idEntite) {
             $entite = Entite::find($idEntite);
             if($entite === null) {
@@ -22,24 +22,24 @@ class CombatController extends Controller {
             }
             
             if($entite->type === "monstre") {
-                array_push($monstreArray, $entite);
+                array_push($monstres, $entite);
             }else{
-                array_push($personnageArray, $entite);
+                array_push($personnages, $entite);
             }
         }
         
         //TODO a changer lorsqu'il y  aura du 2v2
-        if(count($personnageArray) !== 1 && count($monstreArray) !== 1) {
+        if(count($personnages) !== 1 && count($monstres) !== 1) {
             FlashMessage::flashError('Vous devez choisir un personnage et un monstre');
             return Utils::redirect($response, 'accueil');
         }
         
         //TODO verifier les types
         $combat = new Combat();
-        $combat->idPersonnage = $personnageArray[0]->id;
-        $combat->idMonstre = $monstreArray[0]->id;
-        $combat->pointVieMonstre = $monstreArray[0]->pointVie;
-        $combat->pointViePersonnage = $personnageArray[0]->pointVie;
+        $combat->idPersonnage = $personnages[0]->id;
+        $combat->idMonstre = $monstres[0]->id;
+        $combat->pointVieMonstre = $monstres[0]->pointVie;
+        $combat->pointViePersonnage = $personnages[0]->pointVie;
         
         $created = $combat->save();
         
@@ -49,7 +49,7 @@ class CombatController extends Controller {
         }
         
         //TODO changer la vue quand le models combat sera changer
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnageArray[0],'personnage2'=> $monstreArray[0]]);
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnages'=> $personnages,'monstres'=> $monstres]);
     }
     
     /**
@@ -125,7 +125,7 @@ class CombatController extends Controller {
             else
                 $combat->pointVieMonstre -= $degat;
 
-            $messsage = "$attaquant->prenom $attaquant->nom a fait $degat points de dégat à $victime->prenom $victime->nom";
+            $messsage = "$attaquant->nom $attaquant->prenom a fait $degat points de dégat à $victime->nom $victime->prenom";
                 
             $combat->save();
         }
@@ -134,8 +134,9 @@ class CombatController extends Controller {
             FlashMessage::flashInfo('Combat terminé');
             return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
         }
-        
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnage1'=> $personnage1,'personnage2'=> $personnage2, 'message' => $messsage]);        
+        $personnages[] = $personnage1;
+        $monstres[] = $personnage2;
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnages'=> $personnages,'monstres'=> $monstres, 'message' => $messsage]);
     }
     
     public function result(Request $request, Response $response, $args) {
