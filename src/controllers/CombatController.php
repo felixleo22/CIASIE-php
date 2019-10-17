@@ -149,8 +149,13 @@ class CombatController extends Controller {
             $victime = $choix['victime'];
             
             $degat = $this->degat($attaquant,$victime);
+            // save statistique
+            $attaquant->nbAttaqueInflige++;
+            $attaquant->degatInflige += $degat;
             $victime->pointVie -= $degat;
-            $messsage = "$degat points de dégats subits.";
+            $messsage = "$attaquant->entite->prenom a infligé $degat dégats à $victime->entite->prenom.";
+            $victime->nbAttaqueRecu++;
+            $victime->degatRecu += $degat;
             
             
             if($victime->pointVie <= 0) {
