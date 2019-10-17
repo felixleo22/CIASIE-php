@@ -7,12 +7,28 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
-
 use Smash\models\Participant;
 
 class CombatController extends Controller {
     public $compteur_tour;
     public $compteur_coup_porter ;
+
+
+    /**
+     * affiche la liste des combats finits.
+     */
+    public function affichageListeCombat(Request $request, Response $response) {
+        $listeCombat = Combat::all();
+        $combats = [];
+        foreach ($listeCombat as $combat){
+            if($combat->termine === 1) {
+                $combats = $combat;
+            }
+        }
+        //todo changer la route
+        return $this->views->render($response, 'fichier.twig', ['combats' => $combats]);
+    }
+
 
     public function __construct($container)
     {
@@ -155,28 +171,26 @@ class CombatController extends Controller {
             $attaquant->nbAttaqueInflige++;
             $attaquant->degatInflige += $degat;
             $victime->pointVie -= $degat;
-            $messsage = "$attaquant->entite->prenom a infligé $degat dégats à $victime->entite->prenom.";
+            $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom ;
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
             
-            
+            // si combat termine
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
-                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
-                    $entite1 = $attaquant->entite;
-                    $entite1->combatGagne++;
-                    $entite1->totalDegatInflige = $attaquant->degatInflige;
-                    $entite1->totalDegatRecu = $attaquant->degatRecu;
-                    $entite1->save();
 
-                    $entite2 = $victime->entite;
-                    $entite2->combatPerdu++;
-                    $entite2->totalDegatInflige = $victime->degatInflige;
-                    $entite2->totalDegatRecu = $victime->degatRecu;
-                    $entite2->save();
+                $entite1 = $attaquant->entite;
+                $entite1->combatGagne++;
+                $entite1->totalDegatInflige = $attaquant->degatInflige;
+                $entite1->totalDegatRecu = $attaquant->degatRecu;
+                $entite1->save();
 
-                    unset($_SESSION[$key]);
-                }
+                $entite2 = $victime->entite;
+                $entite2->combatPerdu++;
+                $entite2->totalDegatInflige = $victime->degatInflige;
+                $entite2->totalDegatRecu = $victime->degatRecu;
+                $entite2->save();
+
                 $messsage .= "Le coup de grâce à été donné !";
             }
             $attaquant->save();
@@ -185,4 +199,5 @@ class CombatController extends Controller {
         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
+
 }
