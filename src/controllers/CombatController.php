@@ -36,6 +36,15 @@ class CombatController extends Controller {
     }
     
     public function creerCombat(Request $request, Response $response, $args) {
+        $combatCookie = isset($_COOKIE["combat"]) ? Utils::sanitize(json_decode($_COOKIE["combat"])) : null;
+        if($combatCookie) {
+            $combat = Combat::find($combatCookie);
+            if($combat && !$combat->termine){
+                FlashMessage::flashInfo('Vous devez terminé ce combat pour pouvoir en creer un nouveau');
+                return Utils::redirect($response, 'combat', ['id' => $combat->id]);
+            }
+        }
+        
         $data = Utils::getFilteredPost($request, 'ids');
         $personnages = [];
         $monstres = [];
