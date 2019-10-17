@@ -155,11 +155,11 @@ class CombatController extends Controller {
             $attaquant->nbAttaqueInflige++;
             $attaquant->degatInflige += $degat;
             $victime->pointVie -= $degat;
-            $messsage = "$attaquant->entite->prenom a infligé $degat dégats à $victime->entite->prenom.";
+            $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom ;
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
             
-            
+            // si combat termine
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
                 setcookie("combat", "", -1, "/");
@@ -175,7 +175,7 @@ class CombatController extends Controller {
                 $entite2->totalDegatInflige = $victime->degatInflige;
                 $entite2->totalDegatRecu = $victime->degatRecu;
                 $entite2->save();
-                
+
                 $messsage .= "Le coup de grâce à été donné !";
             }
             $attaquant->save();
