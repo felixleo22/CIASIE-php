@@ -7,7 +7,8 @@ use Slim\Views\Twig;
 
 use Smash\models\Entite;
 use Smash\models\Combat;
-use Symfony\Component\Translation\Util\ArrayConverter;
+
+use Smash\models\Participant;
 
 class CombatController extends Controller {
     public $compteur_tour;
@@ -46,24 +47,31 @@ class CombatController extends Controller {
         
         //TODO verifier les types
         $combat = new Combat();
-        $combat->idPersonnage = $personnageArray[0]->id;
-        $combat->idMonstre = $monstreArray[0]->id;
-        $combat->pointVieMonstre = $monstreArray[0]->pointVie;
-        $combat->pointViePersonnage = $personnageArray[0]->pointVie;
-        $combat->nombreTour = 0;
-        $combat->nombreCoupPortePersonnage = 0;
-        $combat->nombreCoupPorteMonstre = 0;
-
-
         $created = $combat->save();
-        
         if(!$created) {
             FlashMessage::flashError('Impossible de créer le combat');
             return Utils::redirect($response, 'accueil');
         }
         
+        foreach ($personnageArray as $personnage) {
+            $participant = new Participant();
+            $participant->pointVie = $personnage->pointVie;
+            $participant->entite_id = $personnage->id;
+            $participant->combat_id = $combat->id;
+            $participant->save();
+        }
+
+        foreach ($monstreArray as $monstre) {
+            $participant = new Participant();
+            $participant->pointVie = $monstre->pointVie;
+            $participant->entite_id = $monstre->id;
+            $participant->combat_id = $combat->id;
+            $participant->save();
+        }
+
+        $_SESSION['combat'][] = [$combat->id];
         //TODO changer la vue quand le models combat sera changer
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnages'=> $personnages,'monstres'=> $monstres]);
+        return Utils::redirect($response, 'combat', ['id' => $combat->id]);
     }
     
     /**
@@ -75,8 +83,8 @@ class CombatController extends Controller {
         $val1 = 0;
         $val2 = 0;
         while($val1 === $val2){
-            $val1 = mt_rand(0, $personnage1->pointAgi);
-            $val2 = mt_rand(0, $personnage2->pointAgi);
+            $val1 = mt_rand(0, $personnage1->entite->pointAgi);
+            $val2 = mt_rand(0, $personnage2->entite->pointAgi);
         }
         if ($val1 > $val2){
             return ['attaquant' => $personnage1, 'victime' => $personnage2];
@@ -101,21 +109,20 @@ class CombatController extends Controller {
         $att = mt_rand(8, 12)/10;
         $critique = mt_rand(1, 100);
         if ($critique <= 5) {
-            return round(($attaquant->pointAtt*$att));
+            return round(($attaquant->entite->pointAtt*$att));
         }
-        $reste = round($victime->pointDef/20);
+        $reste = round($victime->entite->pointDef/20);
         if($reste > 7) {
             $reste = 7;
         }
         if($reste >= 0) {
             $reste = 10;
         }
-        return round(($attaquant->pointAtt*$att)*($reste/10));
+        return round(($attaquant->entite->pointAtt*$att)*($reste/10));
         
     }
     
-    public function play(Request $request, Response $response, $args){
-
+    public function play(Request $request, Response $response, $args){  
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
@@ -123,88 +130,40 @@ class CombatController extends Controller {
             Utils::redirect($response, 'accueil');
         }
         
-        $personnage1 = Entite::find($combat->idPersonnage);
-        $personnage2 = Entite::find($combat->idMonstre);
-
-        $attaquant = $this->choixAttaquant($personnage1, $personnage2);
-
-
-        if(!$combat->isEnd()){
-            $combat->nombreTour ++;
-            if ($attaquant === $personnage1){
-                $degat = $this->degat($attaquant,$personnage2);
-                if ($degat != 0){
-                    $combat->nombreCoupPortePersonnage ++ ;
-                }
-                $combat->pointVieMonstre -= $degat;
-            }
+        $entites = $combat->participants;
+        $participant1 = $entites[0];
+        $participant2 = $entites[1];
+        
+        if($combat->termine){
+            //si combat terminé, on affiche le résultat
+            $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['entite' => $vainqueur]);
+        }
+        $combat->nbTours++;
+        //si Post, on update le combat
+        //sinon on affiche la vue
+        $messsage = "";
+        if ($request->isPost()) {
+            $choix = $this->choixAttaquant($participant1, $participant2);
+            $attaquant = $choix['attaquant'];
+            $victime = $choix['victime'];
             
             $degat = $this->degat($attaquant,$victime);
-
-            if($victime === $personnage1){
-                $combat->pointViePersonnage -= $degat;
-
-                if ($degat != 0){
-                    $combat->nombreCoupPorteMonstre ++;
+            $victime->pointVie -= $degat;
+            $messsage = "$degat points de dégats subits.";
+            
+            
+            if($victime->pointVie <= 0) {
+                $combat->termine = true;
+                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
+                    unset($_SESSION[$key]);
                 }
+                $messsage .= "Le coup de grâce à été donné !";
             }
-
-
-
+            $attaquant->save();
+            $victime->save();
             $combat->save();
         }
-        else
-        {
-            FlashMessage::flashInfo('Combat terminé');
-            return Utils::redirect($response,'resultCombat', ['id' => $combat->id]);
-        }
-        $personnages[] = $personnage1;
-        $monstres[] = $personnage2;
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnages'=> $personnages,'monstres'=> $monstres, 'message' => $messsage]);
-    }
-    
-    public function result(Request $request, Response $response, $args) {
-        //TODO verifier si le combat est terminé
-        $idCombat = Utils::sanitize($args['id']);
-        $combat = Combat::find($idCombat);
-
-        $point_de_vie_personnage_fin_combat = $combat->pointViePersonnage;
-        $point_de_vie_monstre_fin_combat = $combat->pointVieMonstre;
-        $id_monstre = $combat->idMonstre;
-        $id_personnage = $combat->idPersonnage;
-        $personnage = Entite::find($id_personnage);
-        $monstre = Entite::find($id_monstre);
-
-        $personnages = [];
-
-        $nbr_degat_infliger_monstre = $personnage->pointVie - $point_de_vie_personnage_fin_combat;
-        $nbr_degat_infliger_personnage = $monstre->pointVie - $point_de_vie_monstre_fin_combat;
-
-        $nbr_coup_porter_monstre = $combat->nombreCoupPorteMonstre;
-        $nbr_coup_porter_personnage = $combat->nombreCoupPortePersonnage;
-        $nbr_tour = $combat->nombreTour;
-
-
-        if($combat === null) {
-            FlashMessage::flashError('Le combat n\'existe pas');
-            return Utils::redirect($response, 'accueil');
-        }
-        
-        $vainqueur = $combat->vainqueur();
-        if($vainqueur === null) {
-            FlashMessage::flashError('Le combat ne possede pas de resultat');
-            return Utils::redirect($response, 'accueil');
-        }
-
-        if ($vainqueur->nom = $monstre->nom){
-            $personnages[0] = $vainqueur;
-            $personnages[1] = $monstre;
-        }else{
-            $personnages[0] = $vainqueur;
-            $personnages[1] = $personnage;
-        }
-
-        return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages'=>$personnages,'entite' => $vainqueur,'nbr_degat_infliger_monstre' => $nbr_degat_infliger_monstre,'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,'nbr_tour'=>$nbr_tour,'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre, 'nbr_coup_porter_personnage'=>$nbr_coup_porter_personnage]);
-
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
 }

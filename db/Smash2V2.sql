@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 15 Octobre 2019 à 09:14
+-- Généré le :  Jeu 17 Octobre 2019 à 08:16
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -28,7 +28,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `combat` (
   `id` int(11) NOT NULL,
-  `termine` tinyint(1) NOT NULL DEFAULT '0'
+  `termine` tinyint(1) NOT NULL DEFAULT '0',
+  `nbTours` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -88,6 +92,27 @@ INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `poin
 (1, 'personnage', 'Mario', 'Bross', 120, 100, 20, 10, 100, '31353731303738353237980fd013ec49cba8.jpg', '2019-10-14 18:42:07', '2019-10-14 18:42:07', NULL, 50, NULL, NULL),
 (2, 'monstre', 'Godzilla', 'The monster', 250, 200, 40, 40, 20, '313537313037383732349326703bc26c5932.jpeg', '2019-10-14 18:45:24', '2019-10-14 18:45:34', NULL, 150, NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `participant`
+--
+
+CREATE TABLE `participant` (
+  `id` int(11) NOT NULL,
+  `combat_id` int(11) NOT NULL,
+  `entite_id` int(11) NOT NULL,
+  `pointVie` int(11) NOT NULL,
+  `nbAttaqueInflige` int(11) DEFAULT '0',
+  `nbAttaqueRecu` int(11) DEFAULT '0',
+  `degatInflige` int(11) DEFAULT '0',
+  `degatRecu` int(11) DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `gagner` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Index pour les tables exportées
 --
@@ -111,6 +136,12 @@ ALTER TABLE `entite`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `participant`
+--
+ALTER TABLE `participant`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -118,7 +149,7 @@ ALTER TABLE `entite`
 -- AUTO_INCREMENT pour la table `combat`
 --
 ALTER TABLE `combat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
@@ -129,6 +160,11 @@ ALTER TABLE `compteAdmin`
 --
 ALTER TABLE `entite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT pour la table `participant`
+--
+ALTER TABLE `participant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,16 +1,21 @@
 <?php
-namespace smash\models;
 
+namespace Smash\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Entite extends Model {
 
     use SoftDeletes;
-    protected $table = 'entite';
-    protected $fillable = ['type','nom', 'prenom', 'taille' , 'poids', 'pointVie', 'pointAtt', 'pointDef', 'pointAgi', 'photo', 'combatGagne','combatPerdu','degatRecu','degaInflige'];
+	protected $table = 'entite';
+	protected $primaryKey = 'id';
+    protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "combatGagne", "combatPerdu"];
     public $timestamps = true;
 
+	public function participants(){
+		return $this->hasMany(Participant::class);
+    }
+    
     public function defaultPhoto() {
         return $this->type === 'monstre' ? 'default_monstre.png' : 'default_personnage.png';
     }

@@ -1,34 +1,19 @@
 <?php
-namespace smash\models;
 
+namespace Smash\models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Smash\models\Entite;
+class Combat extends Model {
 
-class Combat extends Model
-{
     use SoftDeletes;
-    protected $table = 'combat';
-    protected $fillable = ['id', 'idPersonnage', 'pointViePersonnage', 'idMonstre', 'pointVieMonstre'];
+	protected $table = 'combat';
+	protected $primaryKey = 'id';
+    protected $fillable = ['id' , "termine", "nbTours"];
     public $timestamps = true;
 
-    public function monstre() {
-        return Entite::find($this->idMonstre);
+	public function participants(){
+		return $this->hasMany(Participant::class);
     }
-
-    public function personnage() {
-        return Entite::find($this->idPersonnage);
-    }
-
-    public function isEnd() : bool {
-        return $this->pointViePersonnage <= 0 || $this->pointVieMonstre <= 0;
-    }
-
-    public function vainqueur() {
-        if($this->pointViePersonnage <= 0) return $this->monstre();
-        if($this->pointVieMonstre <= 0) return $this->personnage();
-        return null;
-    }
-
-} 
+    
+}
