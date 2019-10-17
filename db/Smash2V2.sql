@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 15 Octobre 2019 à 10:02
+-- Généré le :  Jeu 17 Octobre 2019 à 08:16
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -34,15 +34,6 @@ CREATE TABLE `combat` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `combat`
---
-
-INSERT INTO `combat` (`id`, `termine`, `nbTours`, `created_at`, `deleted_at`, `updated_at`) VALUES
-(1, 0, 0, '2019-10-15 07:56:43', NULL, '2019-10-15 07:56:43'),
-(2, 0, 0, '2019-10-15 07:59:09', NULL, '2019-10-15 07:59:09'),
-(3, 0, 0, '2019-10-15 07:59:47', NULL, '2019-10-15 07:59:47');
 
 -- --------------------------------------------------------
 
@@ -104,13 +95,13 @@ INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `poin
 -- --------------------------------------------------------
 
 --
--- Structure de la table `participantCombat`
+-- Structure de la table `participant`
 --
 
 CREATE TABLE `participant` (
   `id` int(11) NOT NULL,
-  `idCombat` int(11) NOT NULL,
-  `idEntite` int(11) NOT NULL,
+  `combat_id` int(11) NOT NULL,
+  `entite_id` int(11) NOT NULL,
   `pointVie` int(11) NOT NULL,
   `nbAttaqueInflige` int(11) DEFAULT '0',
   `nbAttaqueRecu` int(11) DEFAULT '0',
@@ -145,7 +136,7 @@ ALTER TABLE `entite`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `participantCombat`
+-- Index pour la table `participant`
 --
 ALTER TABLE `participant`
   ADD PRIMARY KEY (`id`);
@@ -158,7 +149,7 @@ ALTER TABLE `participant`
 -- AUTO_INCREMENT pour la table `combat`
 --
 ALTER TABLE `combat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
@@ -170,10 +161,10 @@ ALTER TABLE `compteAdmin`
 ALTER TABLE `entite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT pour la table `participantCombat`
+-- AUTO_INCREMENT pour la table `participant`
 --
 ALTER TABLE `participant`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
