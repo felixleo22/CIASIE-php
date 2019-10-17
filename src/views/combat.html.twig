@@ -6,38 +6,27 @@
 
 <p>{{ message }}</p>
 
-{% if  personnages[0].pointVie  or  monstres[0].pointVie %}
-    <div class="battlefield">
-        {% set entite = personnages[0] %}
-        {% include 'cardCombat.html.twig' %}
-
-        <div class="vs">
-            <p>VS</p>
-        </div>
-
-        {% set entite = monstres[0] %}
-        {% include 'cardCombat.html.twig' %}
+<div class="battlefield">
+    {% set participant = participant1 %}
+    {% include 'cardCombat.html.twig' %}
+    
+    <div class="vs">
+        <p>VS</p>
     </div>
-    <div class="row">
-        <div class="col-sm">
-            <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
-                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Jouer le prochain tour">
-            </form>
-        </div>
+    
+    {% set participant = participant2 %}
+    {% include 'cardCombat.html.twig' %}
+</div>
+<div class="row">
+    <div class="col-sm">
+        <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
+            {% if combat.termine %}
+                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Voir le resultat">
+            {% else %}
+                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Jouer le prochain tour">                
+            {% endif %}
+        </form>
     </div>
-{% else %}
-{% if  personnage1.pointVie > 0  and (  personnage2.pointVie == 0  or  personnage2.pointVie < 0   )%}
-<div class="content">
-    <p>Le personnage vainqeur de ce duel est {{ personnage1.nom }}</p>
 </div>
-{% endif %}
-
-{% if  personnage2.pointVie > 0  and ( personnage1.pointVie == 0  or  personnage1.pointVie < 0 )%}
-<div class="content">
-    <p>Le personnage vainqeur de ce duel est {{ personnage2.nom }}</p>
-</div>
-{% endif %}
-
-{% endif %}
 
 {% endblock %}
