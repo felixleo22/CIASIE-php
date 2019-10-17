@@ -134,13 +134,10 @@ class CombatController extends Controller {
         $participant1 = $entites[0];
         $participant2 = $entites[1];
         
-        if($combat->termine) {
-            //si combat terminé, on affiche le résultat
-            $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-            $personnages = [];
-            array_push($personnages, [$participant1, $participant2]);
-            return $this->views->render($response, 'affichageVainqueur.html.twig', ['perssonages' => $personnages]);
-        }
+        // if($combat->termine) {
+        //     //si combat terminé, on affiche le résultat
+            
+        // }
         $combat->nbTours++;
         //si Post, on update le combat
         //sinon on affiche la vue
@@ -177,15 +174,43 @@ class CombatController extends Controller {
 
                     unset($_SESSION[$key]);
                 }
-                $messsage .= "Le coup de grâce à été donné !";
-                array_push($personnages,[$attaquant,$victime]);
-                return $this->views->render($response, 'AffichageVainqueur.html.twig',['personnages'=>$personnage, 'message' => $messsage]);        
 
-            }
+                $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $perdant = $participant1->pointVie >= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $personnages = [];
+
+                if ($vainqueur->id == $participant1->entite_id) {
+                    $messsage .= "Le coup de grâce à été donné !";
+                    array_push($personnages,$vainqueur);
+                    array_push($personnages,$perdant);
+                }else{
+                    $messsage .= "Le coup de grâce à été donné !";
+                    array_push($personnages,$vainqueur);
+                    array_push($personnages,$perdant);
+                }
+    
+
+                $nbr_degat_infliger_monstre = $attaquant->nbAttaqueRecu;
+                $nbr_degat_infliger_personnage = $attaquant->degatInflige;
+                $nbr_coup_porter_personnage = $attaquant->nbAttaqueInflige;
+                $nbr_coup_porter_monstre = $victime->nbAttaqueInflige;
+                $nbr_tour = $combat->nbTours;
+                    
+
+                //
+
+                return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages,
+                 'nbr_degat_infliger_monstre'=> $nbr_degat_infliger_monstre,
+                 'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,
+                 'nbr_coup_porter_personnage'=> $nbr_coup_porter_personnage,
+                 'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre,
+                 'nbr_tour'=> $nbr_tour]);
+            }       
             $attaquant->save();
             $victime->save();
             $combat->save();
         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
+
 }
