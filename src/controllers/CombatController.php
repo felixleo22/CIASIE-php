@@ -139,7 +139,7 @@ class CombatController extends Controller {
             $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
             $personnages = [];
             array_push($personnages, [$participant1, $participant2]);
-            return $this->views->render($response, 'affichageVainqueur.html.twig', ['perssonages' => $personnages]);
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages]);
         }
         $combat->nbTours++;
         //si Post, on update le combat
