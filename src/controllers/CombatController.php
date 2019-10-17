@@ -156,7 +156,7 @@ class CombatController extends Controller {
             $messsage = "$attaquant->entite->prenom a infligé $degat dégats à $victime->entite->prenom.";
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
-            
+            $personnages = [];
             
             if($victime->pointVie <= 0) {
                 $combat->termine = true;
@@ -164,6 +164,9 @@ class CombatController extends Controller {
                     unset($_SESSION[$key]);
                 }
                 $messsage .= "Le coup de grâce à été donné !";
+                array_push($personnages,[$attaquant,$victime]);
+                return $this->views->render($response, 'AffichageVainqueur.html.twig',['personnages'=>$personnage, 'message' => $messsage]);        
+
             }
             $attaquant->save();
             $victime->save();
