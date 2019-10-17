@@ -191,9 +191,12 @@ class CombatController extends Controller {
     
 
                 $nbr_degat_infliger_monstre = $attaquant->nbAttaqueRecu;
+                $nbr_coup_porter_monstre = $perdant->nbAttaqueRecu;
+
                 $nbr_degat_infliger_personnage = $attaquant->degatInflige;
+
                 $nbr_coup_porter_personnage = $attaquant->nbAttaqueInflige;
-                $nbr_coup_porter_monstre = $victime->nbAttaqueInflige;
+                $nbr_coup_porter_monstre = $perdant->nbAttaqueInflige;
                 $nbr_tour = $combat->nbTours;
                     
 
