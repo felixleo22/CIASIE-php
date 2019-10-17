@@ -141,7 +141,7 @@ class CombatController extends Controller {
             
             $degat = $this->degat($attaquant,$victime);
 
-            if($victime === $personnage1)
+            if($victime === $personnage1){
                 $combat->pointViePersonnage -= $degat;
 
                 if ($degat != 0){
