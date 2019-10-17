@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Jeu 17 Octobre 2019 à 08:16
+-- Généré le :  Jeu 17 Octobre 2019 à 10:53
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -80,17 +80,19 @@ CREATE TABLE `entite` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `poids` int(11) NOT NULL,
-  `combatGagne` int(11) DEFAULT NULL,
-  `combatPerdu` int(11) DEFAULT NULL
+  `combatGagne` int(11) DEFAULT '0',
+  `combatPerdu` int(11) DEFAULT '0',
+  `totalDegatInflige` int(11) NOT NULL DEFAULT '0',
+  `totalDegatRecu` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `entite`
 --
 
-INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `pointAtt`, `pointDef`, `pointAgi`, `photo`, `created_at`, `updated_at`, `deleted_at`, `poids`, `combatGagne`, `combatPerdu`) VALUES
-(1, 'personnage', 'Mario', 'Bross', 120, 100, 20, 10, 100, '31353731303738353237980fd013ec49cba8.jpg', '2019-10-14 18:42:07', '2019-10-14 18:42:07', NULL, 50, NULL, NULL),
-(2, 'monstre', 'Godzilla', 'The monster', 250, 200, 40, 40, 20, '313537313037383732349326703bc26c5932.jpeg', '2019-10-14 18:45:24', '2019-10-14 18:45:34', NULL, 150, NULL, NULL);
+INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `pointAtt`, `pointDef`, `pointAgi`, `photo`, `created_at`, `updated_at`, `deleted_at`, `poids`, `combatGagne`, `combatPerdu`, `totalDegatInflige`, `totalDegatRecu`) VALUES
+(1, 'personnage', 'Mario', 'Bross', 120, 100, 20, 10, 100, '31353731303738353237980fd013ec49cba8.jpg', '2019-10-14 18:42:07', '2019-10-17 08:23:38', NULL, 50, 1, 0, 204, 76),
+(2, 'monstre', 'Godzilla', 'The monster', 250, 200, 40, 40, 20, '313537313037383732349326703bc26c5932.jpeg', '2019-10-14 18:45:24', '2019-10-17 08:23:38', NULL, 150, 0, 1, 76, 204);
 
 -- --------------------------------------------------------
 
@@ -149,7 +151,7 @@ ALTER TABLE `participant`
 -- AUTO_INCREMENT pour la table `combat`
 --
 ALTER TABLE `combat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
@@ -164,7 +166,7 @@ ALTER TABLE `entite`
 -- AUTO_INCREMENT pour la table `participant`
 --
 ALTER TABLE `participant`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
