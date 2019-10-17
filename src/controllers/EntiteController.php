@@ -27,12 +27,6 @@ class EntiteController extends Controller
         $uploadedFiles = $request->getUploadedFiles();
         
         $photo = $uploadedFiles['photo'];
-
-        if($photo === null){
-            FlashMessage::flashError('L\'image est trop volumineuse');
-            return Utils::redirect($response, 'formCreerEntite');
-        }
-
         if($photo->getError() === UPLOAD_ERR_OK) {
             if(!Utils::isAcceptedFile($photo)) {
                 FlashMessage::flashError('Le fichier doit etre une image');
@@ -60,18 +54,18 @@ class EntiteController extends Controller
             FlashMessage::flashError("Valeurs d'entrés incorrect");
             return Utils::redirect($response, 'listeEntites'); 
         }
-        
+   
         $entite = Entite::create($perso);
         FlashMessage::flashSuccess('L\'entité a été créée !');
         return Utils::redirect($response, 'listeEntites');
     }
     
     /**
-    * Filtre une liste d'entité selon le type passé en paramètre
-    * @param array $tab - La table que l'on souhaite filtrer
-    * @param string $type - Le type selon lequel on filtre
-    * @return array $res - Une nouvelle table filtrée
-    */
+     * Filtre une liste d'entité selon le type passé en paramètre
+     * @param array $tab - La table que l'on souhaite filtrer
+     * @param string $type - Le type selon lequel on filtre
+     * @return array $res - Une nouvelle table filtrée
+     */
     private static function filter($tab, $type){
         $res = [];
         foreach ($tab as $entite){
@@ -81,10 +75,10 @@ class EntiteController extends Controller
         }
         return $res;
     }
-    
+
     /**
-    * selectionne toute les entites de la bdd et les affiche
-    */
+     * selectionne toute les entites de la bdd et les affiche
+     */
     public function listeEntite(Request $request, Response $response, $args) {
         $listeEntite = Entite::all();
         $personnages = self::filter($listeEntite, "personnage");
@@ -116,25 +110,6 @@ class EntiteController extends Controller
             return Utils::redirect($response, 'listeEntites');
         }
         
-        //photo 
-        $uploadedFiles = $request->getUploadedFiles();
-        
-        $photo = $uploadedFiles['photo'];
-        
-        if($photo === null){
-            FlashMessage::flashError('L\'image est trop volumineuse');
-            return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
-        }
-        
-        if($photo->getError() === UPLOAD_ERR_OK) {
-            if(!Utils::isAcceptedFile($photo)) {
-                FlashMessage::flashError('Le fichier doit etre une image');
-                return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
-            }
-            $nomFichier = Utils::uploadFichier($photo);
-            $entite->photo = $nomFichier;
-        }
-        
         $entite->type = Utils::getFilteredPost($request, "type");
         $entite->prenom = Utils::getFilteredPost($request, "prenom");
         $entite->nom = Utils::getFilteredPost($request, "nom");
@@ -144,13 +119,25 @@ class EntiteController extends Controller
         $entite->pointAtt = Utils::getFilteredPost($request, "pointAtt");
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
-        
+
         //TODO meme chose au dessus
         if (!Utils::verifIfNumber($entite->taille) || !Utils::verifIfNumber($entite->poids) || 
         !Utils::verifIfNumber($entite->pointVie) || !Utils::verifIfNumber($entite->pointAtt) || 
         !Utils::verifIfNumber($entite->pointDef) || !Utils::verifIfNumber($entite->pointAgi)) {
             FlashMessage::flashError("Valeurs d'entrés incorrect");
             return Utils::redirect($response, 'listeEntites'); 
+        }
+        //photo 
+        $uploadedFiles = $request->getUploadedFiles();
+        
+        $photo = $uploadedFiles['photo'];
+        if($photo->getError() === UPLOAD_ERR_OK) {
+            if(!Utils::isAcceptedFile($photo)) {
+                FlashMessage::flashError('Le fichier doit etre une image');
+                return Utils::redirect($response, 'formModifEntite', ['id' => $id]);
+            }
+            $nomFichier = Utils::uploadFichier($photo);
+            $entite->photo = $nomFichier;
         }
         
         $entite->save();

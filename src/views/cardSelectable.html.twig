@@ -1,0 +1,16 @@
+{% extends 'card.html.twig' %}
+{% block type %}
+    selectable
+{% endblock %}
+{% block style %}
+    display: flex;
+    justify-content: center;
+{% endblock %}
+{% block cardTitle %}
+    {{ parent() }}
+{% endblock %}
+{% block cardText %}
+    <div class="card-text">
+        <input type="button" class="btn btn-primary btn-select" id="{{ entite.id }}" value="Choisir" data-type="{{ entite.type }}">
+    </div>
+{% endblock %}

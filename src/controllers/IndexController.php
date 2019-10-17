@@ -12,8 +12,10 @@ use Slim\Views\Twig;
 class IndexController extends Controller
 {
     public function index(Request $request, Response $response){
-        $personnages = Entite::all();
-        return $this->views->render($response, 'index.html.twig', ['personnages' => $personnages],$_SESSION);
+        $entities = Entite::all();
+        $personnages = Utils::filter($entities, "personnage");
+        $monstres = Utils::filter($entities, "monstre");
+        return $this->views->render($response, 'index.html.twig', ['personnages' => $personnages, 'monstres' => $monstres],$_SESSION);
     }
 
 }
