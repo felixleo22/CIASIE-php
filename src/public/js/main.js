@@ -26,7 +26,7 @@ function checkboxes(type, id) {
     const checkboxes = $("#deck-" + type + " input.check");
     checkboxes.prop("checked", false);
 
-    const checkbox = $("input#"+id+".check");
+    const checkbox = $("input#" + id + ".check");
     checkbox.prop("checked", true);
 }
 
@@ -36,7 +36,7 @@ function checkboxes(type, id) {
  * @param id - L'ID du perso sélectionné
  */
 function select(type, id) {
-    checkboxes(type,id)
+    checkboxes(type, id);
     images(type, id);
 }
 
@@ -64,6 +64,5 @@ $(document).ready(function () {
         $("#perdant").hide();
         $("#stat_gagant").show();
         $("#titre").text("Vainqueur") ;
-
     });
 });
