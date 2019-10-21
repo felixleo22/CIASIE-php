@@ -21,8 +21,15 @@ class EntiteController extends Controller
             $classement[$entite->id] = $pourcentage;
         }
         arsort($classement, SORT_NUMERIC);
+
+        $keys = array_keys($classement);
+        $entites = [];
+        foreach ($keys as $id) {
+            $entites[] = Entite::find(intval($id));
+        }
+
         //todo faire la vue
-        return $this->views->render($response, 'fichier.twig', ['combats' => $classement]);
+        return $this->views->render($response, 'affichageClassementEntite.html.twig', ['entites' => $entites]);
     }
 
     /**
