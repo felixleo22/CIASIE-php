@@ -9,6 +9,22 @@ use Smash\models\Entite;
 
 class EntiteController extends Controller
 {
+
+    /**
+     * affichage les entite par % de combat gagné
+     */
+    public function affichageClassement(Request $request, Response $response) {
+        $classement = [];
+        $listeEntite = Entite::all();
+        foreach ($listeEntite as $entite) {
+            $pourcentage = ($entite->combatGagne / ($entite->combatGagne + $entite->combatPerdu))*100;
+            $classement[$entite->id] = $pourcentage;
+        }
+        arsort($classement, SORT_NUMERIC);
+        //todo faire la vue
+        return $this->views->render($response, 'fichier.twig', ['combats' => $classement]);
+    }
+
     /**
     * affiche le formulaire de creation de monstre via un fichier twig
     */
@@ -160,6 +176,7 @@ class EntiteController extends Controller
         return Utils::redirect($response, 'listeEntites');
     }
     
-    
+   
+
 }
 
