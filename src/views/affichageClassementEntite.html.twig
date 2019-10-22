@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Entites
+{% endblock %}
+{% block content %}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Place</th>
+            <th scope="col" colspan="1">Image</th>
+            <th scope="col" colspan="1">Nom</th>
+            <th scope="col" colspan="1">Prénom</th>
+            <th scope="col" colspan="1">Gagné</th>
+            <th scope="col" colspan="1">Perdu</th>
+            <th scope="col" colspan="1">Winrate</th>
+        </tr>
+    </thead>
+    {% set place = 1 %}
+    {% for entite in entites %}
+        <tr>
+            <td>{{ place }}</td>
+            <td> <img src="{{ get_photo(entite.photo,entite.defaultPhoto()) }}"></td>
+            <td>{{ entite.nom }}</td>
+            <td>{{ entite.prenom }}</td>
+            <td>{{ entite.combatGagne }} </td>
+            <td>{{ entite.combatPerdu }} </td>
+            <td>{{ entite.getPourcentageWin() }} </td>
+        </tr>
+
+            {% set place = place + 1 %}
+        
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

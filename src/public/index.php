@@ -111,7 +111,7 @@ $app->group('/combat', function($app) {
     $app->post('/{id}', CombatController::class.':play')->setName('jouerCombat');
 });
 
-
+$app->get('/classement', EntiteController::class.':affichageClassement')->setName('classement');
 
 /** Lancement de l'application */
 $app->run();

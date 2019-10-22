@@ -3,6 +3,8 @@
     Entités
 {% endblock %}
 {% block content %}
+    <p class="link"><a class="btn btn-primary" href="{{ path_for('formCreerEntite') }}"><i class="fas fa-plus"></i>  Ajouter une entité</a></p>
+
     <section>
         <h3 class="global-title">Personnages</h3>
         <div id="deck-personnages" class="card-row">
@@ -19,5 +21,4 @@
             {% endfor %}
         </div>
     </section>
-    <td> <a href ="{{ path_for('formCreerEntite') }}"><img src="/ressources/pencil.svg" alt="Creer"></a></td>
 {% endblock %}
