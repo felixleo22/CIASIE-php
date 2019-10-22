@@ -9,7 +9,7 @@ class Entite extends Model {
     use SoftDeletes;
 	protected $table = 'entite';
 	protected $primaryKey = 'id';
-    protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "combatGagne", "combatPerdu", "totalDegatInflige" , "totalDegatRecu"];
+    protected $fillable = ['id' , "nom", "prenom", "type", "taille", "poids", "pointAtt", "pointDef", "pointAgi", "pointVie", "photo", "combatGagne", "combatPerdu", "totalDegatInflige" , "totalDegatRecu"];
     public $timestamps = true;
 
 	public function participants(){
@@ -24,6 +24,6 @@ class Entite extends Model {
         if ($this->combatGagne === NULL && $this->combatPerdu === NULL) {
             return 0;
         }
-        return round($this->combatGagne / ($this->combatGagne + $this->combatPerdu));
+        return round($this->combatGagne / ($this->combatGagne + $this->combatPerdu),2) * 100 ;
     }
 } 

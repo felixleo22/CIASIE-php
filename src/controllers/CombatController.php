@@ -19,7 +19,7 @@ class CombatController extends Controller {
         $combats = [];
         foreach ($listeCombat as $combat){
             if($combat->termine === 1) {
-                $combats = $combat;
+                $combats[] = $combat;
             }
         }
         //todo changer la route
