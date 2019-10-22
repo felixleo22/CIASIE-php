@@ -143,12 +143,11 @@ class CombatController extends Controller {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
         
-        $gagnant->gagner = true;
+        $gagnant->gagner = 1;
         $gagnant->entite->combatGagne++;
         $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
         $gagnant->entite->totalDegatRecu = $gagnant->degatRecu;
-        
-        $gagnant->gagner = false;
+
         $perdant->entite->combatPerdu++;
         $perdant->entite->totalDegatInflige += $perdant->degatInflige;
         $perdant->entite->totalDegatRecu = $perdant->degatRecu;
