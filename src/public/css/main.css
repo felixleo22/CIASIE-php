@@ -29,9 +29,6 @@ div.card > img{
     height: 300px;
     width: auto;
 }
-div.card.selectable > img{
-    filter: grayscale(90%);
-}
 h5{
     display: flex;
     justify-content: space-between;

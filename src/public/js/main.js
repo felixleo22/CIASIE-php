@@ -5,14 +5,14 @@
  * @param type - Le type de perso concerné
  * @param id - L'ID du perso sélectionné
  */
-function images(type, id) {
-    const images = $("#deck-" + type + " img");
-    console.log(images);
-    images.css("filter", "grayscale(90%)");
+function border(type, id) {
+    const cards = $("#deck-" + type + " div.card");
+    console.log(cards);
+    cards.css("border-color", "");
 
-    const image = $("#card-" + id + " img");
-    console.log(image);
-    image.css("filter", "grayscale(0%)");
+    const card = $("#card-" + id);
+    console.log(card);
+    card.css("border-color", "dodgerblue");
 }
 
 /**
@@ -37,7 +37,7 @@ function checkboxes(type, id) {
  */
 function select(type, id) {
     checkboxes(type, id);
-    images(type, id);
+    border(type, id);
 }
 
 $(document).ready(function () {
