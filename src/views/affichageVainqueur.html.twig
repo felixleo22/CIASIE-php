@@ -58,6 +58,7 @@
 {% endblock %}
 
 {% block javascript %}
+{{ parent() }}
 <script>
 $(document).ready(function(){
    $("#vainqueur").show();
