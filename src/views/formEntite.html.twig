@@ -15,7 +15,7 @@
     <form action='{% if entite %}{{ path_for('execModifEntite', {id: entite.id}) }}{% else %}{{ path_for('execCreerEntite') }}{% endif %}' method='POST' enctype="multipart/form-data">
         <div class="form-group">
             <label for="iptSurname">Nom<span>*</span></label>
-            <input class="form-control form-control-sm" id="iptSurname" type='text' name ='nom' minlength='1' value="{{ entite.nom }}" placeholder='Nom' required>
+            <input class="form-control form-control-sm" id="iptSurname" type='text' name ='nom' minlength='1' value="{{ entite.nom }}" placeholder='Nom' required autofocus>
         </div>
         <div class="form-group">
             <label for="iptName">Prénom<span>*</span></label>
