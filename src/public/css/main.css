@@ -60,6 +60,10 @@ div.form-group > label{
 div.form-group > input, select{
     margin-bottom: 1vh;
 }
+div.form-group:last-child{
+    display: flex;
+    justify-content: center;
+}
 label > span{
     color: red;
 }
