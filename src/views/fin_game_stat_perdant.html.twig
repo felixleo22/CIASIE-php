@@ -3,9 +3,9 @@
         <h4>Statistique de fin de game</h4>
     </div>
     <div class="card-body">
-        degat reçu : {{ nbr_degat_infliger_personnage }}<br>
-        degat infliger : {{ nbr_degat_infliger_monstre }}<br>
-        nbr coup porter : {{ nbr_coup_porter_monstre| default('0') }}<br>
-        nbr tour : {{ nbr_tour }}
+        degat reçu : {{ personnages[1].degatRecu }}<br>
+        degat infliger : {{ personnages[1].degatInflige }}<br>
+        nbr coup porter : {{  personnages[1].nbAttaqueInflige }}<br>
+        nbr coup recu : {{  personnages[1].nbAttaqueRecu }}<br>
     </div>
 </div>
