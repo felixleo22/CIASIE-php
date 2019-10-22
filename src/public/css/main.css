@@ -83,6 +83,14 @@ div.vs > p {
     margin: auto;
     font-size: 10rem;
 }
+td.winner{
+    color: darkgreen;
+    background-color: lightgreen;
+}
+td.loser{
+    color: darkred;
+    background-color: indianred;
+}
 
 @media (orientation: portrait) {
     div.vs > p {

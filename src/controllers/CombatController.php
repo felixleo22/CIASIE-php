@@ -15,18 +15,23 @@ class CombatController extends Controller {
 
 
     /**
-     * affiche la liste des combats finits.
+     * affiche la liste des combats finis.
      */
     public function affichageListeCombat(Request $request, Response $response) {
-        $listeCombat = Combat::all();
+        $listeCombat = Combat::where('termine', 1)->get();
         $combats = [];
         foreach ($listeCombat as $combat){
-            if($combat->termine === 1) {
-                $combats = $combat;
-            }
+            $id = $combat->id;
+            $participants = $combat->participants;
+            $personnage = $participants[0];
+            $monstre = $participants[1];
+            $combats[] = array(
+                'id' => $id,
+                'personnage' => $personnage,
+                'monstre' => $monstre
+            );
         }
-        //todo changer la route
-        return $this->views->render($response, 'fichier.twig', ['combats' => $combats]);
+        return $this->views->render($response, 'affichageCombats.html.twig', ['combats' => $combats]);
     }
 
 
