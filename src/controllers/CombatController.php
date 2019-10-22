@@ -198,36 +198,24 @@ class CombatController extends Controller {
             $victime->degatRecu += $degat;
 
 
-            $personnages = [];
+          
+
             
             if($victime->pointVie <= 0) {
-                $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-                $perdant = $participant1->pointVie >= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-                
-                $this->terminerCombat($combat, $vainqueur, $perdant);
-
-                $personnages = [];
-
-                if ($vainqueur->id == $participant1->entite_id) {
-                    $messsage .= "Le coup de grâce à été donné !";
-                    array_push($personnages,$vainqueur);
-                    array_push($personnages,$perdant);
-                }else{
-                    $messsage .= "Le coup de grâce à été donné !";
-                    array_push($personnages,$vainqueur);
-                    array_push($personnages,$perdant);
-                }
-    
+                $this->terminerCombat($combat, $attaquant, $victime);
+                $messsage .= "Le coup de grâce à été donné !";
 
                 $nbr_degat_infliger_monstre = $attaquant->nbAttaqueRecu;
-                $nbr_coup_porter_monstre = $perdant->nbAttaqueRecu;
+                $nbr_coup_porter_monstre = $victime->nbAttaqueRecu;
 
                 $nbr_degat_infliger_personnage = $attaquant->degatInflige;
 
                 $nbr_coup_porter_personnage = $attaquant->nbAttaqueInflige;
-                $nbr_coup_porter_monstre = $perdant->nbAttaqueInflige;
+                $nbr_coup_porter_monstre = $victime->nbAttaqueInflige;
                 $nbr_tour = $combat->nbTours;
                     
+                $personnages[] = $attaquant;
+                $personnages[] = $victime;
 
                 //
                 return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages,
