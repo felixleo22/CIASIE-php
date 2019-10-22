@@ -12,18 +12,23 @@ use Smash\models\Participant;
 class CombatController extends Controller {
     
     /**
-    * affiche la liste des combats finits.
-    */
+     * affiche la liste des combats finis.
+     */
     public function affichageListeCombat(Request $request, Response $response) {
-        $listeCombat = Combat::all();
+        $listeCombat = Combat::where('termine', 1)->get();
         $combats = [];
         foreach ($listeCombat as $combat){
-            if($combat->termine === 1) {
-                $combats[] = $combat;
-            }
+            $id = $combat->id;
+            $participants = $combat->participants;
+            $personnage = $participants[0];
+            $monstre = $participants[1];
+            $combats[] = array(
+                'id' => $id,
+                'personnage' => $personnage,
+                'monstre' => $monstre
+            );
         }
-        //todo changer la route
-        return $this->views->render($response, 'fichier.twig', ['combats' => $combats]);
+        return $this->views->render($response, 'affichageCombats.html.twig', ['combats' => $combats]);
     }
     
     public function creerCombat(Request $request, Response $response, $args) {
@@ -143,12 +148,11 @@ class CombatController extends Controller {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
         
-        $gagnant->gagner = true;
+        $gagnant->gagner = 1;
         $gagnant->entite->combatGagne++;
         $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
         $gagnant->entite->totalDegatRecu = $gagnant->degatRecu;
-        
-        $gagnant->gagner = false;
+
         $perdant->entite->combatPerdu++;
         $perdant->entite->totalDegatInflige += $perdant->degatInflige;
         $perdant->entite->totalDegatRecu = $perdant->degatRecu;
@@ -168,10 +172,13 @@ class CombatController extends Controller {
         $participant1 = $entites[0];
         $participant2 = $entites[1];
         
-        // if($combat->termine) {
-        //     //si combat terminé, on affiche le résultat
-            
-        // }
+        if($combat->termine) {
+            //si combat terminé, on affiche le résultat
+            $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+            $personnages = [];
+            array_push($personnages, [$participant1, $participant2]);
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages]);
+        }
         $combat->nbTours++;
         //si Post, on update le combat
         //sinon on affiche la vue
@@ -189,6 +196,7 @@ class CombatController extends Controller {
             $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom ;
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
+
 
             $personnages = [];
             
@@ -244,6 +252,8 @@ class CombatController extends Controller {
                  'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre,
                  'nbr_tour'=> $nbr_tour]);
             }       
+
+
 
             $attaquant->save();
             $victime->save();

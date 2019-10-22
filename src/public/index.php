@@ -82,9 +82,6 @@ $app->group('/entite', function($app) {
     $app->post('/modifier/{id}', EntiteController::class.':modifierEntite')->setName('execModifEntite');
     //TODO remplacer get par delete
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
-
-
-    $app->get('/test', EntiteController::class.':affichageClassement')->setName('test');
 })->add(new AuthMiddleware());
 
 
@@ -108,13 +105,13 @@ $app->group('/admin', function($app) {
 
 //affichage du combat
 $app->group('/combat', function($app) {
+    $app->get('s', CombatController::class.':affichageListeCombat')->setName('listeCombat');
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
     $app->get('/{id}', CombatController::class.':play')->setName('combat');
     $app->post('/{id}', CombatController::class.':play')->setName('jouerCombat');
-
 });
 
-
+$app->get('/classement', EntiteController::class.':affichageClassement')->setName('classement');
 
 /** Lancement de l'application */
 $app->run();

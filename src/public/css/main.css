@@ -29,12 +29,10 @@ div.card > img{
     height: 300px;
     width: auto;
 }
-div.card.selectable > img{
-    filter: grayscale(90%);
-}
 h5{
     display: flex;
     justify-content: space-between;
+    font-size: 14pt;
 }
 h5 > div > a{
     margin: 0 5px;
@@ -82,9 +80,21 @@ div.vs > p {
     margin: auto;
     font-size: 10rem;
 }
+td.winner{
+    color: darkgreen;
+    background-color: lightgreen;
+}
+td.loser{
+    color: darkred;
+    background-color: indianred;
+}
 
 @media (orientation: portrait) {
     div.vs > p {
         font-size: 3rem;
     }
+}
+
+.imagesClassement {
+    width: 75px;
 }

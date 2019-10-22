@@ -2,9 +2,20 @@
     <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
     <div class="card-body">
         <h5 class="card-title" style="display: flex;justify-content: center">
-                <span>{{ entite.nom }} {{ entite.prenom }}</span>
+            <span>{{ entite.nom }} {{ entite.prenom }}</span>
         </h5>
+        <div class="stat-group">
+            <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
+            <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie}}</p>
+            <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+            <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+            <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi }}</p>
+        </div>
         <div class="card-text">
+            <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                <input type="checkbox" class="custom-control-input" id="{{ entite.id }}" name="ids[]" value="{{ entite.id }}">
+                <label class="custom-control-label" for="{{entite.id}}">Choisir</label>
+            </div>
             <input type="button" class="btn btn-primary btn-select" id="{{ entite.id }}" value="Choisir" data-type="{{ entite.type }}">
         </div>
     </div>
