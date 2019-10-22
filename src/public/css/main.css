@@ -76,6 +76,9 @@ div.stat-group{
 div.card.selectable div.stat-group > p.card-text{
     flex: 0 0 31%;
 }
+div.card.combat div.stat-group > p.card-text{
+    flex: 0 0 31%;
+}
 div.card.editable div.stat-group > p.card-text{
     flex: 0 0 33%;
 }
