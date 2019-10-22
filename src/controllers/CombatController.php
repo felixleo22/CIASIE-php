@@ -244,7 +244,6 @@ class CombatController extends Controller {
                     
 
                 //
-
                 return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages,
                  'nbr_degat_infliger_monstre'=> $nbr_degat_infliger_monstre,
                  'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,
