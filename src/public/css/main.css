@@ -60,6 +60,10 @@ div.form-group > label{
 div.form-group > input, select{
     margin-bottom: 1vh;
 }
+div.form-group:last-child{
+    display: flex;
+    justify-content: center;
+}
 label > span{
     color: red;
 }
@@ -70,6 +74,9 @@ div.stat-group{
     height: 13vh;
 }
 div.card.selectable div.stat-group > p.card-text{
+    flex: 0 0 31%;
+}
+div.card.combat div.stat-group > p.card-text{
     flex: 0 0 31%;
 }
 div.card.editable div.stat-group > p.card-text{

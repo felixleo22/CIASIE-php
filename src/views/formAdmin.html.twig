@@ -15,7 +15,7 @@
     <form action="{% if admin %}{{ path_for("execModifAdmin", {id: admin.id}) }}{% else %}{{ path_for('execCreerAdmin') }}{% endif %}" method='POST' enctype="multipart/form-data">
         <div class="form-group">
             <label for="iptLogin">Login<span>*</span></label>
-            <input id="iptLogin" class="form-control form-control-sm" type='text' name ='login' minlength='1' required value="{{ admin.login }}">
+            <input id="iptLogin" class="form-control form-control-sm" type='text' name ='login' minlength='1' required value="{{ admin.login }}" autofocus>
         </div>
         <div class="form-group">
             <label for="iptMdp">Mot de passe<span>*</span></label>
@@ -37,7 +37,7 @@
                 {% endif %}
             </select>
         </div>
-        <div class="form-group" style="display: flex; justify-content: center">
+        <div class="form-group">
             <input class="btn btn-primary" type='submit' value='Valider'>
         </div>
 

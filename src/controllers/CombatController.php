@@ -36,7 +36,7 @@ class CombatController extends Controller {
         if($combatCookie) {
             $combat = Combat::find($combatCookie);
             if($combat && !$combat->termine){
-                FlashMessage::flashInfo('Vous devez terminé ce combat pour pouvoir en creer un nouveau');
+                FlashMessage::flashInfo('Vous devez terminer le combat en cours pour pouvoir en créer un nouveau');
                 return Utils::redirect($response, 'combat', ['id' => $combat->id]);
             }
         }
