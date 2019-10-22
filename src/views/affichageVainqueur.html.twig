@@ -5,7 +5,7 @@
    <h1 id="titre">Vainqueur</h1>
    <div class="row-deck">
       <div id="vainqueur" style="display: flex; justify-content: center">
-         <div class="card">
+         <div class="card combat">
             <img class="card-img-top" src="{{ get_photo(combat.vainqueurs[0].entite.photo, combat.vainqueurs[0].entite.defaultPhoto()) }}" alt="Card image cap">
             <div class="card-body">
                <h5 class="card-title">
@@ -14,15 +14,17 @@
                   </div>
                </h5>
                <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.vainqueurs[0].entite.taille }}</p>
                   <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.vainqueurs[0].entite.pointVie }}</p>
                   <p class="card-text"><i class="ra ra-sword"></i> {{ combat.vainqueurs[0].entite.pointAtt }}</p>
                   <p class="card-text"><i class="ra ra-shield"></i> {{ combat.vainqueurs[0].entite.pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.vainqueurs[0].entite.taille }}</p>
                   <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.vainqueurs[0].entite.pointAgi  }}</p>
+                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.vainqueurs[0].entite.poids }}</p>
+
                </div>
             </div>
          </div>
-         {% include 'fin_game_stat_vainqeur.html.twig' %}
+         {% include 'fin_game_stat_vainqueur.html.twig' %}
 
       </div>
       <div style="display: flex; justify-content: center;">
@@ -31,7 +33,7 @@
 
 
       <div id="perdant" style="display: flex; justify-content: center" >
-         <div class="card">
+         <div class="card combat">
             <img class="card-img-top" src="{{ get_photo(combat.perdants[0].entite.photo, combat.perdants[0].entite.defaultPhoto()) }}" alt="Card image cap">
             <div class="card-body">
                <h5 class="card-title">
@@ -40,11 +42,12 @@
                   </div>
                </h5>
                <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
                   <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.perdants[0].entite.pointVie }}</p>
                   <p class="card-text"><i class="ra ra-sword"></i> {{ combat.perdants[0].entite.pointAtt }}</p>
                   <p class="card-text"><i class="ra ra-shield"></i> {{ combat.perdants[0].entite.pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
                   <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.perdants[0].entite.pointAgi  }}</p>
+                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.perdants[0].entite.poids }}</p>
                </div>
             </div>
          </div>
