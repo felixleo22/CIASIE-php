@@ -17,8 +17,8 @@
     {% set participant = participant2 %}
     {% include 'cardCombat.html.twig' %}
 </div>
-<div class="row">
-    <div class="col-sm">
+<div>
+    <div>
         <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
             {% if combat.termine %}
                 <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Voir le resultat">
