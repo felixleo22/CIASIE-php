@@ -20,7 +20,7 @@
     {% for entite in entites %}
         <tr>
             <td>{{ place }}</td>
-            <td> <img src="{{ get_photo(entite.photo,entite.defaultPhoto()) }}"></td>
+            <td> <img class ="imagesClassement" src="{{ get_photo(entite.photo,entite.defaultPhoto()) }}"></td>
             <td>{{ entite.nom }}</td>
             <td>{{ entite.prenom }}</td>
             <td>{{ entite.combatGagne }} </td>
