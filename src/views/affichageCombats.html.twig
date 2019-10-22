@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Personnage</th>
+        <th scope="col">Monstre</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for combat in combats %}
+        <tr id="">
+            <td scope="col">{{ combat['id'] }}</td>
+            {% if combat['personnage'].gagner %}
+            <td scope="col" class="winner">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
+            <td scope="col" class="loser">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
+            {% else %}
+            <td scope="col" class="loser">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
+            <td scope="col" class="winner">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
+            {% endif %}
+            <td scope="col" class="btn-expand">+</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
