@@ -1,18 +1,22 @@
-{% extends 'card.html.twig' %}
-{% block type %}editable{% endblock %}
-{% block cardTitle %}
-    {{ parent() }}
-    <div>
-        <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
-        <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
+<div id="card-{{ entite.id }}" class="card editable">
+    <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+    <div class="card-body">
+        <h5 class="card-title" style="display: flex;justify-content: space-between">
+            <span>{{ entite.nom }} {{ entite.prenom }}</span>
+            <div>
+                <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
+                <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
+            </div>
+        </h5>
+        <div class="stat-group">
+            <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
+            <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie}}</p>
+            <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
+            <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
+            <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi }}</p>
+            <p class="card-text"><i class="fas fa-trophy"></i> {{ entite.combatGagne }} gagnés ({{ entite.getPourcentageWin() }}%) / {{ entite.combatPerdu }} perdus</p>
+            <p class="card-text"><i class="fas fa-fist-raised"></i> {{ entite.totalDegatInflige }} total degat / {{ entite.totalDegatRecu }} total subit</p>
+        </div>
     </div>
-{% endblock %}
-{% block cardText %}
-    <div class="stat-group">
-        <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
-        <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie }}</p>
-        <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
-        <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
-        <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi  }}</p>
-    </div>
-{% endblock %}
+</div>
+

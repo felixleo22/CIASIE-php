@@ -105,14 +105,13 @@ $app->group('/admin', function($app) {
 
 //affichage du combat
 $app->group('/combat', function($app) {
+    $app->get('s', CombatController::class.':affichageListeCombat')->setName('listeCombat');
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
     $app->get('/{id}', CombatController::class.':play')->setName('combat');
     $app->post('/{id}', CombatController::class.':play')->setName('jouerCombat');
-
-    
 });
 
-
+$app->get('/classement', EntiteController::class.':affichageClassement')->setName('classement');
 
 /** Lancement de l'application */
 $app->run();
