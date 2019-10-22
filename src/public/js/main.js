@@ -50,6 +50,7 @@ $(document).ready(function () {
     $("#vainqueur").show();
     $("#perdant").hide();
     $("#stat_gagant").hide();
+    $("#stat_perdant").show();
 
     $("#stat_perdant").click(function () {
         $("#vainqueur").hide();
@@ -62,7 +63,8 @@ $(document).ready(function () {
     $("#stat_gagant").click(function () {
         $("#vainqueur").show();
         $("#perdant").hide();
-        $("#stat_gagant").show();
+        $("#stat_gagant").hide();
+        $("#stat_perdant").show();
         $("#titre").text("Vainqueur") ;
     });
 });

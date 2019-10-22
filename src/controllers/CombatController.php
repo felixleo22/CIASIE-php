@@ -196,12 +196,64 @@ class CombatController extends Controller {
             $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom ;
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
+
+
+            $personnages = [];
             
-            // si combat termine
             if($victime->pointVie <= 0) {
-                $this->terminerCombat($combat, $attaquant, $victime);
-                $messsage .= "Le coup de grâce à été donné !";
-            }
+                $combat->termine = true;
+                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
+                    $entite1 = $attaquant->entite;
+                    $entite1->combatGagne++;
+                    $entite1->totalDegatInflige = $attaquant->degatInflige;
+                    $entite1->totalDegatRecu = $attaquant->degatRecu;
+                    $entite1->save();
+
+                    $entite2 = $victime->entite;
+                    $entite2->combatPerdu++;
+                    $entite2->totalDegatInflige = $victime->degatInflige;
+                    $entite2->totalDegatRecu = $victime->degatRecu;
+                    $entite2->save();
+
+                    unset($_SESSION[$key]);
+                }
+
+                $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $perdant = $participant1->pointVie >= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $personnages = [];
+
+                if ($vainqueur->id == $participant1->entite_id) {
+                    $messsage .= "Le coup de grâce à été donné !";
+                    array_push($personnages,$vainqueur);
+                    array_push($personnages,$perdant);
+                }else{
+                    $messsage .= "Le coup de grâce à été donné !";
+                    array_push($personnages,$vainqueur);
+                    array_push($personnages,$perdant);
+                }
+    
+
+                $nbr_degat_infliger_monstre = $attaquant->nbAttaqueRecu;
+                $nbr_coup_porter_monstre = $perdant->nbAttaqueRecu;
+
+                $nbr_degat_infliger_personnage = $attaquant->degatInflige;
+
+                $nbr_coup_porter_personnage = $attaquant->nbAttaqueInflige;
+                $nbr_coup_porter_monstre = $perdant->nbAttaqueInflige;
+                $nbr_tour = $combat->nbTours;
+                    
+
+                //
+
+                return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages,
+                 'nbr_degat_infliger_monstre'=> $nbr_degat_infliger_monstre,
+                 'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,
+                 'nbr_coup_porter_personnage'=> $nbr_coup_porter_personnage,
+                 'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre,
+                 'nbr_tour'=> $nbr_tour]);
+            }       
+
+
 
             $attaquant->save();
             $victime->save();
@@ -209,5 +261,5 @@ class CombatController extends Controller {
         }
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
-    
+
 }
