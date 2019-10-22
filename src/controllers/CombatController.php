@@ -174,10 +174,7 @@ class CombatController extends Controller {
         
         if($combat->termine) {
             //si combat terminé, on affiche le résultat
-            $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-            $personnages = [];
-            array_push($personnages, [$participant1, $participant2]);
-            return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages]);
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
         $combat->nbTours++;
         //si Post, on update le combat
@@ -197,41 +194,16 @@ class CombatController extends Controller {
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;
 
-
-          
-
-            
             if($victime->pointVie <= 0) {
                 $this->terminerCombat($combat, $attaquant, $victime);
                 $messsage .= "Le coup de grâce à été donné !";
-
-                $nbr_degat_infliger_monstre = $attaquant->nbAttaqueRecu;
-                $nbr_coup_porter_monstre = $victime->nbAttaqueRecu;
-
-                $nbr_degat_infliger_personnage = $attaquant->degatInflige;
-
-                $nbr_coup_porter_personnage = $attaquant->nbAttaqueInflige;
-                $nbr_coup_porter_monstre = $victime->nbAttaqueInflige;
-                $nbr_tour = $combat->nbTours;
-                    
-                $personnages[] = $attaquant;
-                $personnages[] = $victime;
-
-                //
-                return $this->views->render($response, 'affichageVainqueur.html.twig', ['personnages' => $personnages,
-                 'nbr_degat_infliger_monstre'=> $nbr_degat_infliger_monstre,
-                 'nbr_degat_infliger_personnage'=> $nbr_degat_infliger_personnage,
-                 'nbr_coup_porter_personnage'=> $nbr_coup_porter_personnage,
-                 'nbr_coup_porter_monstre'=> $nbr_coup_porter_monstre,
-                 'nbr_tour'=> $nbr_tour]);
             }       
-
-
 
             $attaquant->save();
             $victime->save();
             $combat->save();
         }
+        //TODO recuperer participant from combat
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
 
