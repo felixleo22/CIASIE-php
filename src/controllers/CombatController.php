@@ -201,25 +201,11 @@ class CombatController extends Controller {
             $personnages = [];
             
             if($victime->pointVie <= 0) {
-                $combat->termine = true;
-                if (($key = array_search($combat, $_SESSION['combat'])) !== false) {
-                    $entite1 = $attaquant->entite;
-                    $entite1->combatGagne++;
-                    $entite1->totalDegatInflige = $attaquant->degatInflige;
-                    $entite1->totalDegatRecu = $attaquant->degatRecu;
-                    $entite1->save();
-
-                    $entite2 = $victime->entite;
-                    $entite2->combatPerdu++;
-                    $entite2->totalDegatInflige = $victime->degatInflige;
-                    $entite2->totalDegatRecu = $victime->degatRecu;
-                    $entite2->save();
-
-                    unset($_SESSION[$key]);
-                }
-
                 $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
                 $perdant = $participant1->pointVie >= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                
+                $this->terminerCombat($combat, $vainqueur, $perdant);
+
                 $personnages = [];
 
                 if ($vainqueur->id == $participant1->entite_id) {
