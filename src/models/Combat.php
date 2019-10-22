@@ -16,4 +16,11 @@ class Combat extends Model {
 		return $this->hasMany(Participant::class);
     }
     
+    public function vainqueurs(){
+        return $this->participants()->where('gagner','=',1);
+    }
+
+    public function perdants(){
+        return $this->participants()->where('gagner','=',0);
+    }
 }
