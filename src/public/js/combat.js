@@ -7,6 +7,7 @@ $('document').ready(() => {
 
     //formulaire
     const playNextForm = document.getElementById('playNextForm');
+    const submitBtn = $('#submitBtn');
     
     playNextForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -25,15 +26,23 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            updateDisplay(data);
+            const {pv1, pv2, message, isEnd, showResult} = data;
+            if(showResult) {
+                window.location.reload();
+                return;
+            }
+
+            updateDisplay(pv1, pv2, message, isEnd);
         });
     });   
 
-    function updateDisplay(data) {
-        const {pv1, pv2, message} = data;
-
+    function updateDisplay(pv1 , pv2, message, isEnd) {
         participant1PV.text(pv1);
         participant2PV.text(pv2);
         gameMessage.text(message);
+
+        if(isEnd) {
+            submitBtn.val('Voir le résultat');
+        }
     }
 });

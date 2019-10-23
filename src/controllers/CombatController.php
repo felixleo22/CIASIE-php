@@ -173,6 +173,7 @@ class CombatController extends Controller {
         
         if($combat->termine) {
             //TODO si combat terminé, faire qqchose
+            return $response->withJson(['showResult' => true], 201);
         }
 
         $combat->nbTours++;
@@ -203,7 +204,7 @@ class CombatController extends Controller {
             $combat->save();
         }
         //TODO recuperer participant from combat
-        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage];
+        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
         return $response->withJson($data, 201); 
     }
 
