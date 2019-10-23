@@ -164,8 +164,7 @@ class CombatController extends Controller {
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
-            FlashMessage::flashError('Le combat n\'existe pas');
-            Utils::redirect($response, 'accueil');
+            //TODO faire qq chose si le combat n'existe pas
         }
         
         $entites = $combat->participants;
@@ -173,9 +172,9 @@ class CombatController extends Controller {
         $participant2 = $entites[1];
         
         if($combat->termine) {
-            //si combat terminé, on affiche le résultat
-            return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
+            //TODO si combat terminé, faire qqchose
         }
+
         $combat->nbTours++;
         //si Post, on update le combat
         //sinon on affiche la vue
@@ -204,7 +203,8 @@ class CombatController extends Controller {
             $combat->save();
         }
         //TODO recuperer participant from combat
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
+        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage];
+        return $response->withJson($data, 201); 
     }
 
     public function afficherCombat(Request $request, Response $response, $args) {
