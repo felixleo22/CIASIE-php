@@ -4,7 +4,7 @@
 
 <h2>Combat n°{{ combat.id }}</h2>
 
-<p>{{ message }}</p>
+<p id="gameMessage">{{ message }}</p>
 
 <div class="battlefield">
     <div id="card-{{ participant1.entite.id }}" class="card combat">
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 <div>
     <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}">

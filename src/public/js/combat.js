@@ -3,6 +3,7 @@ $('document').ready(() => {
     //affichage des données
     const participant1PV = $('#participant1PV');
     const participant2PV = $('#participant2PV');
+    const gameMessage = $('#gameMessage');
 
     //formulaire
     const playNextForm = document.getElementById('playNextForm');
@@ -33,5 +34,6 @@ $('document').ready(() => {
 
         participant1PV.text(pv1);
         participant2PV.text(pv2);
+        gameMessage.text(message);
     }
 });
