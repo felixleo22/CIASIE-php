@@ -108,7 +108,6 @@ $app->group('/combat', function($app) {
     $app->get('s', CombatController::class.':affichageListeCombat')->setName('listeCombat');
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
     $app->get('/{id}', CombatController::class.':afficherCombat')->setName('combat');
-    //TODO a modifier
     $app->post('/{id}', CombatController::class.':play')->setName('jouerCombat');
 });
 
