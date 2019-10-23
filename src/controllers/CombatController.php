@@ -207,4 +207,26 @@ class CombatController extends Controller {
         return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
     }
 
+    public function afficherCombat(Request $request, Response $response, $args) {
+        //récupération du combat
+        $idCombat = Utils::sanitize($args['id']);
+        $combat = Combat::find($idCombat);
+        if($combat === null) {
+            FlashMessage::flashError('Le combat n\'existe pas');
+            Utils::redirect($response, 'accueil');
+        }
+
+        $entites = $combat->participants;
+        $participant1 = $entites[0];
+        $participant2 = $entites[1];
+        
+        if($combat->termine) {
+            //si combat terminé, on affiche le résultat
+            return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
+        }
+
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);        
+
+    }
+
 }
