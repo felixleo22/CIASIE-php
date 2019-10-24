@@ -12,8 +12,8 @@ use Smash\models\Participant;
 class CombatController extends Controller {
     
     /**
-     * affiche la liste des combats finis.
-     */
+    * affiche la liste des combats finis.
+    */
     public function affichageListeCombat(Request $request, Response $response) {
         $listeCombat = Combat::where('termine', 1)->get();
         $combats = [];
@@ -116,7 +116,7 @@ class CombatController extends Controller {
     * La victime à 5% de chance d'esquiver le coup (return 0)
     * L'attaque est chosit entre 80% et 120% des point d'attaque de l'attaquant.
     * La defence est calculer en % avec des palier tout les 20 points de defense
-    * Elle ne peut pas exeder 70%
+    * Elle ne peut pas exeder 30%
     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
     */
@@ -131,8 +131,8 @@ class CombatController extends Controller {
             return round(($attaquant->entite->pointAtt*$att));
         }
         $reste = round($victime->entite->pointDef/20);
-        if($reste > 7) {
-            $reste = 7;
+        if($reste > 3) {
+            $reste = 3;
         }
         if($reste >= 0) {
             $reste = 10;
@@ -142,8 +142,8 @@ class CombatController extends Controller {
     }
     
     /**
-     * Methode pour cloturer un combat
-     */
+    * Methode pour cloturer un combat
+    */
     private function terminerCombat($combat, $gagnant,  $perdant) {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
@@ -152,7 +152,7 @@ class CombatController extends Controller {
         $gagnant->entite->combatGagne++;
         $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
         $gagnant->entite->totalDegatRecu = $gagnant->degatRecu;
-
+        
         $perdant->entite->combatPerdu++;
         $perdant->entite->totalDegatInflige += $perdant->degatInflige;
         $perdant->entite->totalDegatRecu = $perdant->degatRecu;
@@ -161,6 +161,53 @@ class CombatController extends Controller {
     }
     
     public function play(Request $request, Response $response, $args){  
+        $idCombat = Utils::sanitize($args['id']);
+        $combat = Combat::find($idCombat);
+        if($combat === null) {
+            //TODO faire qq chose si le combat n'existe pas
+        }
+        
+        $entites = $combat->participants;
+        $participant1 = $entites[0];
+        $participant2 = $entites[1];
+        
+        if($combat->termine) {
+            return $response->withJson(['showResult' => true], 201);
+        }
+        
+        $combat->nbTours++;
+        
+        $messsage = "";
+        
+        $choix = $this->choixAttaquant($participant1, $participant2);
+        $attaquant = $choix['attaquant'];
+        $victime = $choix['victime'];
+        
+        $degat = $this->degat($attaquant,$victime);
+        // save statistique
+        $attaquant->nbAttaqueInflige++;
+        $attaquant->degatInflige += $degat;
+        $victime->pointVie -= $degat;
+        $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
+        $victime->nbAttaqueRecu++;
+        $victime->degatRecu += $degat;
+        
+        if($victime->pointVie <= 0) {
+            $this->terminerCombat($combat, $attaquant, $victime);
+            $messsage .= " Le coup de grâce à été donné !";
+        }       
+        
+        $attaquant->save();
+        $victime->save();
+        $combat->save();
+        
+        
+        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
+        return $response->withJson($data, 201); 
+    }
+    
+    public function afficherCombat(Request $request, Response $response, $args) {
+        //récupération du combat
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
@@ -176,35 +223,9 @@ class CombatController extends Controller {
             //si combat terminé, on affiche le résultat
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
-        $combat->nbTours++;
-        //si Post, on update le combat
-        //sinon on affiche la vue
-        $messsage = "";
-        if ($request->isPost()) {
-            $choix = $this->choixAttaquant($participant1, $participant2);
-            $attaquant = $choix['attaquant'];
-            $victime = $choix['victime'];
-            
-            $degat = $this->degat($attaquant,$victime);
-            // save statistique
-            $attaquant->nbAttaqueInflige++;
-            $attaquant->degatInflige += $degat;
-            $victime->pointVie -= $degat;
-            $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom ;
-            $victime->nbAttaqueRecu++;
-            $victime->degatRecu += $degat;
-
-            if($victime->pointVie <= 0) {
-                $this->terminerCombat($combat, $attaquant, $victime);
-                $messsage .= "Le coup de grâce à été donné !";
-            }       
-
-            $attaquant->save();
-            $victime->save();
-            $combat->save();
-        }
-        //TODO recuperer participant from combat
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2, 'message' => $messsage]);        
+        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);        
+        
     }
-
+    
 }
