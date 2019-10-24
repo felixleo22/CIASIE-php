@@ -138,7 +138,6 @@ class CombatController extends Controller {
             $reste = 10;
         }
         return round(($attaquant->entite->pointAtt*$att)*($reste/10));
-        
     }
     
     /**
@@ -205,6 +204,7 @@ class CombatController extends Controller {
         $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
         return $response->withJson($data, 201); 
     }
+
     
     public function afficherCombat(Request $request, Response $response, $args) {
         //récupération du combat
