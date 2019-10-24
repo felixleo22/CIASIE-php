@@ -150,11 +150,11 @@ class CombatController extends Controller {
         $gagnant->gagner = 1;
         $gagnant->entite->combatGagne++;
         $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
-        $gagnant->entite->totalDegatRecu = $gagnant->degatRecu;
+        $gagnant->entite->totalDegatRecu += $gagnant->degatRecu;
         
         $perdant->entite->combatPerdu++;
         $perdant->entite->totalDegatInflige += $perdant->degatInflige;
-        $perdant->entite->totalDegatRecu = $perdant->degatRecu;
+        $perdant->entite->totalDegatRecu += $perdant->degatRecu;
         $gagnant->entite->save();
         $perdant->entite->save();
     }
