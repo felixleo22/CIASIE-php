@@ -4,29 +4,57 @@
 
 <h2>Combat n°{{ combat.id }}</h2>
 
-<p>{{ message }}</p>
+<p id="gameMessage">{{ message }}</p>
 
 <div class="battlefield">
-    {% set participant = participant1 %}
-    {% include 'cardCombat.html.twig' %}
+    <div id="card-{{ participant1.entite.id }}" class="card combat">
+        <img class="card-img-top" src="{{ get_photo(participant1.entite.photo, participant1.entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+        <div class="card-body">
+            <h5 class="card-title" style="display: flex;justify-content: center">
+                <span>{{ participant1.entite.nom }} {{ participant1.entite.prenom }}</span>
+            </h5>
+            <div class="stat-group">
+                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant1PV">{{ participant1.pointVie}}</span></p>
+                <p class="card-text"><i class="ra ra-sword"></i> {{ participant1.entite.pointAtt }}</p>
+                <p class="card-text"><i class="ra ra-shield"></i> {{ participant1.entite.pointDef }}</p>
+                <p class="card-text"><i class="ra ra-player"></i>{{ participant1.entite.taille }}</p>
+                <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant1.entite.pointAgi }}</p>
+                <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ participant1.entite.poids }}</p>
+            </div>
+        </div>
+    </div>
     
     <div class="vs">
         <p>VS</p>
     </div>
     
-    {% set participant = participant2 %}
-    {% include 'cardCombat.html.twig' %}
+    <div id="card-{{ participant2.entite.id }}" class="card combat">
+        <img class="card-img-top" src="{{ get_photo(participant2.entite.photo, participant2.entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+        <div class="card-body">
+            <h5 class="card-title" style="display: flex;justify-content: center">
+                <span>{{ participant2.entite.nom }} {{ participant2.entite.prenom }}</span>
+            </h5>
+            <div class="stat-group">
+                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant2PV">{{ participant2.pointVie}}</span></p>
+                <p class="card-text"><i class="ra ra-sword"></i> {{ participant2.entite.pointAtt }}</p>
+                <p class="card-text"><i class="ra ra-shield"></i> {{ participant2.entite.pointDef }}</p>
+                <p class="card-text"><i class="ra ra-player"></i>{{ participant2.entite.taille }}</p>
+                <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant2.entite.pointAgi }}</p>
+                <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ participant2.entite.poids }}</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 <div>
-    <div>
-        <form action="{{path_for('jouerCombat', {id: combat.id})}}" method="post">
-            {% if combat.termine %}
-                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Voir le resultat">
-            {% else %}
-                <input style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Jouer le prochain tour">                
-            {% endif %}
-        </form>
-    </div>
+    <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}">
+        <input id="submitBtn" style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Jouer le prochain tour">                
+    </form>
 </div>
 
+{% endblock %}
+
+{% block script %}
+{{parent()}}
+<script src="/js/combat.js"></script>
 {% endblock %}
