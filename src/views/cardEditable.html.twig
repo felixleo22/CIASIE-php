@@ -1,5 +1,7 @@
 <div id="card-{{ entite.id }}" class="card editable">
-    <img class="card-img-top" src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+    <div class="card-img-top img-container-300">
+        <img src="{{ get_photo(entite.photo, entite.defaultPhoto()) }}" alt="{{ entite.nom }} {{ entite.prenom }}">
+    </div>
     <div class="card-body">
         <h5 class="card-title" style="display: flex;justify-content: space-between">
             <span>{{ entite.nom }} {{ entite.prenom }}</span>
