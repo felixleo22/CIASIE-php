@@ -21,8 +21,8 @@ class Entite extends Model {
     }
 
     public function getPourcentageWin() {
-        if ($this->combatGagne === NULL && $this->combatPerdu === NULL) {
-            return 0;
+        if ($this->combatPerdu === 0) {
+            return 100;
         }
         return round($this->combatGagne / ($this->combatGagne + $this->combatPerdu),2) * 100 ;
     }
