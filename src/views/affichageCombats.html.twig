@@ -20,7 +20,11 @@
             <td scope="col" class="loser">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
             <td scope="col" class="winner">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
             {% endif %}
-            <td scope="col" class="btn-expand">+</td>
+            <td scope="col" class="btn-expand">
+                <a href="{{ path_for('combat', { 'id' : combat['id']}) }}">
+                    <img src="/ressources/plus.svg" alt="Affichers les stats">
+                </a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
