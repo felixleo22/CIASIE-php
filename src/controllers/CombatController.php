@@ -141,6 +141,12 @@ class CombatController extends Controller {
         
     }
     
+
+    public function seDefendre($entite){
+        return 7;
+    }
+
+
     /**
     * Methode pour cloturer un combat
     */
