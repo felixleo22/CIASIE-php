@@ -8,15 +8,9 @@
                 <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
             </div>
         </h5>
-        <div class="stat-group">
-            <p class="card-text"><i class="ra ra-player"></i>{{ entite.taille }}</p>
-            <p class="card-text"><i class="ra ra-two-hearts"></i> {{ entite.pointVie}}</p>
-            <p class="card-text"><i class="ra ra-sword"></i> {{ entite.pointAtt }}</p>
-            <p class="card-text"><i class="ra ra-shield"></i> {{ entite.pointDef }}</p>
-            <p class="card-text"><i class="ra ra-feather-wing"></i> {{ entite.pointAgi }}</p>
-            <p class="card-text"><i class="fas fa-trophy"></i> {{ entite.combatGagne }} gagnés ({{ entite.getPourcentageWin() }}%) / {{ entite.combatPerdu }} perdus</p>
-            <p class="card-text"><i class="fas fa-fist-raised"></i> {{ entite.totalDegatInflige }} total degat / {{ entite.totalDegatRecu }} total subit</p>
-        </div>
+        {% include 'statGroup.html.twig' %}
+        <p class="card-text"><i class="fas fa-trophy"></i> {{ entite.combatGagne }}W / {{ entite.combatPerdu }}L ({{ entite.getPourcentageWin() }}%)</p>
+        <p class="card-text"><i class="fas fa-fist-raised"></i> {{ entite.totalDegatInflige }} Infligés / {{ entite.totalDegatRecu }} Reçus</p>
     </div>
 </div>
 

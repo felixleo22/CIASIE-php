@@ -1,11 +1,11 @@
 <div id="vainqueur" class="card">
     <div class="card-header">
-        <h4>Statistique de fin de game</h4>
+        <h4>Statistiques</h4>
     </div>
     <div class="card-body">
-        degat reçu : {{ nbr_degat_infliger_personnage }}<br>
-        degat infliger : {{ nbr_degat_infliger_monstre }}<br>
-        nbr coup porter : {{ nbr_coup_porter_monstre| default('0') }}<br>
-        nbr tour : {{ nbr_tour }}
+        <p>Dégats reçus : {{ combat.perdants[0].degatRecu }}</p>
+        <p>Dégats infligés : {{ combat.perdants[0].degatInflige }}</p>
+        <p>Nombre de coups portés : {{ combat.perdants[0].nbAttaqueInflige }}</p>
+        <p>Nombre de coups reçus : {{  combat.perdants[0].nbAttaqueRecu }}</p>
     </div>
 </div>

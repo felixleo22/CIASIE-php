@@ -5,24 +5,25 @@
    <h1 id="titre">Vainqueur</h1>
    <div class="row-deck">
       <div id="vainqueur" style="display: flex; justify-content: center">
-         <div class="card">
-            <img class="card-img-top" src="{{ get_photo(personnages[0].photo, personnages[0].defaultPhoto()) }}" alt="Card image cap">
+         <div class="card combat">
+            <img class="card-img-top" src="{{ get_photo(combat.vainqueurs[0].entite.photo, combat.vainqueurs[0].entite.defaultPhoto()) }}" alt="Card image cap">
             <div class="card-body">
                <h5 class="card-title">
                   <div>
-                     {{ personnages[0].nom }} {{ personnages[0].prenom }}
+                     {{ combat.vainqueurs[0].entite.nom }} {{ combat.vainqueurs[0].entite.prenom }}
                   </div>
                </h5>
                <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-player"></i>{{ personnages[0].taille }}</p>
-                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ personnages[0].pointVie }}</p>
-                  <p class="card-text"><i class="ra ra-sword"></i> {{ personnages[0].pointAtt }}</p>
-                  <p class="card-text"><i class="ra ra-shield"></i> {{ personnages[0].pointDef }}</p>
-                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ personnages[0].pointAgi  }}</p>
+                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.vainqueurs[0].entite.pointVie }}</p>
+                  <p class="card-text"><i class="ra ra-sword"></i> {{ combat.vainqueurs[0].entite.pointAtt }}</p>
+                  <p class="card-text"><i class="ra ra-shield"></i> {{ combat.vainqueurs[0].entite.pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.vainqueurs[0].entite.taille }}</p>
+                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.vainqueurs[0].entite.pointAgi  }}</p>
+                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.vainqueurs[0].entite.poids }}</p>
                </div>
             </div>
          </div>
-         {% include 'fin_game_stat_vainqeur.html.twig' %}
+         {% include 'fin_game_stat_vainqueur.html.twig' %}
 
       </div>
       <div style="display: flex; justify-content: center;">
@@ -31,20 +32,21 @@
 
 
       <div id="perdant" style="display: flex; justify-content: center" >
-         <div class="card">
-            <img class="card-img-top" src="{{ get_photo(personnages[1].photo, personnages[1].defaultPhoto()) }}" alt="Card image cap">
+         <div class="card combat">
+            <img class="card-img-top" src="{{ get_photo(combat.perdants[0].entite.photo, combat.perdants[0].entite.defaultPhoto()) }}" alt="Card image cap">
             <div class="card-body">
                <h5 class="card-title">
                   <div>
-                     {{ personnages[1].nom }} {{ personnages[1].prenom }}
+                     {{ combat.perdants[0].entite.nom }} {{ combat.perdants[0].entite.prenom }}
                   </div>
                </h5>
                <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-player"></i>{{ personnages[1].taille }}</p>
-                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ personnages[1].pointVie }}</p>
-                  <p class="card-text"><i class="ra ra-sword"></i> {{ personnages[1].pointAtt }}</p>
-                  <p class="card-text"><i class="ra ra-shield"></i> {{ personnages[1].pointDef }}</p>
-                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ personnages[1].pointAgi  }}</p>
+                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.perdants[0].entite.pointVie }}</p>
+                  <p class="card-text"><i class="ra ra-sword"></i> {{ combat.perdants[0].entite.pointAtt }}</p>
+                  <p class="card-text"><i class="ra ra-shield"></i> {{ combat.perdants[0].entite.pointDef }}</p>
+                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
+                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.perdants[0].entite.pointAgi  }}</p>
+                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.perdants[0].entite.poids }}</p>
                </div>
             </div>
          </div>
@@ -52,6 +54,7 @@
       </div>
       <div style="display: flex; justify-content: center;">
          <button id="stat_gagant" class="btn btn-primary">Afficher les stats du gagnant </button>
+         <button class="btn btn-primary"><a href="{{ path_for("accueil") }}">Revenir à l'accueil</a></button>
       </div>
    </div>
 

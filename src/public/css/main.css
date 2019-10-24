@@ -18,12 +18,18 @@ div.card-row, div.battlefield{
     flex-wrap: wrap;
     margin: auto;
 }
+div.card-row{
+    overflow: scroll;
+}
 div.battlefield{
     justify-content: space-evenly;
 }
 div.card{
     width: 23%;
     margin: 1%;
+}
+div.card-body{
+    padding: 10px;
 }
 div.card > img{
     height: 300px;
@@ -33,6 +39,9 @@ h5{
     display: flex;
     justify-content: space-between;
     font-size: 14pt;
+}
+h5 > span{
+    margin: 0 auto;
 }
 h5 > div > a{
     margin: 0 5px;
@@ -51,15 +60,34 @@ div.form-group > label{
 div.form-group > input, select{
     margin-bottom: 1vh;
 }
+div.form-group:last-child{
+    display: flex;
+    justify-content: center;
+}
 label > span{
     color: red;
 }
 div.stat-group{
     margin-top: 2vh;
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
     height: 13vh;
+}
+div.card.selectable div.stat-group > p.card-text{
+    flex: 0 0 31%;
+}
+div.card.combat div.stat-group > p.card-text{
+    flex: 0 0 31%;
+}
+div.card.editable div.stat-group > p.card-text{
+    flex: 0 0 33%;
+}
+div.stat-group > p.card-text{
+    height: fit-content;
+    margin: 0;
+}
+p.card-text{
+    text-align: center;
 }
 .table{
     text-align: center;
