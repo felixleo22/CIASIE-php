@@ -72,12 +72,15 @@ class CombatController extends Controller {
             return Utils::redirect($response, 'accueil');
         }
         
+        $participants = [];
         foreach ($personnages as $personnage) {
             $participant = new Participant();
             $participant->pointVie = $personnage->pointVie;
             $participant->entite_id = $personnage->id;
             $participant->combat_id = $combat->id;
             $participant->save();
+            
+            $participants[] = $participant;
         }
         
         foreach ($monstres as $monstre) {
@@ -86,7 +89,12 @@ class CombatController extends Controller {
             $participant->entite_id = $monstre->id;
             $participant->combat_id = $combat->id;
             $participant->save();
+            
+            $participants[] = $participant;
         }
+        
+        $this->choixAttaquant($combat, $participants[0], $participants[1]);
+        $combat->save();
         
         setcookie("combat", json_encode($combat->id), time() + 3600*24*60, "/");
         
@@ -98,7 +106,7 @@ class CombatController extends Controller {
     * le plus grand chiffre commence a attaque
     * @return Entite
     */
-    private function choixAttaquant($personnage1, $personnage2){
+    private function choixAttaquant($combat, $personnage1, $personnage2){
         $val1 = 0;
         $val2 = 0;
         while($val1 === $val2){
@@ -106,9 +114,11 @@ class CombatController extends Controller {
             $val2 = mt_rand(0, $personnage2->entite->pointAgi);
         }
         if ($val1 > $val2){
-            return ['attaquant' => $personnage1, 'victime' => $personnage2];
+            $combat->prochainAttaquant = $personnage1->id;
+            $combat->prochainVictime = $personnage2->id;
         }else{
-            return ['attaquant' => $personnage2, 'victime' => $personnage1];
+            $combat->prochainAttaquant = $personnage2->id;
+            $combat->prochainVictime = $personnage1->id;
         }
     }
     
@@ -166,10 +176,6 @@ class CombatController extends Controller {
             //TODO faire qq chose si le combat n'existe pas
         }
         
-        $entites = $combat->participants;
-        $participant1 = $entites[0];
-        $participant2 = $entites[1];
-        
         if($combat->termine) {
             return $response->withJson(['showResult' => true], 201);
         }
@@ -178,9 +184,21 @@ class CombatController extends Controller {
         
         $messsage = "";
         
-        $choix = $this->choixAttaquant($participant1, $participant2);
-        $attaquant = $choix['attaquant'];
-        $victime = $choix['victime'];
+        $entites = $combat->participants;
+        $participant1 = $entites[0];
+        $participant2 = $entites[1];
+
+        //recuperation de l'attaquant et de la victime
+        $attaquant = null;
+        $victime = null;
+        foreach ($entites as $participant) {
+            if($combat->prochainAttaquant === $participant->id) {
+                $attaquant = $participant;
+            }
+            if($combat->prochainVictime === $participant->id) {
+                $victime = $participant;
+            }
+        }
         
         $degat = $this->degat($attaquant,$victime);
         // save statistique
@@ -196,6 +214,9 @@ class CombatController extends Controller {
             $messsage .= " Le coup de grâce à été donné !";
         }       
         
+        //choix de l attaquant et de la victime au prochain tours;
+        $this->choixAttaquant($combat, $participant1, $participant2);
+        
         $attaquant->save();
         $victime->save();
         $combat->save();
@@ -204,7 +225,7 @@ class CombatController extends Controller {
         $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
         return $response->withJson($data, 201); 
     }
-
+    
     
     public function afficherCombat(Request $request, Response $response, $args) {
         //récupération du combat
