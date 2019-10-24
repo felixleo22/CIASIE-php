@@ -45,10 +45,28 @@ $('document').ready(() => {
         participant1PV.text(pv1);
         participant2PV.text(pv2);
         gameMessage.text(message);
-        console.log(pv1/pvmax1*100)
-        console.log(pv2/pvmax2*100)
-        hpbar1.css("width",pv1/pvmax1*100+"%")
-        hpbar2.css("width",pv2/pvmax2*100+"%")
+        let pb1 = pv1/pvmax1*100;
+        let pb2 = pv2/pvmax2*100;
+        hpbar1.css("width",pb1+"%")
+        hpbar2.css("width",pb2+"%")
+        if(pb1 < 60  && pb1 >=  30){
+            hpbar1.css("background-color","orange")
+
+        }else if (pb1 < 30) {
+            hpbar1.css("background-color","red")
+
+        }
+
+        if(pb2 < 60 && pb2 >=  30 ){
+            hpbar2.css("background-color","orange")
+
+
+        }else if (pb2 < 30 ) {
+            hpbar2.css("background-color","red")
+
+        }
+
+
         if(isEnd) {
             submitBtn.val('Voir le résultat');
         }
