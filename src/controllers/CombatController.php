@@ -116,7 +116,7 @@ class CombatController extends Controller {
     * La victime à 5% de chance d'esquiver le coup (return 0)
     * L'attaque est chosit entre 80% et 120% des point d'attaque de l'attaquant.
     * La defence est calculer en % avec des palier tout les 20 points de defense
-    * Elle ne peut pas exeder 30%
+    * Elle ne peut pas exeder 70%
     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
     */
@@ -131,22 +131,15 @@ class CombatController extends Controller {
             return round(($attaquant->entite->pointAtt*$att));
         }
         $reste = round($victime->entite->pointDef/20);
-        if($reste > 3) {
-            $reste = 3;
+        if($reste > 7) {
+            $reste = 7;
         }
         if($reste >= 0) {
             $reste = 10;
         }
         return round(($attaquant->entite->pointAtt*$att)*($reste/10));
-        
     }
     
-
-    public function seDefendre($entite){
-        return 7;
-    }
-
-
     /**
     * Methode pour cloturer un combat
     */
@@ -157,11 +150,11 @@ class CombatController extends Controller {
         $gagnant->gagner = 1;
         $gagnant->entite->combatGagne++;
         $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
-        $gagnant->entite->totalDegatRecu = $gagnant->degatRecu;
+        $gagnant->entite->totalDegatRecu += $gagnant->degatRecu;
         
         $perdant->entite->combatPerdu++;
         $perdant->entite->totalDegatInflige += $perdant->degatInflige;
-        $perdant->entite->totalDegatRecu = $perdant->degatRecu;
+        $perdant->entite->totalDegatRecu += $perdant->degatRecu;
         $gagnant->entite->save();
         $perdant->entite->save();
     }

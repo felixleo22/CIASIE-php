@@ -135,3 +135,24 @@ td.loser{
 .imagesClassement {
     width: 75px;
 }
+
+h1#titre{
+    text-align: center;
+}
+div.card-container{
+    display: flex;
+    justify-content: center;
+}
+div.button-group{
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: auto;
+}
+div.button-group > input, div.button-group > a{
+    margin: 0 1%;
+}
+input#btn-show-stats {
+    width: 260px;
+}
