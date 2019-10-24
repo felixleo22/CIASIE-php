@@ -218,15 +218,11 @@ class CombatController extends Controller {
                     unset($_SESSION[$key]);
                 }
 
-                $vainqueur = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
-                $perdant = $participant1->pointVie >= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $vainqueur = $participant1->pointVie > 0 ? $participant1->entite()->first() : $participant2->entite()->first();
+                $perdant = $participant1->pointVie <= 0 ? $participant1->entite()->first() : $participant2->entite()->first();
                 $personnages = [];
 
                 if ($vainqueur->id == $participant1->entite_id) {
-                    $messsage .= "Le coup de grâce à été donné !";
-                    array_push($personnages,$vainqueur);
-                    array_push($personnages,$perdant);
-                }else{
                     $messsage .= "Le coup de grâce à été donné !";
                     array_push($personnages,$vainqueur);
                     array_push($personnages,$perdant);
