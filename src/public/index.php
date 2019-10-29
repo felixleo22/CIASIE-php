@@ -109,6 +109,7 @@ $app->group('/combat', function($app) {
     $app->post('/creer', CombatController::class.':creerCombat')->setName('creerCombat');
     $app->get('/{id}', CombatController::class.':afficherCombat')->setName('combat');
     $app->post('/{id}', CombatController::class.':play')->setName('jouerCombat');
+    $app->post('/{id}/start', CombatController::class.':commencerCombat')->setName('commencerCombat');
 });
 
 $app->get('/classement', EntiteController::class.':affichageClassement')->setName('classement');

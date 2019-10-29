@@ -260,7 +260,34 @@ class CombatController extends Controller {
         return $response->withJson($data, 201); 
     }
     
+    /**
+     * Permet de récupérer des infos nécessaires au démarrage du combat
+     */
+    public function commencerCombat(Request $request, Response $response, $args) {
+        $idCombat = Utils::sanitize($args['id']);
+        $combat = Combat::find($idCombat);
+        if($combat === null) {
+            //TODO faire qq chose si le combat n'existe pas
+        }
+        
+        if($combat->termine) {
+            return $response->withJson(['showResult' => true], 201);
+        }
+        
+        $combat->nbTours++;
+        
+        $entites = $combat->participants;
+        $attaquant = Participant::find($combat->prochainAttaquant);
     
+        $messsage = $attaquant->entite->prenom . ' joue en premier !';
+
+        $data = ['typeOfNext' => $attaquant->entite->type, 'message' => $messsage];
+        return $response->withJson($data, 201); 
+    }
+
+    /**
+    *  Affiche la vue du combat
+    */
     public function afficherCombat(Request $request, Response $response, $args) {
         //récupération du combat
         $idCombat = Utils::sanitize($args['id']);
@@ -279,8 +306,7 @@ class CombatController extends Controller {
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
         
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);        
-        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);          
     }
     
 }

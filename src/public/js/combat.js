@@ -14,6 +14,41 @@ $('document').ready(() => {
     const attaquerBtn = $('#attaquerBtn');
     const defendreBtn = $('#defendreBtn');
     
+    const startForm = document.getElementById('startForm');
+    
+    //initialiser les infos du combats
+    startForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const url = startForm.getAttribute('action');  
+        
+        fetch(url, {
+            method: 'POST',
+        })
+        .then((response) => {
+            if(!response.ok) {
+                console.error(response);
+                return;
+            }
+            
+            return response.json();
+        })
+        .then((data) => {
+            const {message, typeOfNext, showResult} = data;
+            if(showResult) {
+                window.location.reload();
+                return;
+            }
+
+            if(typeOfNext === 'personnage') {
+                showChooseActionForm();
+            }else{
+                showPlayNextForm();
+            }
+            gameMessage.text(message);
+        });
+        startForm.remove();
+    });
+    
     //jouer un tour avec choix
     defendreBtn.on('click', () => {
         const url = chooseActionForm.getAttribute('action');
@@ -38,7 +73,7 @@ $('document').ready(() => {
     function play(url, action = 'none') {
         const data = new FormData();
         data.append('chosenAction', action);
-
+        
         fetch(url, {
             method: 'POST',
             body: data,
@@ -66,13 +101,13 @@ $('document').ready(() => {
     function updateDisplay(p1, p2 ,typeOfNext, message) {
         participant1PV.text(p1.pointVie);
         participant2PV.text(p2.pointVie);
-
+        
         if(p1.defensif) {
             participant1Def.text('( + 25%)');
         }else{
             participant1Def.text('');
         }
-
+        
         gameMessage.text(message);
         
         
@@ -82,7 +117,6 @@ $('document').ready(() => {
             showPlayNextForm();
             break;
             case 'monstre':
-            submitBtn.val('Jouer le prochain coup');
             showPlayNextForm();                
             break;
             case 'personnage':

@@ -51,9 +51,9 @@
     
 </div>
 <div style="margin-bottom: 1rem;">
-    <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}">
+    <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}" style="display: none;">
         <div class="button-group">
-            <input id="submitBtn" class="btn btn-primary" type="submit" value="Commencer le combat">      
+            <input id="submitBtn" class="btn btn-primary" type="submit" value="Voir le prochain coup">      
         </div>          
     </form>
     <form id="chooseActionForm" action="{{path_for('jouerCombat', {id: combat.id})}}" style="display: none;">
@@ -61,6 +61,11 @@
             <input id="attaquerBtn" class="btn btn-primary" type="button" value="Attaquer">                
             <input id="defendreBtn" class="btn btn-primary" type="button" value="Défendre">              
         </div>  
+    </form>
+    <form id="startForm" action="{{path_for('commencerCombat', {id: combat.id})}}">
+        <div class="button-group">
+            <input id="submitBtn" class="btn btn-primary" type="submit" value="Commencer le combat">      
+        </div>          
     </form>
 </div>
 
