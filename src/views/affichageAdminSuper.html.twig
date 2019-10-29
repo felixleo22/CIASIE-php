@@ -17,7 +17,7 @@ Admins
             {% if not admin.super %}
             <td> 
                 <a class="btn btn-primary" href="{{ path_for('formModifAdmin', {id: admin.id}) }}"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-primary" href="{{ path_for('execSupprAdmin', {id: admin.id}) }}"><i class="fas fa-trash-alt"></i></a>
+                <a class="btn btn-outline-danger" href="{{ path_for('execSupprAdmin', {id: admin.id}) }}"><i class="fas fa-trash-alt"></i></a>
             </td>
             {% else %}
             <td class="disabled"></td>
