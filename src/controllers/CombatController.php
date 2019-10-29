@@ -202,17 +202,32 @@ class CombatController extends Controller {
             }
         }
         
-        $degat = $this->degat($attaquant,$victime);
-        // save statistique
-        $attaquant->nbAttaqueInflige++;
-        $attaquant->degatInflige += $degat;
-        $victime->pointVie -= $degat;
-        $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
-        $victime->nbAttaqueRecu++;
-        $victime->degatRecu += $degat;
+        //le message sur le tour en cours
+        $messsage = "";
         
-        $typeOfNext = null;
+        //execution du tour
+        $actionOfPersonnage = Utils::getFilteredPost($request, 'chosenAction');
 
+        if($attaquant->entite->type === 'personnage' && $actionOfPersonnage === 'defendre'){
+            //si le perso joue et qu'il défend
+            //TODO faire la défense
+            $messsage .= 'Vous avez defendu ! (augmentation de la défense de 25% jusqu\'au prochain tour ou coup subit).';
+        }else{
+            //sinon un monstre joue ou que le perso attaque
+
+            $degat = $this->degat($attaquant,$victime);
+            // save statistique
+            $attaquant->nbAttaqueInflige++;
+            $attaquant->degatInflige += $degat;
+            $victime->pointVie -= $degat;
+            $messsage .= $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
+            $victime->nbAttaqueRecu++;
+            $victime->degatRecu += $degat;    
+        }     
+        
+        //choix du prochain ou fin du combat            
+        $typeOfNext = null;
+        
         if($victime->pointVie <= 0) {
             $this->terminerCombat($combat, $attaquant, $victime);
             $messsage .= " Le coup de grâce à été donné !";
@@ -222,7 +237,7 @@ class CombatController extends Controller {
             $prochain = $this->choixAttaquant($combat, $participant1, $participant2);
             $messsage .= ' C\'est au tour de '.$prochain->entite->prenom." de jouer.";
             $typeOfNext = $prochain->entite->type;
-        }       
+        }   
         
         $attaquant->save();
         $victime->save();

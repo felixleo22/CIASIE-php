@@ -17,13 +17,13 @@ $('document').ready(() => {
     defendreBtn.on('click', () => {
         const url = chooseActionForm.getAttribute('action');
         
-        play(url);
+        play(url, 'defendre');
     });
     
     attaquerBtn.on('click', () => {
         const url = chooseActionForm.getAttribute('action');
         
-        play(url);
+        play(url, 'attaquer');
     });
     
     //jouer un tour normal
@@ -34,9 +34,13 @@ $('document').ready(() => {
     });   
     
     //requete ajax
-    function play(url) {
+    function play(url, action = 'none') {
+        const data = new FormData();
+        data.append('chosenAction', action);
+
         fetch(url, {
             method: 'POST',
+            body: data,
         })
         .then((response) => {
             if(!response.ok) {
@@ -47,6 +51,8 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
+            console.log(data);
+
             const {pv1, pv2, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
