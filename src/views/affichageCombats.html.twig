@@ -3,14 +3,14 @@
 {% block content %}
 <table class="table table-bordered">
     <thead>
-    <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Personnage</th>
-        <th scope="col">Monstre</th>
-    </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Personnage</th>
+            <th scope="col">Monstre</th>
+        </tr>
     </thead>
     <tbody>
-    {% for combat in combats %}
+        {% for combat in combats %}
         <tr id="">
             <td scope="col">{{ combat['id'] }}</td>
             {% if combat['personnage'].gagner %}
@@ -20,13 +20,13 @@
             <td scope="col" class="loser">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
             <td scope="col" class="winner">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
             {% endif %}
-            <td scope="col" class="btn-expand">
-                <a href="{{ path_for('combat', { 'id' : combat['id']}) }}">
-                    <img src="/ressources/plus.svg" alt="Affichers les stats">
+            <td scope="col" style="padding-left: 0; padding-right: 0;">
+                <a class="btn btn-primary" href="{{ path_for('combat', { 'id' : combat['id']}) }}">
+                    <i class="fas fa-eye"></i> More
                 </a>
             </td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}
