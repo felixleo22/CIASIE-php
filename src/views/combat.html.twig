@@ -50,9 +50,17 @@
     </div>
     
 </div>
-<div>
+<div style="margin-bottom: 1rem;">
     <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}">
-        <input id="submitBtn" style="width: 81%; margin-left: 9.5%;" class="btn btn-primary" type="submit" value="Commencer le combat">                
+        <div class="button-group">
+            <input id="submitBtn" class="btn btn-primary" type="submit" value="Commencer le combat">      
+        </div>          
+    </form>
+    <form id="chooseActionForm" action="{{path_for('jouerCombat', {id: combat.id})}}" style="display: none;">
+        <div class="button-group">
+            <input id="attaquerBtn" class="btn btn-primary" type="button" value="Attaquer">                
+            <input id="defendreBtn" class="btn btn-primary" type="button" value="Défendre">              
+        </div>  
     </form>
 </div>
 
