@@ -211,21 +211,24 @@ class CombatController extends Controller {
         $victime->nbAttaqueRecu++;
         $victime->degatRecu += $degat;
         
+        $typeOfNext = null;
+
         if($victime->pointVie <= 0) {
             $this->terminerCombat($combat, $attaquant, $victime);
             $messsage .= " Le coup de grâce à été donné !";
+            $typeOfNext = 'ended';
         }else{  
             //choix de l attaquant et de la victime au prochain tours;
             $prochain = $this->choixAttaquant($combat, $participant1, $participant2);
             $messsage .= ' C\'est au tour de '.$prochain->entite->prenom." de jouer.";
+            $typeOfNext = $prochain->entite->type;
         }       
         
         $attaquant->save();
         $victime->save();
         $combat->save();
         
-        
-        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
+        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
     

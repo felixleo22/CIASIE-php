@@ -26,23 +26,25 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            const {pv1, pv2, message, isEnd, showResult} = data;
+            const {pv1, pv2, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
                 return;
             }
 
-            updateDisplay(pv1, pv2, message, isEnd);
+            updateDisplay(pv1, pv2, typeOfNext, message);
         });
     });   
 
-    function updateDisplay(pv1 , pv2, message, isEnd) {
+    function updateDisplay(pv1 , pv2,typeOfNext, message) {
         participant1PV.text(pv1);
         participant2PV.text(pv2);
         gameMessage.text(message);
 
-        if(isEnd) {
+        if(typeOfNext === 'ended') {
             submitBtn.val('Voir le résultat');
+        }else{
+            submitBtn.val('Jouer le prochain coup');
         }
     }
 });
