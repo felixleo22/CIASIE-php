@@ -17,7 +17,7 @@ class EntiteController extends Controller
         $classement = [];
         $listeEntite = Entite::all();
         foreach ($listeEntite as $entite) {
-            $pourcentage = ($entite->combatGagne / ($entite->combatGagne + $entite->combatPerdu))*100;
+            $pourcentage = $entite->getPourcentageWin();
             $classement[$entite->id] = $pourcentage;
         }
         arsort($classement, SORT_NUMERIC);

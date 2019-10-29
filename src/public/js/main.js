@@ -40,6 +40,21 @@ function select(type, id) {
     border(type, id);
 }
 
+function toggleStats(target){
+    $("h1#titre").text(target)
+    $("div.card-container").hide();
+    $("div#" + target).show();
+    if (target === "Perdant"){
+        target = "Vainqueur";
+    } else {
+        target = "Perdant";
+    }
+    console.log(target);
+    $("input#btn-show-stats")
+        .val("Afficher les stats du " + target)
+        .data("target", target);
+}
+
 $(document).ready(function () {
     $("input.btn-select").click(function () {
         const type = $(this).data("type");
@@ -47,24 +62,9 @@ $(document).ready(function () {
         select(type, id);
     });
 
-    $("#vainqueur").show();
-    $("#perdant").hide();
-    $("#stat_gagant").hide();
-    $("#stat_perdant").show();
+    $("input#btn-show-stats").click(function () {
+        const target = $(this).data("target");
+        toggleStats(target);
+    })
 
-    $("#stat_perdant").click(function () {
-        $("#vainqueur").hide();
-        $("#perdant").show();
-        $("#stat_perdant").hide();
-        $("#stat_gagant").show();
-        $("#titre").text("Perdant") ;
-    });
-
-    $("#stat_gagant").click(function () {
-        $("#vainqueur").show();
-        $("#perdant").hide();
-        $("#stat_gagant").hide();
-        $("#stat_perdant").show();
-        $("#titre").text("Vainqueur") ;
-    });
 });

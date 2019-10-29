@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 15 Octobre 2019 à 11:36
+-- Généré le :  Mar 29 Octobre 2019 à 17:03
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -30,6 +30,8 @@ CREATE TABLE `combat` (
   `id` int(11) NOT NULL,
   `termine` tinyint(1) NOT NULL DEFAULT '0',
   `nbTours` int(11) NOT NULL DEFAULT '0',
+  `prochainAttaquant` int(11) DEFAULT NULL,
+  `prochainVictime` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -80,17 +82,11 @@ CREATE TABLE `entite` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `poids` int(11) NOT NULL,
-  `combatGagne` int(11) DEFAULT NULL,
-  `combatPerdu` int(11) DEFAULT NULL
+  `combatGagne` int(11) DEFAULT '0',
+  `combatPerdu` int(11) DEFAULT '0',
+  `totalDegatInflige` int(11) NOT NULL DEFAULT '0',
+  `totalDegatRecu` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `entite`
---
-
-INSERT INTO `entite` (`id`, `type`, `nom`, `prenom`, `taille`, `pointVie`, `pointAtt`, `pointDef`, `pointAgi`, `photo`, `created_at`, `updated_at`, `deleted_at`, `poids`, `combatGagne`, `combatPerdu`) VALUES
-(1, 'personnage', 'Mario', 'Bross', 120, 100, 20, 10, 100, '31353731303738353237980fd013ec49cba8.jpg', '2019-10-14 18:42:07', '2019-10-14 18:42:07', NULL, 50, NULL, NULL),
-(2, 'monstre', 'Godzilla', 'The monster', 250, 200, 40, 40, 20, '313537313037383732349326703bc26c5932.jpeg', '2019-10-14 18:45:24', '2019-10-14 18:45:34', NULL, 150, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,10 +103,11 @@ CREATE TABLE `participant` (
   `nbAttaqueRecu` int(11) DEFAULT '0',
   `degatInflige` int(11) DEFAULT '0',
   `degatRecu` int(11) DEFAULT '0',
+  `defensif` tinyint(1) NOT NULL DEFAULT '0',
+  `gagner` tinyint(1) DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `gagner` tinyint(1) DEFAULT '0'
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -149,7 +146,7 @@ ALTER TABLE `participant`
 -- AUTO_INCREMENT pour la table `combat`
 --
 ALTER TABLE `combat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
@@ -159,12 +156,12 @@ ALTER TABLE `compteAdmin`
 -- AUTO_INCREMENT pour la table `entite`
 --
 ALTER TABLE `entite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `participant`
 --
 ALTER TABLE `participant`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -11,7 +11,6 @@ class SuperAdminMiddleware {
 
     public function __invoke(Request $request, Response $response, $next) {
         if(!Auth::estSuperAdmin()){
-            //TODO, à la fin du projet, changer le message d'erreur
             FlashMessage::flashError('Vous ne pouvez pas les droits pour modifer, creer, supprimer (il faut etre super admin)');
             return Utils::redirect($response, 'listeAdmins'); 
         }

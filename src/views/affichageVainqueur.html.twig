@@ -2,76 +2,60 @@
 
 
 {% block content %}
-   <h1 id="titre">Vainqueur</h1>
-   <div class="row-deck">
-      <div id="vainqueur" style="display: flex; justify-content: center">
-         <div class="card combat">
+<h1 id="titre">Vainqueur</h1>
+<div class="row-deck">
+    <div id="Vainqueur" class="card-container">
+      <div class="card combat">
+         <div class="card-img-top img-container-300">
             <img class="card-img-top" src="{{ get_photo(combat.vainqueurs[0].entite.photo, combat.vainqueurs[0].entite.defaultPhoto()) }}" alt="Card image cap">
-            <div class="card-body">
-               <h5 class="card-title">
-                  <div>
-                     {{ combat.vainqueurs[0].entite.nom }} {{ combat.vainqueurs[0].entite.prenom }}
-                  </div>
-               </h5>
-               <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.vainqueurs[0].entite.pointVie }}</p>
-                  <p class="card-text"><i class="ra ra-sword"></i> {{ combat.vainqueurs[0].entite.pointAtt }}</p>
-                  <p class="card-text"><i class="ra ra-shield"></i> {{ combat.vainqueurs[0].entite.pointDef }}</p>
-                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.vainqueurs[0].entite.taille }}</p>
-                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.vainqueurs[0].entite.pointAgi  }}</p>
-                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.vainqueurs[0].entite.poids }}</p>
+         </div>
+         <div class="card-body">
+            <h5 class="card-title">
+               <div>
+                  {{ combat.vainqueurs[0].entite.nom }} {{ combat.vainqueurs[0].entite.prenom }}
                </div>
+            </h5>
+            <div class="stat-group">
+               <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.vainqueurs[0].entite.pointVie }}</p>
+               <p class="card-text"><i class="ra ra-sword"></i> {{ combat.vainqueurs[0].entite.pointAtt }}</p>
+               <p class="card-text"><i class="ra ra-shield"></i> {{ combat.vainqueurs[0].entite.pointDef }}</p>
+               <p class="card-text"><i class="ra ra-player"></i>{{ combat.vainqueurs[0].entite.taille }}</p>
+               <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.vainqueurs[0].entite.pointAgi  }}</p>
+               <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.vainqueurs[0].entite.poids }}</p>
+               
             </div>
          </div>
-         {% include 'fin_game_stat_vainqueur.html.twig' %}
-
       </div>
-      <div style="display: flex; justify-content: center;">
-         <button id="stat_perdant" class="btn btn-primary">Afficher les stats du perdant </button>
-      </div>
-
-
-      <div id="perdant" style="display: flex; justify-content: center" >
-         <div class="card combat">
-            <img class="card-img-top" src="{{ get_photo(combat.perdants[0].entite.photo, combat.perdants[0].entite.defaultPhoto()) }}" alt="Card image cap">
-            <div class="card-body">
-               <h5 class="card-title">
-                  <div>
-                     {{ combat.perdants[0].entite.nom }} {{ combat.perdants[0].entite.prenom }}
-                  </div>
-               </h5>
-               <div class="stat-group">
-                  <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.perdants[0].entite.pointVie }}</p>
-                  <p class="card-text"><i class="ra ra-sword"></i> {{ combat.perdants[0].entite.pointAtt }}</p>
-                  <p class="card-text"><i class="ra ra-shield"></i> {{ combat.perdants[0].entite.pointDef }}</p>
-                  <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
-                  <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.perdants[0].entite.pointAgi  }}</p>
-                  <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.perdants[0].entite.poids }}</p>
-               </div>
-            </div>
-         </div>
-             {% include 'fin_game_stat_perdant.html.twig' %}
-      </div>
-      <div style="display: flex; justify-content: center;">
-         <button id="stat_gagant" class="btn btn-primary">Afficher les stats du gagnant </button>
-         <button class="btn btn-primary"><a href="{{ path_for("accueil") }}">Revenir à l'accueil</a></button>
-      </div>
+      {% include 'fin_game_stat_vainqueur.html.twig' %}
    </div>
+   
+   <div id="Perdant" class="card-container" style="display: none;" >
+      <div class="card combat">
+         <div class="card-img-top img-container-300">
+            <img class="card-img-top" src="{{ get_photo(combat.perdants[0].entite.photo, combat.perdants[0].entite.defaultPhoto()) }}" alt="Card image cap">
+         </div>
+         <div class="card-body">
+            <h5 class="card-title">
+               <div>
+                  {{ combat.perdants[0].entite.nom }} {{ combat.perdants[0].entite.prenom }}
+               </div>
+            </h5>
+            <div class="stat-group">
+               <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.perdants[0].entite.pointVie }}</p>
+               <p class="card-text"><i class="ra ra-sword"></i> {{ combat.perdants[0].entite.pointAtt }}</p>
+               <p class="card-text"><i class="ra ra-shield"></i> {{ combat.perdants[0].entite.pointDef }}</p>
+               <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
+               <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.perdants[0].entite.pointAgi  }}</p>
+               <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.perdants[0].entite.poids }}</p>
+            </div>
+         </div>
+      </div>
+      {% include 'fin_game_stat_perdant.html.twig' %}
+   </div>
+</div>
 
-{% endblock %}
-
-{% block javascript %}
-{{ parent() }}
-<script>
-$(document).ready(function(){
-   $("#vainqueur").show();
-   $("#perdant").hide();
-
-   $("#stat").click(function () {
-      $("#vainqueur").hide();
-      $("#perdant").show();
-   })
-})
-</script>
-
+<div class="button-group">
+    <input type="button" id="btn-show-stats" data-target="Perdant" class="btn btn-primary" value="Afficher les stats du Perdant">
+    <a class="btn btn-secondary" href="{{ path_for("accueil") }}">Revenir à l'accueil</a>
+</div>
 {% endblock %}
