@@ -5,14 +5,14 @@
     <div class="card-body">
         <h5 class="card-title" style="display: flex;justify-content: space-between">
             <span>{{ entite.nom }} {{ entite.prenom }}</span>
-            <div>
-                <a href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><img src="/ressources/pencil.svg"></a>
-                <a href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><img src="/ressources/x.svg"></a>
-            </div>
         </h5>
         {% include 'statGroup.html.twig' %}
         <p class="card-text"><i class="fas fa-trophy"></i> {{ entite.combatGagne }}W / {{ entite.combatPerdu }}L ({{ entite.getPourcentageWin() }}%)</p>
         <p class="card-text"><i class="fas fa-fist-raised"></i> {{ entite.totalDegatInflige }} Infligés / {{ entite.totalDegatRecu }} Reçus</p>
+    </div>
+    <div class="card-footer text-center">
+        <a class="btn btn-primary" href="{{ path_for('formModifEntite', {id:  entite.id}) }}"><i class="fas fa-edit"></i></a>
+        <a class="btn btn-outline-primary" href="{{ path_for('execSupprEntite', {id:  entite.id}) }}"><i class="fas fa-trash-alt"></i></a>
     </div>
 </div>
 
