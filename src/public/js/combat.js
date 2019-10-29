@@ -2,6 +2,7 @@ $('document').ready(() => {
     
     //affichage des données
     const participant1PV = $('#participant1PV');
+    const participant1Def = $('#participant1Def');
     const participant2PV = $('#participant2PV');
     const gameMessage = $('#gameMessage');
     
@@ -51,22 +52,27 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            console.log(data);
-
-            const {pv1, pv2, message, typeOfNext, showResult} = data;
+            const {p1, p2, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
                 return;
             }
             
-            updateDisplay(pv1, pv2, typeOfNext, message);
+            updateDisplay(p1, p2, typeOfNext, message);
         });
     }
     
     //mise a jour de l affichage
-    function updateDisplay(pv1 , pv2,typeOfNext, message) {
-        participant1PV.text(pv1);
-        participant2PV.text(pv2);
+    function updateDisplay(p1, p2 ,typeOfNext, message) {
+        participant1PV.text(p1.pointVie);
+        participant2PV.text(p2.pointVie);
+
+        if(p1.defensif) {
+            participant1Def.text('( + 25%)');
+        }else{
+            participant1Def.text('');
+        }
+
         gameMessage.text(message);
         
         
