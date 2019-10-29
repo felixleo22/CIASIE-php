@@ -16,13 +16,19 @@
                 <span>{{ participant1.entite.nom }} {{ participant1.entite.prenom }}</span>
             </h5>
             <div class="stat-group">
-                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant1PV">{{ participant1.pointVie}}</span></p>
+                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant1PV" data-hp-max= {{participant1.entite.pointVie}}>{{ participant1.pointVie}}</span></p>
                 <p class="card-text"><i class="ra ra-sword"></i> {{ participant1.entite.pointAtt }}</p>
                 <p class="card-text"><i class="ra ra-shield"></i> {{ participant1.entite.pointDef }}<span id="participant1Def"></span></p>
                 <p class="card-text"><i class="ra ra-player"></i>{{ participant1.entite.taille }}</p>
                 <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant1.entite.pointAgi }}</p>
                 <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ participant1.entite.poids }}</p>
             </div>
+             <div class="progress">
+  <div id="hp_bar_1" class="progress-bar" role="progressbar" aria-valuenow="70"
+  aria-valuemin="0" aria-valuemax="100" style="width:{{participant1.pointVie}}%">
+    <span class="sr-only">70% Complete</span>
+  </div>
+</div> 
         </div>
     </div>
     
@@ -39,13 +45,19 @@
                 <span>{{ participant2.entite.nom }} {{ participant2.entite.prenom }}</span>
             </h5>
             <div class="stat-group">
-                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant2PV">{{ participant2.pointVie}}</span></p>
+                <p class="card-text"><i class="ra ra-two-hearts"></i> <span id="participant2PV" data-hp-max= {{participant2.entite.pointVie}}>{{ participant2.pointVie}}</span></p>
                 <p class="card-text"><i class="ra ra-sword"></i> {{ participant2.entite.pointAtt }}</p>
                 <p class="card-text"><i class="ra ra-shield"></i> {{ participant2.entite.pointDef }}</p>
                 <p class="card-text"><i class="ra ra-player"></i>{{ participant2.entite.taille }}</p>
                 <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant2.entite.pointAgi }}</p>
                 <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ participant2.entite.poids }}</p>
             </div>
+                         <div class="progress">
+  <div id="hp_bar_2" class="progress-bar" role="progressbar" aria-valuenow="100"
+  aria-valuemin="0" aria-valuemax="100" style="width:{{participant2.pointVie}}%">
+    <span class="sr-only"></span>
+  </div>
+</div> 
         </div>
     </div>
     

@@ -5,7 +5,12 @@ $('document').ready(() => {
     const participant1Def = $('#participant1Def');
     const participant2PV = $('#participant2PV');
     const gameMessage = $('#gameMessage');
-    
+
+    const hpbar1 = $("#hp_bar_1");
+    const hpbar2 = $("#hp_bar_2");
+    const pvmax1 = participant1PV.data("hp-max");
+    const pvmax2 = participant2PV.data("hp-max");
+
     //formulaire
     const playNextForm = document.getElementById('playNextForm');
     const submitBtn = $('#submitBtn');
@@ -109,8 +114,30 @@ $('document').ready(() => {
         }
         
         gameMessage.text(message);
-        
-        
+      
+        //animation 
+        let pb1 = p1.pointVie/pvmax1*100;
+        let pb2 = p2.pointVie/pvmax2*100;
+        hpbar1.css("width",pb1+"%")
+        hpbar2.css("width",pb2+"%")
+        if(pb1 < 60  && pb1 >=  30){
+            hpbar1.css("background-color","orange")
+
+        }else if (pb1 < 30) {
+            hpbar1.css("background-color","red")
+
+        }
+
+        if(pb2 < 60 && pb2 >=  30 ){
+            hpbar2.css("background-color","orange")
+
+
+        }else if (pb2 < 30 ) {
+            hpbar2.css("background-color","red")
+
+        }
+
+
         switch (typeOfNext) {
             case 'ended':
             submitBtn.val('Voir le résultat');
