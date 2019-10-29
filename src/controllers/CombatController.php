@@ -116,9 +116,11 @@ class CombatController extends Controller {
         if ($val1 > $val2){
             $combat->prochainAttaquant = $personnage1->id;
             $combat->prochainVictime = $personnage2->id;
+            return $personnage1;
         }else{
             $combat->prochainAttaquant = $personnage2->id;
             $combat->prochainVictime = $personnage1->id;
+            return $personnage2;
         }
     }
     
@@ -187,7 +189,7 @@ class CombatController extends Controller {
         $entites = $combat->participants;
         $participant1 = $entites[0];
         $participant2 = $entites[1];
-
+        
         //recuperation de l'attaquant et de la victime
         $attaquant = null;
         $victime = null;
@@ -212,10 +214,11 @@ class CombatController extends Controller {
         if($victime->pointVie <= 0) {
             $this->terminerCombat($combat, $attaquant, $victime);
             $messsage .= " Le coup de grâce à été donné !";
+        }else{  
+            //choix de l attaquant et de la victime au prochain tours;
+            $prochain = $this->choixAttaquant($combat, $participant1, $participant2);
+            $messsage .= ' C\'est au tour de '.$prochain->entite->prenom." de jouer.";
         }       
-        
-        //choix de l attaquant et de la victime au prochain tours;
-        $this->choixAttaquant($combat, $participant1, $participant2);
         
         $attaquant->save();
         $victime->save();
