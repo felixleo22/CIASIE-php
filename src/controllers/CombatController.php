@@ -119,22 +119,43 @@ class CombatController extends Controller {
     * @return Entite
     */
     //TODO modifier pour que cela fonctionne en 3v3
-    private function choixAttaquant($combat, $personnage1, $personnage2){
+    private function choixAttaquant($combat, $entite1, $entite2){
         $val1 = 0;
         $val2 = 0;
         while($val1 === $val2){
-            $val1 = mt_rand(0, $personnage1->entite->pointAgi);
-            $val2 = mt_rand(0, $personnage2->entite->pointAgi);
+            $val1 = mt_rand(0, $entite1->entite->pointAgi);
+            $val2 = mt_rand(0, $entite2->entite->pointAgi);
         }
         if ($val1 > $val2){
-            $combat->prochainAttaquant = $personnage1->id;
-            $combat->prochainVictime = $personnage2->id;
-            return $personnage1;
+            $combat->prochainAttaquant = $entite1->id;
+            $combat->prochainVictime = $entite2->id;
+            return $entite1;
         }else{
-            $combat->prochainAttaquant = $personnage2->id;
-            $combat->prochainVictime = $personnage1->id;
-            return $personnage2;
+            $combat->prochainAttaquant = $entite2->id;
+            $combat->prochainVictime = $entite1->id;
+            return $entite2;
         }
+    }
+
+    public function trieAttaquant($participantsPersonnage, $participantsMonstre) {
+        $res = [];
+        for ($i = 0; $i <= count($participantsPersonnage); $i++) {
+            $res[$participantsPersonnage[$i]] = mt_rand(0, $participantsPersonnage[$i]->entite->pointAgi);
+            $res[$participantsMonstre[$i]] = mt_rand(0, $participantsMonstre[$i]->entite->pointAgi);
+        }
+        arsort($res, SORT_NUMERIC);
+        return $res;
+    }
+
+    public function choixVictime($participants) {
+        $res = [];
+        $victime = $participants[0];
+        for ($i = 1; $i <= count($participants); $i++) {
+            if($victime->pointVie <= $participants[$i]->pointVie) {
+                $victime =  $participants[$i];
+            }
+        }
+        return $victime;
     }
     
     /**
