@@ -138,7 +138,7 @@ class CombatController extends Controller {
     }
 
     /**
-     * return un tableau des attaquants dans l'ordre selon l'agilité, monstre et personnage confondu
+     * return un tableau des attaquants dans l'ordre selon l'agilité, monstres et personnages confondu
      */
     public function trieAttaquant($participantsPersonnage, $participantsMonstre) {
         $res = [];
@@ -151,17 +151,15 @@ class CombatController extends Controller {
     }
 
     /**
-     * return la victime pour une equipe
+     * return un tableau de l'ordre des victimes pour une équipe
      */
     public function choixVictime($participants) {
         $res = [];
-        $victime = $participants[0];
         for ($i = 1; $i <= count($participants); $i++) {
-            if($victime->pointVie <= $participants[$i]->pointVie) {
-                $victime =  $participants[$i];
-            }
+            $res[$participants[$i]] =  $participants[$i]->pointVie;
         }
-        return $victime;
+        arsort($res, SORT_NUMERIC);
+        return $res;
     }
     
     /**
