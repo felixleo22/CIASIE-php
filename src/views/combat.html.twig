@@ -5,7 +5,6 @@
 
 <h2>Combat n°{{ combat.id }}</h2>
 
-<p id="gameMessage">{{ message }}</p>
 
 
 <div class="battlefield">
@@ -66,6 +65,8 @@
     {% endfor %}
 </div>
 <div style="margin-bottom: 1rem;">
+    <p id="gameMessage">{{ message }}</p>
+    
     <form id="playNextForm" action="{{path_for('jouerCombat', {id: combat.id})}}" style="display: none;">
         <div class="button-group">
             <input id="submitBtn" class="btn btn-primary" type="submit" value="Voir le prochain coup">      
