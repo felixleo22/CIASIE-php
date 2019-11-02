@@ -5,28 +5,38 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
 {% endblock %}
 
 {% block content %}
-    <h2>Choix des combattants</h2>
-    <form id="formulaire" action="{{path_for('creerCombat')}}" method="post">
-        <section id="personnage">
-            <h3 class="global-title">Personnages</h3>
-            <div class="card-row" id="deck-personnage">
-                {% for entite in personnages %}
-                    {% include 'cardSelectable.html.twig' %}
-                    <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
-                {% endfor %}
-            </div>
-        </section>
-        <section id="monstre">
-            <h3 class="global-title">Monstres</h3>
-            <div class="card-row" id="deck-monstre">
-                {% for entite in monstres %}
-                    {% include 'cardSelectable.html.twig' %}
-                    <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
-                {% endfor %}
-            </div>
-        </section>
-        <div class="form-group" style="display:flex; justify-content: center">
-            <input id="valid" class="btn btn-danger" type="submit" value="SMASH">
+<h2>Choix des combattants</h2>
+<form id="formulaire" action="{{path_for('creerCombat')}}" method="post">
+    <section id="mode">
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="mode1v1" value="1v1" name="modeRadio" class="selectCombatMode custom-control-input" checked>
+            <label class="custom-control-label" for="mode1v1">1 VS 1</label>
         </div>
-    </form>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="mode3v3" value="3v3" name="modeRadio" class="selectCombatMode custom-control-input">
+            <label class="custom-control-label" for="mode3v3">3 VS 3</label>
+        </div>
+    </section>
+    <section id="personnage">
+        <h3 class="global-title">Personnages</h3>
+        <div class="card-row" id="deck-personnage">
+            {% for entite in personnages %}
+            {% include 'cardSelectable.html.twig' %}
+            <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="monstre">
+        <h3 class="global-title">Monstres</h3>
+        <div class="card-row" id="deck-monstre">
+            {% for entite in monstres %}
+            {% include 'cardSelectable.html.twig' %}
+            <input id="{{ entite.id }}" class="check" type="checkbox" name="ids[]" value="{{ entite.id }}" hidden>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="form-group" style="display:flex; justify-content: center">
+        <input id="valid" class="btn btn-danger" type="submit" value="SMASH">
+    </div>
+</form>
 {% endblock %}

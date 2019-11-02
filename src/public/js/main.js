@@ -1,7 +1,20 @@
 /**
+ * Type de combat a créer (1v1 ou 3v3);
+ */
+let currentMode = '1v1';
+
+/**
+ * Personnages séléctionnées
+ */
+let currentPersoChecked = [];
+
+/**
+ * Monstres séléctionés
+ */
+let currentMonsterChecked = [];
+
+/**
  * Utilité : Permet à l'utilisateur de visualiser le choix d'un perso
- *  On applique un filtre gris sur les images de tous les personnages d'un type
- *  On enlève ce filtre sur l'image du personnage choisi
  * @param type - Le type de perso concerné
  * @param id - L'ID du perso sélectionné
  */
@@ -54,6 +67,27 @@ function toggleStats(target){
 }
 
 $(document).ready(function () {
+    /**
+     * Detecte le changement du combat en 1v1 ou 3v3
+     */
+    $('input.selectCombatMode[type=radio]').change(function() {
+        // on change le mode
+       if(!this.checked) return;
+       currentMode = this.value;
+
+       //on reset la selection
+       currentMonsterChecked = [];
+       currentPersoChecked = [];
+
+       //on reset l'affichage de la selection
+       const checkboxes = $(`input.check`);
+       checkboxes.prop("checked", false);
+       const cards = $("div.card.selectable");
+       cards.css("border-color", "");
+
+
+    });
+    
     $("input.btn-select").click(function () {
         const type = $(this).data("type");
         const id = $(this).prop("id");
