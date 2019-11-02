@@ -124,7 +124,7 @@ class CombatController extends Controller {
             return $elem->pointVie > 0;
         });
         
-        $monstres = $victimes = array_filter($monstres, function($elem) {
+        $monstres = array_filter($monstres, function($elem) {
             return $elem->pointVie > 0;
         });
         
@@ -151,9 +151,9 @@ class CombatController extends Controller {
         
         $victimes = [];
         if($attaquant->entite->type === 'personnage') {
-            $victimes = $monstres;
+            $victimes = array_values($monstres);
         }else{
-            $victimes = $personnages;
+            $victimes = array_values($personnages);
         }
         
         $index = rand(0, count($victimes) - 1);

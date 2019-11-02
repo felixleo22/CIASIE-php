@@ -84,7 +84,7 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            
+
             const {attaquant, victime, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
