@@ -1,15 +1,8 @@
 $('document').ready(() => {
     
     //affichage des données
-    const participant1PV = $('#participant1PV');
     const participant1Def = $('#participant1Def');
-    const participant2PV = $('#participant2PV');
     const gameMessage = $('#gameMessage');
-
-    const hpbar1 = $("#hp_bar_1");
-    const hpbar2 = $("#hp_bar_2");
-    const pvmax1 = participant1PV.data("hp-max");
-    const pvmax2 = participant2PV.data("hp-max");
 
     //formulaire
     const playNextForm = document.getElementById('playNextForm');
@@ -92,34 +85,35 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            const {p1, p2, message, typeOfNext, showResult} = data;
+            const {attaquant, victime, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
                 return;
             }
             
-            updateDisplay(p1, p2, typeOfNext, message);
+            updateDisplay(attaquant, victime, typeOfNext, message);
         });
     }
     
     //mise a jour de l affichage
-    function updateDisplay(p1, p2 ,typeOfNext, message) {
-        participant1PV.text(p1.pointVie);
-        participant2PV.text(p2.pointVie);
+    function updateDisplay(attaquant, victime ,typeOfNext, message) {
+
+        console.log('ok')
+        $('#participant' + victime.id + 'PV').text(p2.pointVie);
         
-        if(p1.defensif) {
-            participant1Def.text('( + 25%)');
-        }else{
-            participant1Def.text('');
-        }
+        //TODO
+        // if(p1.defensif) {
+        //     participant1Def.text('( + 25%)');
+        // }else{
+        //     participant1Def.text('');
+        // }
         
         gameMessage.text(message);
       
         //animation 
-        let pb1 = p1.pointVie/pvmax1*100;
-        let pb2 = p2.pointVie/pvmax2*100;
-        hpbar1.css("width",pb1+"%")
-        hpbar2.css("width",pb2+"%")
+        let pb1 = victime.pointVie/victime.entite.pointVie*100;
+
+        const hpbar1 = $('#hp_bar_participant.id').css("width",pb1+"%")
         if(pb1 < 60  && pb1 >=  30){
             hpbar1.css("background-color","orange")
 
@@ -127,16 +121,6 @@ $('document').ready(() => {
             hpbar1.css("background-color","red")
 
         }
-
-        if(pb2 < 60 && pb2 >=  30 ){
-            hpbar2.css("background-color","orange")
-
-
-        }else if (pb2 < 30 ) {
-            hpbar2.css("background-color","red")
-
-        }
-
 
         switch (typeOfNext) {
             case 'ended':

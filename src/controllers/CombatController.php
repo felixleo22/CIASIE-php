@@ -193,7 +193,7 @@ class CombatController extends Controller {
             $perdant->entite->totalDegatRecu += $perdant->degatRecu;
             $perdant->entite->save();
         }
-
+        
         $combat->save();
     }
     
@@ -213,26 +213,23 @@ class CombatController extends Controller {
         $messsage = "";
         
         $entites = $combat->participants;
-
-        // $participant1 = $entites[0];
-        // $participant2 = $entites[1];
         
-        //recuperation de l'attaquant et de la victime
+        //recuperation de l'attaquant et de la victime et trie par type
         $personnages = [];
         $monstres = [];
-
+        
         $attaquant = null;
         $victime = null;
         foreach ($entites as $participant) {
             //trie par type
-            if($participant->type === 'personnage') {
+            if($participant->entite->type === 'personnage') {
                 $personnages[] = $participant;
             }
-
-            if($participant->type === 'monstre') {
+            
+            if($participant->entite->type === 'monstre') {
                 $monstres[] = $participant;
             }
-
+            
             //verfie si c'est l'attaquant ou la victime
             if($combat->prochainAttaquant === $participant->id) {
                 $attaquant = $participant;
@@ -290,13 +287,13 @@ class CombatController extends Controller {
         $victime->save();
         $combat->save();
         
-        $data = ['p1' => $personnages, 'p2' => $monstres, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
+        $data = ['attaquant' => $attaquant, 'victime' => $victime, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
-
+    
     private function isTerminated($victime, $personnages, $monstres) {
         $entites = $victime->type === 'monstre' ? $monstres : $personnages;
-
+        
         foreach ($entites as $entite) {
             if($entite->pointVie > 0) return false;
         }
@@ -341,15 +338,27 @@ class CombatController extends Controller {
         }
         
         $entites = $combat->participants;
-        $participant1 = $entites[0];
-        $participant2 = $entites[1];
+
+        $personnages = [];
+        $monstres = [];
+
+        foreach ($entites as $participant) {
+            //trie par type
+            if($participant->entite->type === 'personnage') {
+                $personnages[] = $participant;
+            }
+            
+            if($participant->entite->type === 'monstre') {
+                $monstres[] = $participant;
+            }
+        }
         
         if($combat->termine) {
             //si combat terminé, on affiche le résultat
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
         
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);          
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'personnages'=> $personnages,'monstres'=> $monstres]);          
     }
     
 }
