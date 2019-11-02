@@ -43,6 +43,9 @@ function select(type, id) {
     }
 }
 
+/**
+ * Permet de verifier si on peut selectionner une entite
+ */
 function couldCheck(type) {
     if(type === 'personnage') {
         if(currentMode === '3v3') {
@@ -63,6 +66,28 @@ function couldCheck(type) {
     }
     return false;
 }
+
+/**
+ * Permet de vérifier si le formulaire peut etre soumis
+ */
+function updateFormStatus() {
+    if(currentMode === '3v3' && currentMonsterChecked === 3 && currentPersoChecked === 3){
+        $('#valid').removeClass('disabled');
+        return;
+    }
+    if(currentMode === '1v1' && currentMonsterChecked === 1 && currentPersoChecked === 1){
+        $('#valid').removeClass('disabled');
+        return;
+    }
+    $('#valid').addClass('disabled');    
+}
+
+$('#formulaire').on('submit', (event) => {
+    updateFormStatus();
+    if($('#valid').hasClass('disabled')){
+        event.preventDefault();
+    }
+});
 
 function toggleStats(target){
     $("h1#titre").text(target)
@@ -91,17 +116,21 @@ $(document).ready(function () {
         currentMonsterChecked = 0;
         currentPersoChecked = 0;
         
-        //on reset l'affichage de la selection
+        //on reset l'affvichage de la selection
         const checkboxes = $(`input.check`);
         checkboxes.prop("checked", false);
         const cards = $("div.card.selectable");
         cards.css("border-color", "");
     });
     
+    /**
+     * selection d'une entite
+     */
     $("input.btn-select").click(function () {
         const type = $(this).data("type");
         const id = $(this).prop("id");
         select(type, id);
+        updateFormStatus();
     });
     
     $("input#btn-show-stats").click(function () {
