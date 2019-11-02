@@ -70,7 +70,7 @@ class CombatController extends Controller {
             return Utils::redirect($response, 'accueil');
         }
 
-        if($combatMode === '3v3' && count($personnages) !== 2 && count($monstres) !== 2) {
+        if($combatMode === '3v3' && count($personnages) !== 3 && count($monstres) !== 3) {
             FlashMessage::flashError('Vous devez choisir trois personnages et trois monstres en mode 3 VS 3');
             return Utils::redirect($response, 'accueil');
         }
