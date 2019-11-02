@@ -116,9 +116,11 @@ class CombatController extends Controller {
         if ($val1 > $val2){
             $combat->prochainAttaquant = $personnage1->id;
             $combat->prochainVictime = $personnage2->id;
+            return $personnage1;
         }else{
             $combat->prochainAttaquant = $personnage2->id;
             $combat->prochainVictime = $personnage1->id;
+            return $personnage2;
         }
     }
     
@@ -129,8 +131,14 @@ class CombatController extends Controller {
     * Elle ne peut pas exeder 70%
     * Une attaque classique (return l'attaque l'attaquant entre 80 et 120% - le % de defence
     * L'attaquant peut effectuer un coup critique qui ignore la defense (return l'attaque de l'attaquant entre 80 et 120%)
+    * Si la victime est en defensif, ca defence est multiplie par 1.25
     */
     private function degat($attaquant, $victime) {
+        $defense = $victime->entite->pointDef;
+        if($victime->defensif) {
+            $defense *= 1.25;
+        }
+
         $esquive = mt_rand(1, 100);
         if ($esquive <= 5) {
             return 0;
@@ -140,7 +148,7 @@ class CombatController extends Controller {
         if ($critique <= 5) {
             return round(($attaquant->entite->pointAtt*$att));
         }
-        $reste = round($victime->entite->pointDef/20);
+        $reste = round($defense/20);
         if($reste > 7) {
             $reste = 7;
         }
@@ -187,7 +195,7 @@ class CombatController extends Controller {
         $entites = $combat->participants;
         $participant1 = $entites[0];
         $participant2 = $entites[1];
-
+        
         //recuperation de l'attaquant et de la victime
         $attaquant = null;
         $victime = null;
@@ -200,33 +208,86 @@ class CombatController extends Controller {
             }
         }
         
-        $degat = $this->degat($attaquant,$victime);
-        // save statistique
-        $attaquant->nbAttaqueInflige++;
-        $attaquant->degatInflige += $degat;
-        $victime->pointVie -= $degat;
-        $messsage = $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
-        $victime->nbAttaqueRecu++;
-        $victime->degatRecu += $degat;
+        //le message sur le tour en cours
+        $messsage = "";
+        
+        //execution du tour
+        $actionOfPersonnage = Utils::getFilteredPost($request, 'chosenAction');
+
+        if($attaquant->entite->type === 'personnage' && $actionOfPersonnage === 'defendre'){
+            //si le perso joue et qu'il défend
+            //TODO faire la défense
+            $attaquant->defensif = true;
+            $messsage .= 'Vous avez defendu ! (augmentation de la défense de 25% jusqu\'au prochain tour ou coup subit).';
+        }else{
+            //sinon un monstre joue ou que le perso attaque
+
+            // calcul des degats
+            $degat = $this->degat($attaquant,$victime);
+
+            // save statistique
+            $attaquant->nbAttaqueInflige++;
+            $attaquant->degatInflige += $degat;
+            $victime->pointVie -= $degat;
+            $messsage .= $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
+            $victime->nbAttaqueRecu++;
+            $victime->degatRecu += $degat;    
+
+            // remise à zéro de la défense
+            $attaquant->defensif = false;
+            $victime->defensif = false;
+        }     
+        
+        //choix du prochain ou fin du combat            
+        $typeOfNext = null;
         
         if($victime->pointVie <= 0) {
             $this->terminerCombat($combat, $attaquant, $victime);
             $messsage .= " Le coup de grâce à été donné !";
-        }       
-        
-        //choix de l attaquant et de la victime au prochain tours;
-        $this->choixAttaquant($combat, $participant1, $participant2);
+            $typeOfNext = 'ended';
+        }else{  
+            //choix de l attaquant et de la victime au prochain tours;
+            $prochain = $this->choixAttaquant($combat, $participant1, $participant2);
+            $messsage .= ' C\'est au tour de '.$prochain->entite->prenom." de jouer.";
+            $typeOfNext = $prochain->entite->type;
+        }   
         
         $attaquant->save();
         $victime->save();
         $combat->save();
         
-        
-        $data = ['pv1' => $participant1->pointVie, 'pv2' => $participant2->pointVie, 'message' => $messsage, 'isEnd' => $combat->termine];
+        $data = ['p1' => $participant1, 'p2' => $participant2, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
     
+    /**
+     * Permet de récupérer des infos nécessaires au démarrage du combat
+     */
+    public function commencerCombat(Request $request, Response $response, $args) {
+        $idCombat = Utils::sanitize($args['id']);
+        $combat = Combat::find($idCombat);
+        if($combat === null) {
+            //TODO faire qq chose si le combat n'existe pas
+        }
+        
+        if($combat->termine) {
+            return $response->withJson(['showResult' => true], 201);
+        }
+        
+        $combat->nbTours++;
+        
+        $entites = $combat->participants;
+        $attaquant = Participant::find($combat->prochainAttaquant);
     
+        $messsage = $attaquant->entite->prenom . ' joue en premier !';
+
+        $data = ['typeOfNext' => $attaquant->entite->type, 'message' => $messsage];
+        return $response->withJson($data, 201); 
+    }
+
+    /**
+    *  Affiche la vue du combat
+    */
     public function afficherCombat(Request $request, Response $response, $args) {
         //récupération du combat
         $idCombat = Utils::sanitize($args['id']);
@@ -245,8 +306,7 @@ class CombatController extends Controller {
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
         
-        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);        
-        
+        return $this->views->render($response, 'combat.html.twig',['combat' => $combat, 'participant1'=> $participant1,'participant2'=> $participant2]);          
     }
     
 }
