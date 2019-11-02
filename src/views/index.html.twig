@@ -6,14 +6,14 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
 
 {% block content %}
 <h2>Choix des combattants</h2>
-<form id="formulaire" action="{{path_for('creerCombat')}}" method="post">
+<form id="formulaire" action="{{path_for('creerCombat')}}" method="post" disabled>
     <section id="mode">
         <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="mode1v1" value="1v1" name="modeRadio" class="selectCombatMode custom-control-input" checked>
+            <input type="radio" id="mode1v1" value="1v1" name="combatMode" class="selectCombatMode custom-control-input" checked>
             <label class="custom-control-label" for="mode1v1">1 VS 1</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="mode3v3" value="3v3" name="modeRadio" class="selectCombatMode custom-control-input">
+            <input type="radio" id="mode3v3" value="3v3" name="combatMode" class="selectCombatMode custom-control-input">
             <label class="custom-control-label" for="mode3v3">3 VS 3</label>
         </div>
     </section>
@@ -36,7 +36,7 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
         </div>
     </section>
     <div class="form-group" style="display:flex; justify-content: center">
-        <input id="valid" class="btn btn-danger" type="submit" value="SMASH">
+        <input id="valid" class="btn btn-danger disabled" type="submit" value="SMASH">
     </div>
 </form>
 {% endblock %}
