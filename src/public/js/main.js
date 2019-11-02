@@ -7,11 +7,10 @@
  */
 function border(type, id) {
     const cards = $("#deck-" + type + " div.card");
-    console.log(cards);
     cards.css("border-color", "");
 
     const card = $("#card-" + id);
-    console.log(card);
+
     card.css("border-color", "dodgerblue");
 }
 
@@ -49,7 +48,6 @@ function toggleStats(target){
     } else {
         target = "Perdant";
     }
-    console.log(target);
     $("input#btn-show-stats")
         .val("Afficher les stats du " + target)
         .data("target", target);
