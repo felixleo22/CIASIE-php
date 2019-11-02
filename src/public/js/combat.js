@@ -30,7 +30,6 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            console.log(data);
             const {message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
@@ -85,7 +84,7 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
-            // console.log(data)
+
             const {attaquant, victime, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
@@ -100,7 +99,6 @@ $('document').ready(() => {
     function updateDisplay(attaquant, victime ,typeOfNext, message) {
 
         const pvText = $('#participant' + victime.id + 'PV');
-        console.log(pvText);
         pvText.text(victime.pointVie);
         
         let pb1 = (victime.pointVie/victime.entite.pointVie) * 100;
