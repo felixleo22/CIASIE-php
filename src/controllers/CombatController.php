@@ -137,22 +137,22 @@ class CombatController extends Controller {
         }
     }
 
+    /**
+     * return un tableau des attaquants dans l'ordre selon l'agilité, monstre et personnage confondu
+     */
     public function trieAttaquant($participantsPersonnage, $participantsMonstre) {
         $res = [];
-<<<<<<< HEAD
         for ($i = 0; $i <= count($participantsPersonnage)+count($participantsMonstre); $i++) {
             $res[$participantsPersonnage[$i]] = mt_rand(0, $participantsPersonnage[$i]->entite->pointAgi);
-            $res[$participantsMonstreR[$i]] = mt_rand(0, $participantsMonstreR[$i]->entite->pointAgi);
-=======
-        for ($i = 0; $i <= count($participantsPersonnage); $i++) {
-            $res[$participantsPersonnage[$i]] = mt_rand(0, $participantsPersonnage[$i]->entite->pointAgi);
             $res[$participantsMonstre[$i]] = mt_rand(0, $participantsMonstre[$i]->entite->pointAgi);
->>>>>>> 0780b52d69916f99be751df7f80f6c255302e3d2
         }
         arsort($res, SORT_NUMERIC);
         return $res;
     }
 
+    /**
+     * return la victime pour une equipe
+     */
     public function choixVictime($participants) {
         $res = [];
         $victime = $participants[0];
