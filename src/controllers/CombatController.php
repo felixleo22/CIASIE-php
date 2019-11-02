@@ -120,49 +120,50 @@ class CombatController extends Controller {
     */
     //TODO modifier pour que cela fonctionne en 3v3
     private function choixAttaquant($combat, $personnages, $monstres){
+        $personnages = array_filter($personnages, function($elem) {
+            return $elem->pointVie > 0;
+        });
+        
+        $monstres = $victimes = array_filter($monstres, function($elem) {
+            return $elem->pointVie > 0;
+        });
+        
         $max = null;
         $maxCoeff = -1;
         
         foreach ($personnages as $p) {
-            if($p->pointVie > 0){
-                $coef = $this->coeffAttaque($p);
-                if($coef > $maxCoeff) {
-                    $max = $p;
-                    $maxCoeff = $coef;
-                }
+            $coef = $this->coeffAttaque($p);
+            if($coef > $maxCoeff) {
+                $max = $p;
+                $maxCoeff = $coef;
             }
         }
         
         foreach ($monstres as $m) {
-            if($m->pointVie > 0){
-                $coef = $this->coeffAttaque($m);
-                if($coef > $maxCoeff) {
-                    $max = $m;
-                    $maxCoeff = $coef;
-                }
+            $coef = $this->coeffAttaque($m);
+            if($coef > $maxCoeff) {
+                $max = $m;
+                $maxCoeff = $coef;
             }
         }
         
         $attaquant = $max;
-
+        
         $victimes = [];
         if($attaquant->entite->type === 'personnage') {
-            $victimes = array_filter($monstres, function($elem) {
-                return $elem->pointVie > 0;
-            });
+            $victimes = $monstres;
         }else{
-            $victimes = array_filter($personnages, function($elem) {
-                return $elem->pointVie > 0;
-            });
+            $victimes = $personnages;
         }
-        
+
         $index = rand(0, count($victimes) - 1);
         $victime = $victimes[$index];
         
         $combat->prochainAttaquant = $attaquant->id;
         $combat->prochainVictime = $victime->id;
         $combat->save();
-
+        
+        //FIXME retourne parfois null en 3v3
         return $attaquant;
     }
     
@@ -295,11 +296,12 @@ class CombatController extends Controller {
             $victime->pointVie -= $degat;
             $messsage .= $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
             $victime->nbAttaqueRecu++;
-            $victime->degatRecu += $degat;    
+            $victime->degatRecu += $degat;  
+            
             
             // remise à zéro de la défense
             $attaquant->defensif = false;
-            $victime->defensif = false;
+            $victime->defensif = false;            
         }     
         
         //choix du prochain ou fin du combat            
@@ -318,8 +320,9 @@ class CombatController extends Controller {
         
         $attaquant->save();
         $victime->save();
-        $combat->save();
 
+        $combat->save();
+        
         $data = ['attaquant' => $attaquant, 'victime' => $victime, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
@@ -350,7 +353,7 @@ class CombatController extends Controller {
         }
         
         $combat->nbTours++;
-
+        
         $attaquant = Participant::find($combat->prochainAttaquant);
         
         $messsage = $attaquant->entite->prenom . ' joue en premier !';
