@@ -155,7 +155,7 @@ class CombatController extends Controller {
         }else{
             $victimes = $personnages;
         }
-
+        
         $index = rand(0, count($victimes) - 1);
         $victime = $victimes[$index];
         
@@ -308,7 +308,11 @@ class CombatController extends Controller {
         $typeOfNext = null;
         
         if($this->isTerminated($victime, $personnages, $monstres)) {
-            $this->terminerCombat($combat, $personnages, $monstres);
+            if($attaquant->entite->type === 'personnage') {
+                $this->terminerCombat($combat, $personnages, $monstres);
+            }else{
+                $this->terminerCombat($combat, $monstres, $personnages);
+            }
             $messsage .= " Le coup de grâce à été donné !";
             $typeOfNext = 'ended';
         }else{  
@@ -320,7 +324,7 @@ class CombatController extends Controller {
         
         $attaquant->save();
         $victime->save();
-
+        
         $combat->save();
         
         $data = ['attaquant' => $attaquant, 'victime' => $victime, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
