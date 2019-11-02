@@ -64,12 +64,12 @@ class CombatController extends Controller {
             FlashMessage::flashError($combatMode.' n\'est pas un mode de combat valide');
             return Utils::redirect($response, 'accueil');
         }
-
+        
         if($combatMode === '1v1' && count($personnages) !== 1 && count($monstres) !== 1) {
             FlashMessage::flashError('Vous devez choisir un personnage et un monstre en mode 1 VS 1');
             return Utils::redirect($response, 'accueil');
         }
-
+        
         if($combatMode === '3v3' && count($personnages) !== 3 && count($monstres) !== 3) {
             FlashMessage::flashError('Vous devez choisir trois personnages et trois monstres en mode 3 VS 3');
             return Utils::redirect($response, 'accueil');
@@ -151,7 +151,7 @@ class CombatController extends Controller {
         if($victime->defensif) {
             $defense *= 1.25;
         }
-
+        
         $esquive = mt_rand(1, 100);
         if ($esquive <= 5) {
             return 0;
@@ -175,20 +175,26 @@ class CombatController extends Controller {
     * Methode pour cloturer un combat
     */
     //TODO modifier pour que cela fonctionne en 3v3
-    private function terminerCombat($combat, $gagnant,  $perdant) {
+    private function terminerCombat($combat, $gagnants,  $perdants) {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
         
-        $gagnant->gagner = 1;
-        $gagnant->entite->combatGagne++;
-        $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
-        $gagnant->entite->totalDegatRecu += $gagnant->degatRecu;
+        foreach ($gagnants as $gagnant) {
+            $gagnant->gagner = 1;
+            $gagnant->entite->combatGagne++;
+            $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
+            $gagnant->entite->totalDegatRecu += $gagnant->degatRecu;
+            $gagnant->entite->save();     
+        }
         
-        $perdant->entite->combatPerdu++;
-        $perdant->entite->totalDegatInflige += $perdant->degatInflige;
-        $perdant->entite->totalDegatRecu += $perdant->degatRecu;
-        $gagnant->entite->save();
-        $perdant->entite->save();
+        foreach ($perdants as $perdant) {
+            $perdant->entite->combatPerdu++;
+            $perdant->entite->totalDegatInflige += $perdant->degatInflige;
+            $perdant->entite->totalDegatRecu += $perdant->degatRecu;
+            $perdant->entite->save();
+        }
+
+        $combat->save();
     }
     
     public function play(Request $request, Response $response, $args){  
@@ -207,13 +213,27 @@ class CombatController extends Controller {
         $messsage = "";
         
         $entites = $combat->participants;
-        $participant1 = $entites[0];
-        $participant2 = $entites[1];
+
+        // $participant1 = $entites[0];
+        // $participant2 = $entites[1];
         
         //recuperation de l'attaquant et de la victime
+        $personnages = [];
+        $monstres = [];
+
         $attaquant = null;
         $victime = null;
         foreach ($entites as $participant) {
+            //trie par type
+            if($participant->type === 'personnage') {
+                $personnages[] = $participant;
+            }
+
+            if($participant->type === 'monstre') {
+                $monstres[] = $participant;
+            }
+
+            //verfie si c'est l'attaquant ou la victime
             if($combat->prochainAttaquant === $participant->id) {
                 $attaquant = $participant;
             }
@@ -227,7 +247,7 @@ class CombatController extends Controller {
         
         //execution du tour
         $actionOfPersonnage = Utils::getFilteredPost($request, 'chosenAction');
-
+        
         if($attaquant->entite->type === 'personnage' && $actionOfPersonnage === 'defendre'){
             //si le perso joue et qu'il défend
             //TODO faire la défense
@@ -235,10 +255,10 @@ class CombatController extends Controller {
             $messsage .= 'Vous avez defendu ! (augmentation de la défense de 25% jusqu\'au prochain tour ou coup subit).';
         }else{
             //sinon un monstre joue ou que le perso attaque
-
+            
             // calcul des degats
             $degat = $this->degat($attaquant,$victime);
-
+            
             // save statistique
             $attaquant->nbAttaqueInflige++;
             $attaquant->degatInflige += $degat;
@@ -246,7 +266,7 @@ class CombatController extends Controller {
             $messsage .= $attaquant->entite->prenom . " " . $attaquant->entite->nom . " a infligé $degat dégats à " . $victime->entite->prenom . " " . $victime->entite->nom . '.' ;
             $victime->nbAttaqueRecu++;
             $victime->degatRecu += $degat;    
-
+            
             // remise à zéro de la défense
             $attaquant->defensif = false;
             $victime->defensif = false;
@@ -255,13 +275,13 @@ class CombatController extends Controller {
         //choix du prochain ou fin du combat            
         $typeOfNext = null;
         
-        if($victime->pointVie <= 0) {
-            $this->terminerCombat($combat, $attaquant, $victime);
+        if($this->isTerminated($victime, $personnages, $monstres)) {
+            $this->terminerCombat($combat, $personnages, $monstres);
             $messsage .= " Le coup de grâce à été donné !";
             $typeOfNext = 'ended';
         }else{  
             //choix de l attaquant et de la victime au prochain tours;
-            $prochain = $this->choixAttaquant($combat, $participant1, $participant2);
+            $prochain = $this->choixAttaquant($combat, $personnages, $monstres);
             $messsage .= ' C\'est au tour de '.$prochain->entite->prenom." de jouer.";
             $typeOfNext = $prochain->entite->type;
         }   
@@ -270,13 +290,22 @@ class CombatController extends Controller {
         $victime->save();
         $combat->save();
         
-        $data = ['p1' => $participant1, 'p2' => $participant2, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
+        $data = ['p1' => $personnages, 'p2' => $monstres, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
+    }
+
+    private function isTerminated($victime, $personnages, $monstres) {
+        $entites = $victime->type === 'monstre' ? $monstres : $personnages;
+
+        foreach ($entites as $entite) {
+            if($entite->pointVie > 0) return false;
+        }
+        return true;
     }
     
     /**
-     * Permet de récupérer des infos nécessaires au démarrage du combat
-     */
+    * Permet de récupérer des infos nécessaires au démarrage du combat
+    */
     public function commencerCombat(Request $request, Response $response, $args) {
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
@@ -292,13 +321,13 @@ class CombatController extends Controller {
         
         $entites = $combat->participants;
         $attaquant = Participant::find($combat->prochainAttaquant);
-    
+        
         $messsage = $attaquant->entite->prenom . ' joue en premier !';
-
+        
         $data = ['typeOfNext' => $attaquant->entite->type, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
-
+    
     /**
     *  Affiche la vue du combat
     */
