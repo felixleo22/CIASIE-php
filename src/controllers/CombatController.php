@@ -58,14 +58,26 @@ class CombatController extends Controller {
             }
         }
         
-        //TODO a changer lorsqu'il y  aura du 2v2
-        if(count($personnages) !== 1 && count($monstres) !== 1) {
-            FlashMessage::flashError('Vous devez choisir un personnage et un monstre');
+        //recuperation du mode du combat
+        $combatMode = Utils::getFilteredPost($request, 'combatMode');
+        if($combatMode !== '1v1' && $combatMode !== '3v3') {
+            FlashMessage::flashError($combatMode.' n\'est pas un mode de combat valide');
+            return Utils::redirect($response, 'accueil');
+        }
+
+        if($combatMode === '1v1' && count($personnages) !== 1 && count($monstres) !== 1) {
+            FlashMessage::flashError('Vous devez choisir un personnage et un monstre en mode 1 VS 1');
+            return Utils::redirect($response, 'accueil');
+        }
+
+        if($combatMode === '3v3' && count($personnages) !== 2 && count($monstres) !== 2) {
+            FlashMessage::flashError('Vous devez choisir trois personnages et trois monstres en mode 3 VS 3');
             return Utils::redirect($response, 'accueil');
         }
         
         //TODO verifier les types
         $combat = new Combat();
+        $combat->mode = $combatMode;
         $created = $combat->save();
         if(!$created) {
             FlashMessage::flashError('Impossible de créer le combat');
@@ -106,6 +118,7 @@ class CombatController extends Controller {
     * le plus grand chiffre commence a attaque
     * @return Entite
     */
+    //TODO modifier pour que cela fonctionne en 3v3
     private function choixAttaquant($combat, $personnage1, $personnage2){
         $val1 = 0;
         $val2 = 0;
@@ -161,6 +174,7 @@ class CombatController extends Controller {
     /**
     * Methode pour cloturer un combat
     */
+    //TODO modifier pour que cela fonctionne en 3v3
     private function terminerCombat($combat, $gagnant,  $perdant) {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");

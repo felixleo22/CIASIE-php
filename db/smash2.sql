@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 29 Octobre 2019 à 17:03
+-- Généré le :  Sam 02 Novembre 2019 à 16:24
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
--- Version de PHP :  7.2.19-0ubuntu0.18.04.2
+-- Version de PHP :  7.2.24-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `combat` (
   `id` int(11) NOT NULL,
+  `mode` varchar(255) NOT NULL DEFAULT '1v1',
   `termine` tinyint(1) NOT NULL DEFAULT '0',
   `nbTours` int(11) NOT NULL DEFAULT '0',
   `prochainAttaquant` int(11) DEFAULT NULL,
@@ -59,7 +60,9 @@ CREATE TABLE `compteAdmin` (
 
 INSERT INTO `compteAdmin` (`id`, `login`, `mdp`, `created_at`, `updated_at`, `deleted_at`, `super`) VALUES
 (1, 'root', '$2y$10$ZdhF63uUHeYsutMaDRv4VeIlw0b2B/i2Fa8c5Igzvk7QByZOOq6tG', '2019-10-14 18:33:02', NULL, NULL, 1),
-(2, 'admin', '$2y$10$/tOr21XdRhhMek8T6xD/9eLMPsyxrjpXn8AmPmvQ1nUx4LkphuJ9a', '2019-10-14 18:33:30', '2019-10-14 18:33:30', NULL, 0);
+(2, 'admin', '$2y$10$/tOr21XdRhhMek8T6xD/9eLMPsyxrjpXn8AmPmvQ1nUx4LkphuJ9a', '2019-10-14 18:33:30', '2019-10-14 18:33:30', NULL, 0),
+(3, 'blabla', '$2y$10$1gse1/FXVkCxiMuyIAadUe48FsIq4pTG4PTOagCePxazBgVVrF01q', '2019-10-29 17:59:16', '2019-10-29 17:59:16', '2019-10-29 17:59:16', 0),
+(4, 'blabla', '$2y$10$01QwiiO3Yg1QsBevJ4HMh.K2qPNwJKqeyM6VKVZJhshgJEb0BFqUe', '2019-10-29 18:01:32', '2019-10-29 18:01:32', '2019-10-29 18:01:32', 0);
 
 -- --------------------------------------------------------
 
@@ -146,12 +149,12 @@ ALTER TABLE `participant`
 -- AUTO_INCREMENT pour la table `combat`
 --
 ALTER TABLE `combat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `compteAdmin`
 --
 ALTER TABLE `compteAdmin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `entite`
 --
@@ -161,7 +164,7 @@ ALTER TABLE `entite`
 -- AUTO_INCREMENT pour la table `participant`
 --
 ALTER TABLE `participant`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
