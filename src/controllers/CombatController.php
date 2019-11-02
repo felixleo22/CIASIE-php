@@ -84,7 +84,7 @@ class CombatController extends Controller {
             return Utils::redirect($response, 'accueil');
         }
         
-        $participants = [];
+        $participantsPerso = [];
         foreach ($personnages as $personnage) {
             $participant = new Participant();
             $participant->pointVie = $personnage->pointVie;
@@ -92,9 +92,10 @@ class CombatController extends Controller {
             $participant->combat_id = $combat->id;
             $participant->save();
             
-            $participants[] = $participant;
+            $participantsPerso[] = $participant;
         }
         
+        $participantsMonstre = [];
         foreach ($monstres as $monstre) {
             $participant = new Participant();
             $participant->pointVie = $monstre->pointVie;
@@ -102,11 +103,10 @@ class CombatController extends Controller {
             $participant->combat_id = $combat->id;
             $participant->save();
             
-            $participants[] = $participant;
+            $participantsMonstre[] = $participant;
         }
         
-        $this->choixAttaquant($combat, $participants[0], $participants[1]);
-        $combat->save();
+        $this->choixAttaquant($combat, $participantsPerso, $participantsMonstre);
         
         setcookie("combat", json_encode($combat->id), time() + 3600*24*60, "/");
         
@@ -119,47 +119,56 @@ class CombatController extends Controller {
     * @return Entite
     */
     //TODO modifier pour que cela fonctionne en 3v3
-    private function choixAttaquant($combat, $entite1, $entite2){
-        $val1 = 0;
-        $val2 = 0;
-        while($val1 === $val2){
-            $val1 = mt_rand(0, $entite1->entite->pointAgi);
-            $val2 = mt_rand(0, $entite2->entite->pointAgi);
+    private function choixAttaquant($combat, $personnages, $monstres){
+        $max = null;
+        $maxCoeff = -1;
+        
+        foreach ($personnages as $p) {
+            if($p->pointVie > 0){
+                $coef = $this->coeffAttaque($p);
+                if($coef > $maxCoeff) {
+                    $max = $p;
+                    $maxCoeff = $coef;
+                }
+            }
         }
-        if ($val1 > $val2){
-            $combat->prochainAttaquant = $entite1->id;
-            $combat->prochainVictime = $entite2->id;
-            return $entite1;
+        
+        foreach ($monstres as $m) {
+            if($m->pointVie > 0){
+                $coef = $this->coeffAttaque($m);
+                if($coef > $maxCoeff) {
+                    $max = $m;
+                    $maxCoeff = $coef;
+                }
+            }
+        }
+        
+        $attaquant = $max;
+
+        $victimes = [];
+        if($attaquant->entite->type === 'personnage') {
+            $victimes = array_filter($monstres, function($elem) {
+                return $elem->pointVie > 0;
+            });
         }else{
-            $combat->prochainAttaquant = $entite2->id;
-            $combat->prochainVictime = $entite1->id;
-            return $entite2;
+            $victimes = array_filter($personnages, function($elem) {
+                return $elem->pointVie > 0;
+            });
         }
-    }
+        
+        $index = rand(0, count($victimes) - 1);
+        $victime = $victimes[$index];
+        
+        $combat->prochainAttaquant = $attaquant->id;
+        $combat->prochainVictime = $victime->id;
+        $combat->save();
 
-    /**
-     * return un tableau des attaquants dans l'ordre selon le score l'agilité, monstres et personnages confondu
-     */
-    public function trieAttaquant($participantsPersonnage, $participantsMonstre) {
-        $res = [];
-        for ($i = 0; $i <= count($participantsPersonnage)+count($participantsMonstre); $i++) {
-            $res[$participantsPersonnage[$i]] = mt_rand(0, $participantsPersonnage[$i]->entite->pointAgi);
-            $res[$participantsMonstre[$i]] = mt_rand(0, $participantsMonstre[$i]->entite->pointAgi);
-        }
-        arsort($res, SORT_NUMERIC);
-        return $res;
+        return $attaquant;
     }
-
-    /**
-     * return un tableau de l'ordre des victimes pour une équipe
-     */
-    public function choixVictime($participants) {
-        $res = [];
-        for ($i = 1; $i <= count($participants); $i++) {
-            $res[$participants[$i]] =  $participants[$i]->pointVie;
-        }
-        arsort($res, SORT_NUMERIC);
-        return $res;
+    
+    private function coeffAttaque($participant) {
+        $agi = rand(0, $participant->entite->pointAgi);
+        return $agi / $participant->entite->pointAgi;
     }
     
     /**
@@ -272,7 +281,6 @@ class CombatController extends Controller {
         
         if($attaquant->entite->type === 'personnage' && $actionOfPersonnage === 'defendre'){
             //si le perso joue et qu'il défend
-            //TODO faire la défense
             $attaquant->defensif = true;
             $messsage .= 'Vous avez defendu ! (augmentation de la défense de 25% jusqu\'au prochain tour ou coup subit).';
         }else{
@@ -311,16 +319,18 @@ class CombatController extends Controller {
         $attaquant->save();
         $victime->save();
         $combat->save();
-        
+
         $data = ['attaquant' => $attaquant, 'victime' => $victime, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
     
-    private function isTerminated($victime, $personnages, $monstres) {
-        $entites = $victime->type === 'monstre' ? $monstres : $personnages;
+    private function isTerminated($victime, $personnages, $monstres) : bool{
+        $participants = $victime->entite->type === 'monstre' ? $monstres : $personnages;
         
-        foreach ($entites as $entite) {
-            if($entite->pointVie > 0) return false;
+        foreach ($participants as $p) {
+            if($p->pointVie > 0) {
+                return false;
+            }
         }
         return true;
     }
@@ -340,8 +350,7 @@ class CombatController extends Controller {
         }
         
         $combat->nbTours++;
-        
-        $entites = $combat->participants;
+
         $attaquant = Participant::find($combat->prochainAttaquant);
         
         $messsage = $attaquant->entite->prenom . ' joue en premier !';
@@ -363,10 +372,10 @@ class CombatController extends Controller {
         }
         
         $entites = $combat->participants;
-
+        
         $personnages = [];
         $monstres = [];
-
+        
         foreach ($entites as $participant) {
             //trie par type
             if($participant->entite->type === 'personnage') {

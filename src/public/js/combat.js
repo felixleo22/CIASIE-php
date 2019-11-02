@@ -1,7 +1,6 @@
 $('document').ready(() => {
     
     //affichage des données
-    const participant1Def = $('#participant1Def');
     const gameMessage = $('#gameMessage');
 
     //formulaire
@@ -31,6 +30,7 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
+            console.log(data);
             const {message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
@@ -85,6 +85,7 @@ $('document').ready(() => {
             return response.json();
         })
         .then((data) => {
+            // console.log(data)
             const {attaquant, victime, message, typeOfNext, showResult} = data;
             if(showResult) {
                 window.location.reload();
@@ -98,22 +99,13 @@ $('document').ready(() => {
     //mise a jour de l affichage
     function updateDisplay(attaquant, victime ,typeOfNext, message) {
 
-        console.log('ok')
-        $('#participant' + victime.id + 'PV').text(p2.pointVie);
+        const pvText = $('#participant' + victime.id + 'PV');
+        console.log(pvText);
+        pvText.text(victime.pointVie);
         
-        //TODO
-        // if(p1.defensif) {
-        //     participant1Def.text('( + 25%)');
-        // }else{
-        //     participant1Def.text('');
-        // }
-        
-        gameMessage.text(message);
-      
-        //animation 
-        let pb1 = victime.pointVie/victime.entite.pointVie*100;
+        let pb1 = (victime.pointVie/victime.entite.pointVie) * 100;
 
-        const hpbar1 = $('#hp_bar_participant.id').css("width",pb1+"%")
+        const hpbar1 = $('#hp_bar_' + victime.id).css("width",pb1+"%")
         if(pb1 < 60  && pb1 >=  30){
             hpbar1.css("background-color","orange")
 
@@ -121,6 +113,16 @@ $('document').ready(() => {
             hpbar1.css("background-color","red")
 
         }
+
+        const perso = attaquant.entite.type === 'personnage' ? attaquant : victime;
+        const defText = $('#participant' + perso.id + 'Def');
+        if(perso.defensif) {
+           defText.text('( + 25%)');
+        }else{
+            defText.text('');
+        }
+
+        gameMessage.text(message);
 
         switch (typeOfNext) {
             case 'ended':

@@ -20,15 +20,15 @@
             </h5>
             <div class="stat-group">
                 <p class="card-text"><i class="ra ra-sword"></i> {{ participant1.entite.pointAtt }}</p>
-                <p class="card-text"><i class="ra ra-shield"></i> {{ participant1.entite.pointDef }}<span id="participant1Def"></span></p>
+                <p class="card-text"><i class="ra ra-shield"></i> {{ participant1.entite.pointDef }}<span id="participant{{participant1.id}}Def"></span></p>
                 <p class="card-text"><i class="ra ra-player"></i>{{ participant1.entite.taille }}</p>
                 <p class="card-text"><i class="ra ra-feather-wing"></i> {{ participant1.entite.pointAgi }}</p>
                 <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ participant1.entite.poids }}</p>
             </div>
             <i class="fas fa-heart" style="float: left;margin-right: 0.5em;"></i>
             <div class="progress">
-                <div id="hp_bar_{{participant.id}}" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{participant1.pointVie}}%">
-                    <span id="participant{{participant.id}}" data-hp-max= {{participant1.entite.pointVie}}>{{ participant1.pointVie}}</span>                    
+                <div id="hp_bar_{{participant1.id}}" class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{participant1.pointVie}}%">
+                    <span id="participant{{participant1.id}}PV" data-hp-max= {{participant1.entite.pointVie}}>{{ participant1.pointVie}}</span>                    
                 </div>
             </div> 
         </div>
@@ -57,8 +57,8 @@
             </div>
             <i class="fas fa-heart" style="float: left;margin-right: 0.5em;"></i>
             <div class="progress">                
-                <div id="hp_bar_{{participant.id}}" class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:{{participant2.pointVie}}%">
-                    <span id="participant{{participant.id}}PV" data-hp-max= {{participant2.entite.pointVie}}>{{ participant2.pointVie}}</span>
+                <div id="hp_bar_{{participant2.id}}" class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:{{participant2.pointVie}}%">
+                    <span id="participant{{participant2.id}}PV" data-hp-max= {{participant2.entite.pointVie}}>{{ participant2.pointVie}}</span>
                 </div>
             </div> 
         </div>
