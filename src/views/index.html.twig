@@ -7,7 +7,9 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
 {% block content %}
 <h2>Choix des combattants</h2>
 <form id="formulaire" action="{{path_for('creerCombat')}}" method="post" disabled>
+    
     <section id="mode">
+        <h3 class="global-title">Mode de combat</h3>
         <div class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="mode1v1" value="1v1" name="combatMode" class="selectCombatMode custom-control-input" checked>
             <label class="custom-control-label" for="mode1v1">1 VS 1</label>
@@ -36,6 +38,7 @@ Smash 2.0 {% if est_connecte() %} - {{ get_admin_login() }}{% endif %}
         </div>
     </section>
     <div class="form-group" style="display:flex; justify-content: center">
+        <input class="btn btn-outline-primary" id="randomSelect" value="Choisir les entités aléatoirement" style="margin-right: 1em;">
         <input id="valid" class="btn btn-danger disabled" type="submit" value="SMASH">
     </div>
 </form>

@@ -44,8 +44,58 @@ function select(type, id) {
 }
 
 /**
- * Permet de verifier si on peut selectionner une entite
- */
+* Deselectionn toutes les entites
+*/
+function deselectAll() {
+    //on reset la selection
+    currentMonsterChecked = 0;
+    currentPersoChecked = 0;
+    
+    //on reset l'affvichage de la selection
+    const checkboxes = $(`input.check`);
+    checkboxes.prop("checked", false);
+    const cards = $("div.card.selectable");
+    cards.css("border-color", "");
+}
+
+/**
+* Choisi aléatoirement les entites
+*/
+function randomSelect() {
+    deselectAll(); 
+
+    const persoInputs = $('#personnage input.btn-select');
+    const monstreInputs = $('#monstre input.btn-select');
+
+    const numberOfEach = currentMode === '3v3' ? 3 : 1;
+
+    if(persoInputs.length < numberOfEach || monstreInputs.length < numberOfEach) return;
+    
+    const selected = [];
+    for (let index = 0; index < numberOfEach; index++) {
+        //choix d un personnage
+        let choosePerso = null;
+        while(choosePerso == null || selected.includes(choosePerso)) {
+            choosePerso = persoInputs[Math.floor(Math.random() * persoInputs.length)];
+        }
+        selected.push(choosePerso);
+        choosePerso.click();
+
+        //choix d un monstre
+        let chooseMonstre = null;
+        while(chooseMonstre == null || selected.includes(chooseMonstre)) {
+            chooseMonstre = monstreInputs[Math.floor(Math.random() * monstreInputs.length)];
+        }
+        selected.push(chooseMonstre);
+        chooseMonstre.click();
+    }
+
+
+}
+
+/**
+* Permet de verifier si on peut selectionner une entite
+*/
 function couldCheck(type) {
     if(type === 'personnage') {
         if(currentMode === '3v3') {
@@ -68,23 +118,23 @@ function couldCheck(type) {
 }
 
 /**
- * Permet de vérifier si le formulaire peut etre soumis
- */
+* Permet de vérifier si le formulaire peut etre soumis
+*/
 function updateFormStatus() {
     if(currentMode === '3v3' && currentMonsterChecked === 3 && currentPersoChecked === 3){
         $('#valid').removeClass('disabled');
-        return;
+        return true;
     }
     if(currentMode === '1v1' && currentMonsterChecked === 1 && currentPersoChecked === 1){
         $('#valid').removeClass('disabled');
-        return;
+        return true;
     }
-    $('#valid').addClass('disabled');    
+    $('#valid').addClass('disabled');  
+    return false;  
 }
 
 $('#formulaire').on('submit', (event) => {
-    updateFormStatus();
-    if($('#valid').hasClass('disabled')){
+    if(!updateFormStatus()){
         event.preventDefault();
     }
 });
@@ -111,21 +161,12 @@ $(document).ready(function () {
         // on change le mode
         if(!this.checked) return;
         currentMode = this.value;
-        
-        //on reset la selection
-        currentMonsterChecked = 0;
-        currentPersoChecked = 0;
-        
-        //on reset l'affvichage de la selection
-        const checkboxes = $(`input.check`);
-        checkboxes.prop("checked", false);
-        const cards = $("div.card.selectable");
-        cards.css("border-color", "");
+        deselectAll();
     });
     
     /**
-     * selection d'une entite
-     */
+    * selection d'une entite
+    */
     $("input.btn-select").click(function () {
         const type = $(this).data("type");
         const id = $(this).prop("id");
@@ -133,6 +174,15 @@ $(document).ready(function () {
         updateFormStatus();
     });
     
+    /**
+     * selection aleatoire
+     */
+    $("#randomSelect").on('click', () => {
+        randomSelect();
+        updateFormStatus();
+    });
+
+
     $("input#btn-show-stats").click(function () {
         const target = $(this).data("target");
         toggleStats(target);
