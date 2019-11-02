@@ -119,22 +119,47 @@ class CombatController extends Controller {
     * @return Entite
     */
     //TODO modifier pour que cela fonctionne en 3v3
-    private function choixAttaquant($combat, $personnage1, $personnage2){
+    private function choixAttaquant($combat, $entite1, $entite2){
         $val1 = 0;
         $val2 = 0;
         while($val1 === $val2){
-            $val1 = mt_rand(0, $personnage1->entite->pointAgi);
-            $val2 = mt_rand(0, $personnage2->entite->pointAgi);
+            $val1 = mt_rand(0, $entite1->entite->pointAgi);
+            $val2 = mt_rand(0, $entite2->entite->pointAgi);
         }
         if ($val1 > $val2){
-            $combat->prochainAttaquant = $personnage1->id;
-            $combat->prochainVictime = $personnage2->id;
-            return $personnage1;
+            $combat->prochainAttaquant = $entite1->id;
+            $combat->prochainVictime = $entite2->id;
+            return $entite1;
         }else{
-            $combat->prochainAttaquant = $personnage2->id;
-            $combat->prochainVictime = $personnage1->id;
-            return $personnage2;
+            $combat->prochainAttaquant = $entite2->id;
+            $combat->prochainVictime = $entite1->id;
+            return $entite2;
         }
+    }
+
+    /**
+     * return un tableau des attaquants dans l'ordre selon l'agilité, monstres et personnages confondu
+     */
+    public function trieAttaquant($participantsPersonnage, $participantsMonstre) {
+        $res = [];
+        for ($i = 0; $i <= count($participantsPersonnage)+count($participantsMonstre); $i++) {
+            $res[$participantsPersonnage[$i]] = mt_rand(0, $participantsPersonnage[$i]->entite->pointAgi);
+            $res[$participantsMonstre[$i]] = mt_rand(0, $participantsMonstre[$i]->entite->pointAgi);
+        }
+        arsort($res, SORT_NUMERIC);
+        return $res;
+    }
+
+    /**
+     * return un tableau de l'ordre des victimes pour une équipe
+     */
+    public function choixVictime($participants) {
+        $res = [];
+        for ($i = 1; $i <= count($participants); $i++) {
+            $res[$participants[$i]] =  $participants[$i]->pointVie;
+        }
+        arsort($res, SORT_NUMERIC);
+        return $res;
     }
     
     /**
