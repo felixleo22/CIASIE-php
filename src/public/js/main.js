@@ -162,6 +162,7 @@ $(document).ready(function () {
         if(!this.checked) return;
         currentMode = this.value;
         deselectAll();
+        updateFormStatus();
     });
     
     /**
