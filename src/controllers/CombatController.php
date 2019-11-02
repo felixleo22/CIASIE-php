@@ -210,7 +210,7 @@ class CombatController extends Controller {
     * Methode pour cloturer un combat
     */
     //TODO modifier pour que cela fonctionne en 3v3
-    private function terminerCombat($combat, $gagnants,  $perdants) {
+    private function terminerCombat($combat, $gagnants, $perdants) {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
         
