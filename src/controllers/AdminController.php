@@ -118,7 +118,6 @@ class AdminController extends Controller {
             return Utils::redirect($response, 'listeAdmins');
         }
         if($admin->super === 1) {
-            //TODO a la fin du projet, changer le message d'erreur
             FlashMessage::flashError('Impossible de supprimer le super admin');
             return Utils::redirect($response, 'listeAdmins');
         }

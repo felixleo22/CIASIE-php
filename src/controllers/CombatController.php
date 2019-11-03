@@ -75,7 +75,6 @@ class CombatController extends Controller {
             return Utils::redirect($response, 'accueil');
         }
         
-        //TODO verifier les types
         $combat = new Combat();
         $combat->mode = $combatMode;
         $created = $combat->save();
@@ -118,7 +117,6 @@ class CombatController extends Controller {
     * le plus grand chiffre commence a attaque
     * @return Entite
     */
-    //TODO modifier pour que cela fonctionne en 3v3
     private function choixAttaquant($combat, $personnages, $monstres){
         $personnages = array_filter($personnages, function($elem) {
             return $elem->pointVie > 0;
@@ -163,7 +161,6 @@ class CombatController extends Controller {
         $combat->prochainVictime = $victime->id;
         $combat->save();
         
-        //FIXME retourne parfois null en 3v3
         return $attaquant;
     }
     
@@ -209,7 +206,6 @@ class CombatController extends Controller {
     /**
     * Methode pour cloturer un combat
     */
-    //TODO modifier pour que cela fonctionne en 3v3
     private function terminerCombat($combat, $gagnants, $perdants) {
         $combat->termine = true;
         setcookie("combat", "", -1, "/");
@@ -220,13 +216,16 @@ class CombatController extends Controller {
             $gagnant->entite->totalDegatInflige += $gagnant->degatInflige;
             $gagnant->entite->totalDegatRecu += $gagnant->degatRecu;
             $gagnant->entite->save();     
+            $gagnant->save();
         }
         
         foreach ($perdants as $perdant) {
             $perdant->entite->combatPerdu++;
             $perdant->entite->totalDegatInflige += $perdant->degatInflige;
             $perdant->entite->totalDegatRecu += $perdant->degatRecu;
+            //FIXME ajouter els saves
             $perdant->entite->save();
+            $perdant->save();
         }
         
         $combat->save();
