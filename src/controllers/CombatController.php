@@ -20,12 +20,37 @@ class CombatController extends Controller {
         foreach ($listeCombat as $combat){
             $id = $combat->id;
             $participants = $combat->participants;
-            $personnage = $participants[0];
-            $monstre = $participants[1];
+            
+            $personnagesArray = [];
+            $monstresArray = [];
+
+            $gagnants = '';
+
+            foreach($participants as $p) {
+                if($p->entite->type === 'personnage') {
+                    $personnagesArray[] = $p->entite->prenom." ".$p->entite->nom;
+                    if($p->gagner) {
+                        $gagnants = 'personnages';
+                    }
+                }
+
+                if($p->entite->type === 'monstre') {
+                    $monstresArray[] = $p->entite->prenom." ".$p->entite->nom;
+                    if($p->gagner) {
+                        $gagnants = 'monstres';
+                    }
+                }
+            }
+
+            $personnage = implode('<br>', $personnagesArray);
+            $monstre = implode('<br>', $monstresArray);
+
             $combats[] = array(
                 'id' => $id,
                 'personnage' => $personnage,
-                'monstre' => $monstre
+                'monstre' => $monstre,
+                'gagnants' => $gagnants,
+                'mode' => $combat->mode,
             );
         }
         return $this->views->render($response, 'affichageCombats.html.twig', ['combats' => $combats]);
@@ -223,7 +248,6 @@ class CombatController extends Controller {
             $perdant->entite->combatPerdu++;
             $perdant->entite->totalDegatInflige += $perdant->degatInflige;
             $perdant->entite->totalDegatRecu += $perdant->degatRecu;
-            //FIXME ajouter els saves
             $perdant->entite->save();
             $perdant->save();
         }
@@ -235,7 +259,7 @@ class CombatController extends Controller {
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
-            //TODO faire qq chose si le combat n'existe pas
+            return $response->withJson(['showResult' => true], 201);            
         }
         
         if($combat->termine) {
@@ -348,7 +372,7 @@ class CombatController extends Controller {
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
         if($combat === null) {
-            //TODO faire qq chose si le combat n'existe pas
+            return $response->withJson(['showResult' => true], 201);
         }
         
         if($combat->termine) {
