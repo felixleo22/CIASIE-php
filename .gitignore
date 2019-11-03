@@ -2,4 +2,4 @@ vendor/
 .idea/
 composer.lock
 config.inc.php
-uploaded/
+
