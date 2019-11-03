@@ -56,6 +56,9 @@ class CombatController extends Controller {
         return $this->views->render($response, 'affichageCombats.html.twig', ['combats' => $combats]);
     }
     
+    /**
+     * Méthode permettant la création d'un combat 1v1 ou 3v3 avec des entités sélectionnées
+     */
     public function creerCombat(Request $request, Response $response, $args) {
         $combatCookie = isset($_COOKIE["combat"]) ? Utils::sanitize(json_decode($_COOKIE["combat"])) : null;
         if($combatCookie) {
@@ -141,6 +144,7 @@ class CombatController extends Controller {
     * choix d'un ramdom selon l'agilite de chaque entite
     * le plus grand chiffre commence a attaque
     * @return Entite
+    *               le prochain attaquant
     */
     private function choixAttaquant($combat, $personnages, $monstres){
         $personnages = array_filter($personnages, function($elem) {
@@ -189,6 +193,9 @@ class CombatController extends Controller {
         return $attaquant;
     }
     
+    /**
+     * Permet de calculer la probabilité d'attaque d'une entité
+     */
     private function coeffAttaque($participant) {
         $agi = rand(0, $participant->entite->pointAgi);
         return $agi / $participant->entite->pointAgi;
@@ -255,6 +262,9 @@ class CombatController extends Controller {
         $combat->save();
     }
     
+    /**
+     * Méthode permettant de fair eévoluer le combat (appelée via une requête ajax)
+     */
     public function play(Request $request, Response $response, $args){  
         $idCombat = Utils::sanitize($args['id']);
         $combat = Combat::find($idCombat);
@@ -329,7 +339,6 @@ class CombatController extends Controller {
         
         //choix du prochain ou fin du combat            
         $typeOfNext = null;
-        
         if($this->isTerminated($victime, $personnages, $monstres)) {
             if($attaquant->entite->type === 'personnage') {
                 $this->terminerCombat($combat, $personnages, $monstres);
@@ -345,15 +354,19 @@ class CombatController extends Controller {
             $typeOfNext = $prochain->entite->type;
         }   
         
+        //sauvegarde des données
         $attaquant->save();
         $victime->save();
-        
         $combat->save();
         
+        //envoie de la réponse en ajax
         $data = ['attaquant' => $attaquant, 'victime' => $victime, 'typeOfNext' => $typeOfNext, 'message' => $messsage];
         return $response->withJson($data, 201); 
     }
     
+    /**
+     * Méthode permettant de savoir si toutes les entités d'une équipe ont étés éliminées
+     */
     private function isTerminated($victime, $personnages, $monstres) : bool{
         $participants = $victime->entite->type === 'monstre' ? $monstres : $personnages;
         

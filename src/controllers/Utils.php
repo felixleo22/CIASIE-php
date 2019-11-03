@@ -5,6 +5,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\UploadedFile;
 
+/**
+ * Classe contenant les fonctions utiles fréquemment utilisées
+ */
 class Utils {
 
     private static $uploadDirectory = '/uploaded';
@@ -26,6 +29,9 @@ class Utils {
         return $filename;
     }
     
+    /**
+     * retourne une image si elle existe, sinon retourne l'image définie dans l'argument default
+     */
     public static function getUploadedPhoto($file, $default) : string {
         $img = self::$uploadDirectory.'/'.$file;
         
@@ -36,11 +42,17 @@ class Utils {
         return '/img/'.$default;
     }
 
+    /**
+     * permet de savoir si le fichier est accepté
+     */
     public static function isAcceptedFile(UploadedFile  $uploadedFile) : bool {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
          return in_array($extension, self::$acceptedFiles);
     }
     
+    /**
+     * permet la redirection d'un utilisateur
+     */
     public static function redirect(ResponseInterface $response, $route, $args = [])
     {
         global $app;
@@ -65,6 +77,9 @@ class Utils {
         return self::sanitize($data);
     }
 
+    /**
+     * verifie si les données sont de type nombre
+     */
     public static function verifIfNumber($data) : bool {
         return filter_var($data, FILTER_VALIDATE_INT);
     }

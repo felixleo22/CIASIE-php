@@ -3,6 +3,9 @@ use Smash\controllers\Auth;
 use Smash\controllers\FlashMessage;
 use Smash\controllers\Utils;
 
+/**
+ * Fonctions utilisées dans les templates twig
+ */
 return [
     new Twig_Function("est_connecte", Auth::class."::estConnecte"),
     new Twig_Function("get_message", FlashMessage::class."::get"),

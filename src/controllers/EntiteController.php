@@ -168,7 +168,7 @@ class EntiteController extends Controller
     }
     
     /**
-    * 
+    * permet de supprimer une entité
     */
     public function suppressionEntite(Request $request, Response $response, $args){
         $id = Utils::sanitize($args['id']);
