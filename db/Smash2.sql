@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Dim 03 Novembre 2019 à 21:26
+-- Généré le :  Dim 03 Novembre 2019 à 21:41
 -- Version du serveur :  5.7.27-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.19-0ubuntu0.18.04.2
 
@@ -44,7 +44,6 @@ CREATE TABLE `combat` (
 
 INSERT INTO `combat` (`id`, `mode`, `termine`, `nbTours`, `prochainAttaquant`, `prochainVictime`, `created_at`, `deleted_at`, `updated_at`) VALUES
 (1, '1v1', 1, 5, 2, 1, '2019-11-02 22:10:13', NULL, '2019-11-02 22:10:13'),
-(2, '3v3', 1, 10, 6, 3, '2019-11-02 22:24:23', NULL, '2019-11-02 22:24:23'),
 (3, '3v3', 1, 15, 9, 12, '2019-11-03 19:23:57', NULL, '2019-11-03 19:23:57'),
 (4, '1v1', 1, 3, 16, 15, '2019-11-03 19:24:21', NULL, '2019-11-03 19:24:21'),
 (5, '1v1', 1, 4, 18, 17, '2019-11-03 19:24:30', NULL, '2019-11-03 19:24:30'),
