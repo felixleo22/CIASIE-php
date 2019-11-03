@@ -4,6 +4,9 @@ namespace Smash\controllers;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class permettant la création de messages flash
+ */
 class FlashMessage {
     
     private static $flashedData;

@@ -11,6 +11,9 @@ use Slim\Views\Twig;
 
 class IndexController extends Controller
 {
+    /**
+     * méthode permttant l'affichage de la page d'accueil
+     */
     public function index(Request $request, Response $response){
         $entities = Entite::all();
         $personnages = Utils::filter($entities, "personnage");

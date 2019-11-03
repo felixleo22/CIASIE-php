@@ -3,7 +3,6 @@
 
 namespace Smash\controllers;
 
-
 class Controller
 {
     private $c = null;
