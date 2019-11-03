@@ -34,27 +34,29 @@
    </div>
    
    <div id="Perdant" class="card-container" style="display: none;" >
+      {% for perdant in combat.perdants %}
       <div class="card combat">
          <div class="card-img-top img-container-300">
-            <img class="card-img-top" src="{{ get_photo(combat.perdants[0].entite.photo, combat.perdants[0].entite.defaultPhoto()) }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ get_photo(perdant.entite.photo, perdant.entite.defaultPhoto()) }}" alt="Card image cap">
          </div>
          <div class="card-body">
             <h5 class="card-title">
                <div>
-                  {{ combat.perdants[0].entite.nom }} {{ combat.perdants[0].entite.prenom }}
+                  {{ perdant.entite.nom }} {{ perdant.entite.prenom }}
                </div>
             </h5>
             <div class="stat-group">
-               <p class="card-text"><i class="ra ra-two-hearts"></i> {{ combat.perdants[0].entite.pointVie }}</p>
-               <p class="card-text"><i class="ra ra-sword"></i> {{ combat.perdants[0].entite.pointAtt }}</p>
-               <p class="card-text"><i class="ra ra-shield"></i> {{ combat.perdants[0].entite.pointDef }}</p>
-               <p class="card-text"><i class="ra ra-player"></i>{{ combat.perdants[0].entite.taille }}</p>
-               <p class="card-text"><i class="ra ra-feather-wing"></i> {{ combat.perdants[0].entite.pointAgi  }}</p>
-               <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ combat.perdants[0].entite.poids }}</p>
+               <p class="card-text"><i class="ra ra-two-hearts"></i> {{ perdant.entite.pointVie }}</p>
+               <p class="card-text"><i class="ra ra-sword"></i> {{ perdant.entite.pointAtt }}</p>
+               <p class="card-text"><i class="ra ra-shield"></i> {{ perdant.entite.pointDef }}</p>
+               <p class="card-text"><i class="ra ra-player"></i>{{ perdant.entite.taille }}</p>
+               <p class="card-text"><i class="ra ra-feather-wing"></i> {{ perdant.entite.pointAgi  }}</p>
+               <p class="card-text"><i class="fas fa-weight-hanging"></i> {{ perdant.entite.poids }}</p>
             </div>
          </div>
       </div>
       {% include 'fin_game_stat_perdant.html.twig' %}
+      {% endfor %}
    </div>
 </div>
 
