@@ -5,20 +5,22 @@
     <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Personnage</th>
-            <th scope="col">Monstre</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Personnage(s)</th>
+            <th scope="col">Monstre(s)</th>
         </tr>
     </thead>
     <tbody>
         {% for combat in combats %}
         <tr id="">
             <td scope="col">{{ combat['id'] }}</td>
-            {% if combat['personnage'].gagner %}
-            <td scope="col" class="winner">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
-            <td scope="col" class="loser">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
+            <td scope="col">{{combat.mode}}</td>
+            {% if combat['gagnants'] == 'personnages' %}
+            <td scope="col" class="winner">{{ combat['personnage']|raw  }}</td>
+            <td scope="col" class="loser">{{ combat['monstre']|raw}}</td>
             {% else %}
-            <td scope="col" class="loser">{{ combat['personnage'].entite.nom }} {{ combat['personnage'].entite.prenom }}</td>
-            <td scope="col" class="winner">{{ combat['monstre'].entite.nom }} {{ combat['monstre'].entite.prenom }}</td>
+            <td scope="col" class="loser">{{ combat['personnage']|raw  }}</td>
+            <td scope="col" class="winner">{{ combat['monstre']|raw  }}</td>
             {% endif %}
             <td scope="col" style="padding-left: 0; padding-right: 0;">
                 <a class="btn btn-primary" href="{{ path_for('combat', { 'id' : combat['id']}) }}">
