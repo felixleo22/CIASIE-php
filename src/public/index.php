@@ -78,9 +78,7 @@ $app->group('/entite', function($app) {
     $app->get('/liste', EntiteController::class.':listeEntite')->setname('listeEntites');
     
     $app->get('/modifier/{id}', EntiteController::class.':afficherEntite')->setname('formModifEntite');
-    //TODO remplacer post par put
     $app->post('/modifier/{id}', EntiteController::class.':modifierEntite')->setName('execModifEntite');
-    //TODO remplacer get par delete
     $app->get('/supprimer/{id}', EntiteController::class.':suppressionEntite')->setName('execSupprEntite');
 })->add(new AuthMiddleware());
 
@@ -93,10 +91,8 @@ $app->group('/admin', function($app) {
     $app->get('/creer', AdminController::class.':formulaireCreation')->setName('formCreerAdmin')->add(new SuperAdminMiddleware());
     $app->post('/creer', AdminController::class.':creerAdmin')->setName('execCreerAdmin');
     
-    //TODO remplacer post par put
     $app->get('/modifier/{id}', AdminController::class.':formulaireEditAdmin')->setname('formModifAdmin')->add(new SuperAdminMiddleware());
     $app->post('/modifier/{id}', AdminController::class.':modifierAdmin')->setName('execModifAdmin');
-    //TODO remplacer get par delete
     $app->get('/supprimer/{id}', AdminController::class.':suppressionAdmin')->setName('execSupprAdmin')->add(new SuperAdminMiddleware());
     
     $app->get('/modifierMdp', AdminController::class.':afficherModiferMdp')->setName('formModifMdpAdmin');

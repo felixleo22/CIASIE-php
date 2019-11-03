@@ -87,11 +87,6 @@ class AdminController extends Controller {
             return Utils::redirect($response, "listeAdmins");
         }
         $admin->login = Utils::getFilteredPost($request, "login");
-        //TODO verifier s'il veut changer de login
-        // if(!Auth::loginDisponible($admin->login)){
-        //     FlashMessage::flashError('login deja utilisé');
-        //     return Utils::redirect($response, 'formModifAdmin',['id' => $admin->id]);   
-        // }
 
         $mdp = Utils::getFilteredPost($request, "mdp");
         $mdpConf = Utils::getFilteredPost($request, "mdp_conf");

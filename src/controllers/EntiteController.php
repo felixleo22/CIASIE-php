@@ -70,7 +70,7 @@ class EntiteController extends Controller
         $perso['pointAtt'] = Utils::getFilteredPost($request, 'pointAtt');
         $perso['pointDef'] = Utils::getFilteredPost($request, 'pointDef');
         $perso['pointAgi'] = Utils::getFilteredPost($request, 'pointAgi');
-        //TODO eventuellement faire plus propre
+
         if (!Utils::verifIfNumber($perso['taille']) || !Utils::verifIfNumber($perso['poids']) || 
         !Utils::verifIfNumber($perso['pointVie']) || !Utils::verifIfNumber($perso['pointAtt']) || 
         !Utils::verifIfNumber($perso['pointDef']) || !Utils::verifIfNumber($perso['pointAgi'])) {
@@ -143,7 +143,6 @@ class EntiteController extends Controller
         $entite->pointDef = Utils::getFilteredPost($request, "pointDef");
         $entite->pointAgi = Utils::getFilteredPost($request, "pointAgi");
 
-        //TODO meme chose au dessus
         if (!Utils::verifIfNumber($entite->taille) || !Utils::verifIfNumber($entite->poids) || 
         !Utils::verifIfNumber($entite->pointVie) || !Utils::verifIfNumber($entite->pointAtt) || 
         !Utils::verifIfNumber($entite->pointDef) || !Utils::verifIfNumber($entite->pointAgi)) {

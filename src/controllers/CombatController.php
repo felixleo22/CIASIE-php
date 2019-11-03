@@ -419,7 +419,6 @@ class CombatController extends Controller {
         
         if($combat->termine) {
             //si combat terminé, on affiche le résultat
-            //TODO affichage 3v3 du resultat
             return $this->views->render($response, 'affichageVainqueur.html.twig', ['combat' => $combat]);
         }
         
