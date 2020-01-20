@@ -6,5 +6,5 @@ use Smash\controllers\FlashMessage;
  * Fonction utilisé dans les templates twig * 
  */
 return [
-    new Twig_Test('flashed', FlashMessage::class.'::has'),
+    new \Twig\TwigTest('flashed', FlashMessage::class.'::has'),
 ];
