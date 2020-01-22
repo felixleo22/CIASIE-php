@@ -1,0 +1,46 @@
+version: '3'
+
+networks: 
+    Smash2:
+        driver: bridge
+
+services: 
+    app:
+        build: ./app
+        volumes: 
+            - ./app:/var/www/html
+            - ./app/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        working_dir: 
+            /var/www/html
+        ports: 
+            - 8080:80
+        networks: 
+            - Smash2
+        links: 
+            - database
+    database:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=Smash2
+            - MYSQL_PASSWORD=Smash2
+            - MYSQL_DATABASE=Smash2
+        ports:
+            - "3307:3306"
+        networks:
+            - Smash2
+        volumes:
+            - ./db-volume:/var/lib/mysql
+    phpmyadminSmash2:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadminSmash2
+        ports:
+            - 5000:80
+        environment:
+            - PMA_ARBITRARY=1
+        depends_on:
+            - database
+        networks: 
+            - Smash2

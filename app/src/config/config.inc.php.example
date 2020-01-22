@@ -8,10 +8,10 @@ $config['addContentLengthHeader'] = false;
 
 $config["db"] = [
     'driver' => "mysql",
-    'host' => "localhost",
+    'host' => "database",
     'database' => "Smash2",
-    'username' => "",
-    'password' => "",
+    'username' => "Smash2",
+    'password' => "Smash2",
     'charset' => "utf8",
     'collation' => "utf8_unicode_ci",
     'prefix' => ''
